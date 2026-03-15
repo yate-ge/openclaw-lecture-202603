@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From LLM to Agent — OpenClaw</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;500;700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Mono:wght@300;400;500&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --base: #F0F0F0;
+    --white: #FFFFFF;
+    --black: #000000;
+    --text: #1A1A1A;
+    --gray: #999999;
+    --light-gray: #D0D0D0;
+    --mid-gray: #888888;
+    --slide-w: 100vw;
+    --slide-h: 100vh;
+    --nav-size: 11px;
+    --body-size: clamp(13px, 1.4vw, 16px);
+    --h1-size: clamp(28px, 4vw, 56px);
+    --h2-size: clamp(20px, 2.6vw, 36px);
+    --h3-size: clamp(16px, 1.8vw, 24px);
+    --big-number: clamp(48px, 8vw, 120px);
+    --pad: clamp(32px, 4vw, 64px);
+    --pad-sm: clamp(16px, 2vw, 32px);
+  }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', 'Noto Sans SC', sans-serif;
+    background: var(--black);
+    color: var(--text);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── Slide Container ─── */
+  .deck {
+    position: relative;
+    width: var(--slide-w);
+    height: var(--slide-h);
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--pad);
+    background: var(--base);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+  }
+
+  .slide.dark {
+    background: var(--black);
+    color: #E0E0E0;
+  }
+
+  .slide.dark .nav-label,
+  .slide.dark .nav-number { color: #666; }
+  .slide.dark .nav-line { background: #333; }
+
+  /* ─── Navigation Label ─── */
+  .nav {
+    position: absolute;
+    top: var(--pad-sm);
+    left: var(--pad);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+  }
+
+  .nav-number {
+    font-family: 'DM Mono', monospace;
+    font-size: var(--nav-size);
+    font-weight: 500;
+    color: var(--gray);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .nav-line {
+    width: 24px;
+    height: 1px;
+    background: var(--light-gray);
+  }
+
+  .nav-label {
+    font-family: 'DM Mono', monospace;
+    font-size: var(--nav-size);
+    font-weight: 400;
+    color: var(--gray);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ─── Typography ─── */
+  .en { font-family: 'DM Sans', sans-serif; }
+  .mono { font-family: 'DM Mono', monospace; }
+  .cn { font-family: 'Noto Sans SC', sans-serif; }
+
+  h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: var(--h1-size);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--black);
+  }
+
+  .slide.dark h1 { color: #FFF; }
+
+  h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: var(--h2-size);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: var(--h3-size);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  p, li {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: var(--body-size);
+    font-weight: 300;
+    line-height: 1.85;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+
+  .slide.dark p,
+  .slide.dark li { color: #BBB; }
+
+  .big-num {
+    font-family: 'DM Sans', sans-serif;
+    font-size: var(--big-number);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--black);
+  }
+
+  .slide.dark .big-num { color: #FFF; }
+
+  strong {
+    font-weight: 700;
+    color: var(--black);
+  }
+
+  .slide.dark strong { color: #FFF; }
+
+  .tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid var(--light-gray);
+    color: var(--gray);
+  }
+
+  .slide.dark .tag {
+    border-color: #444;
+    color: #777;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--light-gray);
+    margin: var(--pad-sm) 0;
+  }
+
+  .slide.dark .divider { background: #333; }
+
+  .accent-line {
+    width: 40px;
+    height: 3px;
+    background: var(--black);
+    margin-bottom: 20px;
+  }
+
+  .slide.dark .accent-line { background: #FFF; }
+
+  ul { list-style: none; padding: 0; }
+  ul li { position: relative; padding-left: 16px; }
+  ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 4px;
+    height: 4px;
+    background: var(--gray);
+  }
+
+  .slide.dark ul li::before { background: #666; }
+
+  /* ─── Layout Helpers ─── */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--pad);
+    align-items: start;
+    height: 100%;
+  }
+
+  .split-40-60 {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: var(--pad);
+    align-items: start;
+  }
+
+  .split-60-40 {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: var(--pad);
+    align-items: start;
+  }
+
+  .v-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .gap-sm { gap: 12px; }
+  .gap-md { gap: 20px; }
+  .gap-lg { gap: 32px; }
+  .mt-auto { margin-top: auto; }
+  .mb-sm { margin-bottom: 12px; }
+  .mb-md { margin-bottom: 20px; }
+  .mb-lg { margin-bottom: 32px; }
+
+  .flex-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .columns-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--pad);
+  }
+
+  .columns-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--pad-sm);
+  }
+
+  /* ─── Specific Layouts ─── */
+
+  /* Title slide scattered */
+  .title-scattered {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .title-scattered .main-title {
+    text-align: center;
+    z-index: 2;
+  }
+
+  .title-scattered .stamp {
+    position: absolute;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray);
+    border: 1px solid var(--light-gray);
+    padding: 6px 14px;
+    transform: rotate(var(--rot, 0deg));
+    white-space: nowrap;
+  }
+
+  .slide.dark .title-scattered .stamp {
+    border-color: #333;
+    color: #555;
+  }
+
+  /* Two-column problem/solution */
+  .vs-split {
+    display: grid;
+    grid-template-columns: 1fr 3px 1fr;
+    gap: 0;
+    height: 70%;
+    align-items: start;
+  }
+
+  .vs-split .vs-line {
+    width: 3px;
+    height: 100%;
+    background: var(--black);
+  }
+
+  .slide.dark .vs-split .vs-line { background: #FFF; }
+
+  .vs-split .vs-col {
+    padding: 0 var(--pad-sm);
+  }
+
+  /* Flow diagram */
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .flow-box {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(11px, 1.2vw, 14px);
+    font-weight: 500;
+    padding: 10px 18px;
+    border: 1.5px solid var(--black);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .slide.dark .flow-box {
+    border-color: #FFF;
+    color: #FFF;
+  }
+
+  .flow-arrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 18px;
+    color: var(--gray);
+    user-select: none;
+  }
+
+  /* Network diagram */
+  .network-svg {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  /* Table */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--body-size);
+  }
+
+  .compare-table th {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--black);
+  }
+
+  .slide.dark .compare-table th { border-color: #FFF; color: #FFF; }
+
+  .compare-table td {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-weight: 300;
+    font-size: clamp(12px, 1.2vw, 14px);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--light-gray);
+    letter-spacing: 0.03em;
+    line-height: 1.6;
+  }
+
+  .slide.dark .compare-table td { border-color: #333; color: #BBB; }
+
+  .compare-table td:first-child {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-weight: 500;
+    color: var(--black);
+    white-space: nowrap;
+  }
+
+  .slide.dark .compare-table td:first-child { color: #FFF; }
+
+  /* Step columns */
+  .step-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .step-col .step-num {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(36px, 5vw, 72px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--light-gray);
+  }
+
+  .slide.dark .step-col .step-num { color: #333; }
+
+  .step-col h3 {
+    font-size: clamp(14px, 1.6vw, 20px);
+    font-weight: 700;
+  }
+
+  .step-col p {
+    font-size: clamp(12px, 1.1vw, 14px);
+    line-height: 1.7;
+  }
+
+  /* Challenge cards */
+  .challenge-card {
+    border-left: 3px solid var(--black);
+    padding-left: var(--pad-sm);
+  }
+
+  .slide.dark .challenge-card { border-color: #FFF; }
+
+  .challenge-card .challenge-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 8px;
+  }
+
+  .challenge-card h3 {
+    margin-bottom: 10px;
+    font-size: clamp(14px, 1.5vw, 20px);
+  }
+
+  .challenge-card p {
+    font-size: clamp(12px, 1.1vw, 14px);
+    line-height: 1.7;
+  }
+
+  /* ─── Reveal Animation ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .slide.active .reveal {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .slide.active .reveal.d1 { transition-delay: 0.1s; }
+  .slide.active .reveal.d2 { transition-delay: 0.2s; }
+  .slide.active .reveal.d3 { transition-delay: 0.3s; }
+  .slide.active .reveal.d4 { transition-delay: 0.4s; }
+  .slide.active .reveal.d5 { transition-delay: 0.5s; }
+  .slide.active .reveal.d6 { transition-delay: 0.6s; }
+  .slide.active .reveal.d7 { transition-delay: 0.7s; }
+  .slide.active .reveal.d8 { transition-delay: 0.8s; }
+
+  /* ─── Progress Bar ─── */
+  .progress-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--black);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+  }
+
+  .progress-bar.on-dark { background: #FFF; }
+
+  /* ─── Slide Counter ─── */
+  .slide-counter {
+    position: fixed;
+    bottom: var(--pad-sm);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+    z-index: 100;
+    transition: color 0.4s;
+  }
+
+  .slide-counter.on-dark { color: #555; }
+
+  /* ─── Keyboard Hint ─── */
+  .key-hint {
+    position: fixed;
+    bottom: var(--pad-sm);
+    left: var(--pad);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--light-gray);
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 2s ease 4s;
+  }
+
+  .key-hint.hide { opacity: 0; }
+  .key-hint.on-dark { color: #333; }
+
+  /* ─── CDI Logo ─── */
+  .cdi-logo {
+    position: absolute;
+    bottom: var(--pad-sm);
+    right: var(--pad);
+    height: 28px;
+    opacity: 0.35;
+    z-index: 10;
+    pointer-events: none;
+    filter: invert(0);
+    transition: filter 0.4s;
+  }
+
+  .slide.dark .cdi-logo {
+    filter: invert(0);
+    opacity: 0.5;
+  }
+
+  .slide:not(.dark) .cdi-logo {
+    filter: invert(1);
+    opacity: 0.3;
+  }
+
+  /* ─── TOC Button & Panel ─── */
+  .toc-btn {
+    position: fixed;
+    bottom: var(--pad-sm);
+    left: var(--pad);
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--light-gray);
+    background: var(--base);
+    cursor: pointer;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  .toc-btn:hover { border-color: var(--black); }
+
+  .toc-btn.on-dark {
+    border-color: #444;
+    background: var(--black);
+  }
+
+  .toc-btn.on-dark:hover { border-color: #FFF; }
+
+  .toc-btn .toc-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .toc-btn .toc-icon span {
+    display: block;
+    height: 1.5px;
+    background: var(--black);
+    transition: background 0.3s;
+  }
+
+  .toc-btn .toc-icon span:nth-child(1) { width: 14px; }
+  .toc-btn .toc-icon span:nth-child(2) { width: 10px; }
+  .toc-btn .toc-icon span:nth-child(3) { width: 14px; }
+
+  .toc-btn.on-dark .toc-icon span { background: #FFF; }
+
+  .toc-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 300;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .toc-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .toc-panel {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 380px;
+    max-width: 90vw;
+    max-height: 70vh;
+    background: var(--white);
+    z-index: 310;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    padding: var(--pad-sm) var(--pad);
+  }
+
+  .toc-panel.open {
+    transform: translateY(0);
+  }
+
+  .toc-panel-header {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--light-gray);
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 8px 0;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  .toc-item:hover { opacity: 0.6; }
+
+  .toc-item.is-section {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--light-gray);
+  }
+
+  .toc-item-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    width: 28px;
+  }
+
+  .toc-item-title {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0.03em;
+  }
+
+  .toc-item.is-section .toc-item-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .toc-item.active .toc-item-num,
+  .toc-item.active .toc-item-title {
+    color: var(--black);
+    font-weight: 700;
+  }
+
+  /* ─── Subtitle styling ─── */
+  .subtitle {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-weight: 300;
+    font-size: clamp(14px, 1.6vw, 20px);
+    color: var(--gray);
+    letter-spacing: 0.06em;
+    line-height: 1.7;
+  }
+
+  .slide.dark .subtitle { color: #777; }
+
+  .quote-block {
+    border-left: 2px solid var(--light-gray);
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  .slide.dark .quote-block { border-color: #444; }
+
+  .quote-block p {
+    font-size: clamp(13px, 1.3vw, 16px);
+    color: var(--mid-gray);
+    line-height: 1.8;
+  }
+
+  /* ─── Timeline ─── */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--light-gray);
+  }
+
+  .slide.dark .timeline::before { background: #333; }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 24px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 8px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--black);
+  }
+
+  .slide.dark .timeline-item::before { background: #FFF; }
+
+  .timeline-item h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(13px, 1.3vw, 16px);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .timeline-item p {
+    font-size: clamp(11px, 1vw, 13px);
+    line-height: 1.6;
+    color: var(--mid-gray);
+  }
+
+  /* ─── EUD levels ─── */
+  .level-row {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--light-gray);
+  }
+
+  .slide.dark .level-row { border-color: #333; }
+
+  .level-row:last-child { border-bottom: none; }
+
+  .level-num {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(24px, 3vw, 40px);
+    font-weight: 900;
+    color: var(--light-gray);
+    flex-shrink: 0;
+    width: 60px;
+    line-height: 1;
+  }
+
+  .slide.dark .level-num { color: #333; }
+
+  .level-content h3 {
+    font-size: clamp(13px, 1.4vw, 17px);
+    margin-bottom: 6px;
+  }
+
+  .level-content p {
+    font-size: clamp(11px, 1.1vw, 14px);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 00: Title -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide dark active" data-index="0">
+    <div class="title-scattered">
+      <span class="stamp reveal d1" style="top:12%;left:8%;--rot:-6deg;">INTERACTION DESIGN</span>
+      <span class="stamp reveal d2" style="top:18%;right:10%;--rot:3deg;">AI AGENT</span>
+      <span class="stamp reveal d3" style="bottom:28%;left:12%;--rot:4deg;">OPENCLAW</span>
+      <span class="stamp reveal d4" style="bottom:20%;right:14%;--rot:-3deg;">2026.03</span>
+      <span class="stamp reveal d5" style="top:38%;left:5%;--rot:-2deg;">REACT LOOP</span>
+      <span class="stamp reveal d6" style="top:50%;right:6%;--rot:5deg;">HEARTBEAT</span>
+      <div class="main-title reveal d3">
+        <p class="subtitle" style="margin-bottom:20px;">从交互设计视角理解</p>
+        <h1 style="font-size:clamp(32px,5.5vw,72px);color:#FFF;">From LLM<br>to Agent</h1>
+        <div style="width:40px;height:2px;background:#FFF;margin:24px auto;"></div>
+        <p class="subtitle">AI Agent 的技术本质与设计创新</p>
+        <div style="margin-top:36px;display:flex;align-items:center;justify-content:center;gap:16px;">
+          <span class="mono" style="font-size:12px;color:#666;letter-spacing:0.08em;">葛亚特</span>
+          <span style="width:1px;height:12px;background:#444;display:inline-block;"></span>
+          <span class="mono" style="font-size:11px;color:#555;letter-spacing:0.1em;">博士生</span>
+          <span style="width:1px;height:12px;background:#444;display:inline-block;"></span>
+          <span class="mono" style="font-size:11px;color:#555;letter-spacing:0.1em;">数字创新中心</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 01: Course Objective -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="1">
+    <div class="nav">
+      <span class="nav-number">00</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Introduction</span>
+    </div>
+    <div class="v-center" style="max-width:640px;">
+      <div class="accent-line reveal d1"></div>
+      <h2 class="reveal d2" style="margin-bottom:24px;">课程目标</h2>
+      <p class="reveal d3" style="font-size:clamp(15px,1.6vw,20px);line-height:2;font-weight:300;">
+        面向设计学本科生和研究生，从<strong>交互设计视角</strong>理解 AI Agent 的技术本质，启发学生思考如何利用 Agent 技术进行<strong>设计创新</strong>。
+      </p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 02: Part 1 Section Header -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide dark" data-index="2">
+    <div class="nav">
+      <span class="nav-number">01</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Technical Evolution</span>
+    </div>
+    <div class="v-center">
+      <div class="tag reveal d1" style="margin-bottom:24px;">Part 1</div>
+      <h1 class="reveal d2" style="margin-bottom:32px;">从大模型到 Agent<br><span style="font-weight:300;font-size:0.6em;color:#777;">技术演进与本质</span></h1>
+      <div class="reveal d3 quote-block" style="max-width:600px;">
+        <p>核心叙事线：LLM → Chatbot → Agent（ReAct）→ OpenClaw<br>每一步跨越意味着什么？对我们（设计者）意味着什么？</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 03: Layer 1 — LLM -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="3">
+    <div class="nav">
+      <span class="nav-number">01</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">LLM</span>
+    </div>
+    <div class="split" style="align-items:center;">
+      <div class="flex-col gap-md">
+        <div class="big-num reveal d1">01</div>
+        <h2 class="reveal d2">大模型（LLM）</h2>
+        <p class="reveal d3 mono" style="font-size:13px;color:var(--gray);letter-spacing:0.1em;">会说话的大脑</p>
+      </div>
+      <div class="flex-col gap-md v-center">
+        <div class="reveal d2">
+          <div class="flow-row" style="margin-bottom:20px;">
+            <span class="flow-box">Prompt</span>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="flow-box" style="background:var(--black);color:#FFF;">LLM</span>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="flow-box">Text</span>
+          </div>
+        </div>
+        <div class="divider reveal d3"></div>
+        <ul class="reveal d3 flex-col gap-sm">
+          <li>本质上是一个<strong>文本生成器</strong></li>
+          <li>能力：理解语义、生成内容、推理</li>
+          <li>局限：<strong>没有记忆、没有行动力、没有外部连接</strong></li>
+          <li>形态：单轮问答，用完即走</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 04: Layer 2 — Chatbot -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="4">
+    <div class="nav">
+      <span class="nav-number">01</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Chatbot</span>
+    </div>
+    <div class="split" style="align-items:center;">
+      <div class="flex-col gap-md">
+        <div class="big-num reveal d1">02</div>
+        <h2 class="reveal d2">Chatbot</h2>
+        <p class="reveal d3 mono" style="font-size:13px;color:var(--gray);letter-spacing:0.1em;">能对话了</p>
+      </div>
+      <div class="flex-col gap-md v-center">
+        <ul class="reveal d2 flex-col gap-sm">
+          <li>在 LLM 基础上加入<strong>对话历史</strong></li>
+          <li>多轮对话，有上下文感知</li>
+          <li>本质仍是<strong>被动应答</strong>：你问它答，你不问它就不动</li>
+          <li>形态：ChatGPT、Claude 对话界面</li>
+        </ul>
+        <div class="divider reveal d3"></div>
+        <div class="reveal d4" style="padding:16px;border:1px solid var(--light-gray);">
+          <p class="mono" style="font-size:11px;color:var(--gray);margin-bottom:6px;">FOR DESIGNERS</p>
+          <p style="font-size:clamp(12px,1.2vw,15px);">交互从搜索框/表单 → 对话框，但仍然是<strong>用户发起</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 05: Layer 3 — Agent -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide dark" data-index="5">
+    <div class="nav">
+      <span class="nav-number">01</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Agent</span>
+    </div>
+    <div class="split" style="align-items:center;">
+      <div class="flex-col gap-md">
+        <div class="big-num reveal d1" style="color:#444;">03</div>
+        <h2 class="reveal d2">Agent</h2>
+        <p class="reveal d3 mono" style="font-size:13px;color:#666;letter-spacing:0.1em;">会思考、会行动</p>
+        <div class="reveal d4" style="margin-top:16px;">
+          <p style="font-size:clamp(12px,1.2vw,15px);color:#999;">关键跨越：LLM + <strong style="color:#FFF;">Tool Use</strong> + <strong style="color:#FFF;">ReAct 循环</strong></p>
+        </div>
+      </div>
+      <div class="flex-col gap-md v-center">
+        <div class="reveal d3" style="padding:24px;border:1px solid #333;">
+          <p class="mono" style="font-size:11px;color:#666;margin-bottom:12px;">REACT LOOP</p>
+          <div class="flow-row" style="gap:16px;">
+            <span class="flow-box">Thought</span>
+            <span class="flow-arrow" style="color:#555;">&rarr;</span>
+            <span class="flow-box">Action</span>
+            <span class="flow-arrow" style="color:#555;">&rarr;</span>
+            <span class="flow-box">Observation</span>
+            <span class="flow-arrow" style="color:#555;">&circlearrowright;</span>
+          </div>
+        </div>
+        <div class="divider reveal d4"></div>
+        <ul class="reveal d5 flex-col gap-sm" style="font-size:clamp(12px,1.1vw,14px);">
+          <li>LLM 决定调用工具来完成任务</li>
+          <li>角色从"文本生成器"变成"<strong>决策者 + 协调者</strong>"</li>
+          <li>模仿人类：想一想 → 做一做 → 看结果 → 再想</li>
+        </ul>
+        <div class="reveal d6" style="padding:16px;border:1px solid #333;">
+          <p class="mono" style="font-size:11px;color:#666;margin-bottom:6px;">FOR DESIGNERS</p>
+          <p style="font-size:clamp(12px,1.1vw,14px);">AI 从"应答工具"变成"能执行任务的助手"<br>交互从"对话"扩展到"<strong>委托</strong>"</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 06: Layer 4 — OpenClaw Intro -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide dark" data-index="6">
+    <div class="nav">
+      <span class="nav-number">01</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">OpenClaw</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;">
+      <div class="big-num reveal d1" style="color:#333;">04</div>
+      <h1 class="reveal d2" style="font-size:clamp(36px,6vw,80px);margin:16px 0;">OpenClaw</h1>
+      <p class="reveal d3 subtitle" style="margin-bottom:32px;">Agent 住进了电脑</p>
+      <div class="reveal d4" style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
+        <span class="flow-box" style="border-color:#FFF;color:#FFF;">常驻运行</span>
+        <span class="flow-arrow" style="color:#555;">+</span>
+        <span class="flow-box" style="border-color:#FFF;color:#FFF;">通讯连接</span>
+        <span class="flow-arrow" style="color:#555;">+</span>
+        <span class="flow-box" style="border-color:#FFF;color:#FFF;">记忆系统</span>
+        <span class="flow-arrow" style="color:#555;">+</span>
+        <span class="flow-box" style="border-color:#FFF;color:#FFF;">定时心跳</span>
+      </div>
+      <div class="divider reveal d5" style="max-width:400px;margin:32px auto;"></div>
+      <p class="reveal d6" style="font-size:clamp(12px,1.2vw,15px);color:#888;max-width:520px;">
+        不再是"打开-使用-关闭"，而是<strong>24/7 活着的数字存在</strong>
+      </p>
+      <div class="reveal d7" style="margin-top:24px;display:flex;gap:24px;justify-content:center;">
+        <span class="tag">2025.11 发布</span>
+        <span class="tag">开源 / Self-Hosted</span>
+        <span class="tag">30-40万用户</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 07: Five Core Components -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="7">
+    <div class="nav">
+      <span class="nav-number">01</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Architecture</span>
+    </div>
+    <div class="flex-col" style="height:100%;justify-content:center;">
+      <h2 class="reveal d1" style="margin-bottom:32px;">五大核心组件</h2>
+      <div class="columns-5 reveal d2">
+        <div class="step-col">
+          <div class="step-num">01</div>
+          <h3>Gateway</h3>
+          <p>消息路由控制面，连接 20+ 通讯平台。Hub-and-spoke 架构，Channel Adapter 归一化消息格式。</p>
+        </div>
+        <div class="step-col">
+          <div class="step-num">02</div>
+          <h3>Brain</h3>
+          <p>基于 ReAct 循环编排 LLM 调用，支持 Claude、GPT、DeepSeek 等多模型。</p>
+        </div>
+        <div class="step-col">
+          <div class="step-num">03</div>
+          <h3>Memory</h3>
+          <p>双层记忆：短期（daily logs）+ 长期（Markdown 文件）。刻意简洁，无向量数据库。</p>
+        </div>
+        <div class="step-col">
+          <div class="step-num">04</div>
+          <h3>Skills</h3>
+          <p>插件能力系统，YAML frontmatter 定义。社区通过 ClawHub 共享 1700+ 技能。</p>
+        </div>
+        <div class="step-col">
+          <div class="step-num">05</div>
+          <h3>Heartbeat</h3>
+          <p>周期性触发（如每30分钟），无需用户输入。Agent 主动性的关键机制。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 08: Agent Loop -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="8">
+    <div class="nav">
+      <span class="nav-number">01</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Agent Loop</span>
+    </div>
+    <div class="flex-col" style="height:100%;justify-content:center;gap:32px;">
+      <h2 class="reveal d1">Agent Loop — 完整循环</h2>
+      <div class="reveal d2 flow-row" style="gap:8px;justify-content:center;flex-wrap:wrap;">
+        <span class="flow-box">接收消息</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-box">路由到会话</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-box">加载上下文+Skills</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-box" style="background:var(--black);color:#FFF;">LLM 推理 (ReAct)</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-box">工具调用</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-box">流式回复</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-box">持久化状态</span>
+      </div>
+      <div class="divider reveal d3"></div>
+      <div class="reveal d4" style="max-width:680px;margin:0 auto;text-align:center;">
+        <p class="mono" style="font-size:11px;color:var(--gray);margin-bottom:10px;">FOR DESIGNERS</p>
+        <p style="font-size:clamp(14px,1.5vw,18px);line-height:1.8;">
+          这不再是一个"工具"，而是一个<strong>有记忆、有行动力、能主动联系你、活在你日常通讯渠道里的数字实体</strong>。<br>交互设计的对象从"界面"变成了"<strong>关系</strong>"。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 09: Part 2 Section Header -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide dark" data-index="9">
+    <div class="nav">
+      <span class="nav-number">02</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Paradigm Shift</span>
+    </div>
+    <div class="v-center">
+      <div class="tag reveal d1" style="margin-bottom:24px;">Part 2</div>
+      <h1 class="reveal d2" style="margin-bottom:32px;">Agent 架构带来的<br>交互范式变化</h1>
+      <div class="reveal d3 quote-block" style="max-width:560px;">
+        <p>从 OpenClaw 的架构特性出发，讨论对交互设计的影响和创新空间</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 10: Proactive Interaction -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="10">
+    <div class="nav">
+      <span class="nav-number">02</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Proactive</span>
+    </div>
+    <div class="flex-col" style="height:100%;justify-content:center;">
+      <h2 class="reveal d1" style="margin-bottom:32px;">2.1 主动响应式交互</h2>
+      <div class="vs-split reveal d2">
+        <div class="vs-col">
+          <p class="mono" style="font-size:11px;color:var(--gray);letter-spacing:0.15em;margin-bottom:16px;">TRADITIONAL</p>
+          <h3 style="margin-bottom:12px;">用户发起 → 系统响应</h3>
+          <p style="color:var(--mid-gray);">Request-Response 模式<br>用户不操作，系统就沉默</p>
+        </div>
+        <div class="vs-line"></div>
+        <div class="vs-col">
+          <p class="mono" style="font-size:11px;color:var(--gray);letter-spacing:0.15em;margin-bottom:16px;">AGENT MODE</p>
+          <h3 style="margin-bottom:12px;">Agent 主动感知 → 主动联系</h3>
+          <p>通过 Heartbeat 周期性检查邮件/日历<br>主动推送待办提醒</p>
+          <div style="margin-top:16px;padding:12px;border:1px solid var(--light-gray);">
+            <p class="mono" style="font-size:10px;color:var(--gray);margin-bottom:6px;">DESIGN QUESTION</p>
+            <p style="font-size:clamp(12px,1.1vw,14px);">如何设计"<strong>不打扰但有用</strong>"的主动交互？</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 11: Memory -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="11">
+    <div class="nav">
+      <span class="nav-number">02</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Memory</span>
+    </div>
+    <div class="split" style="align-items:center;">
+      <div class="flex-col gap-md">
+        <h2 class="reveal d1">2.2 连续交互与<br>记忆能力</h2>
+        <div class="divider reveal d2"></div>
+        <div class="reveal d3" style="padding:16px;border:1px solid var(--light-gray);">
+          <p class="mono" style="font-size:10px;color:var(--gray);margin-bottom:6px;">DESIGN QUESTION</p>
+          <p style="font-size:clamp(12px,1.1vw,14px);">如何设计"<strong>长期关系型</strong>"的交互？<br>记忆如何影响 Agent 的行为和人格？</p>
+        </div>
+      </div>
+      <div class="flex-col">
+        <div class="timeline reveal d2">
+          <div class="timeline-item">
+            <h4>短期记忆</h4>
+            <p>Daily logs + session context，对话中积累</p>
+          </div>
+          <div class="timeline-item">
+            <h4>长期记忆</h4>
+            <p>Curated Markdown 文件，跨会话持久化偏好、决策、重要事实</p>
+          </div>
+          <div class="timeline-item">
+            <h4>选择性记忆</h4>
+            <p>有意识地决定记什么、忘什么 — 记忆 = Agent 的"人格"基础</p>
+          </div>
+        </div>
+        <div class="reveal d3" style="margin-top:12px;margin-left:32px;display:flex;gap:8px;">
+          <span class="tag">纯 Markdown</span>
+          <span class="tag">无向量数据库</span>
+          <span class="tag">刻意简洁</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 12: End-User Development -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="12">
+    <div class="nav">
+      <span class="nav-number">02</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">End-User Dev</span>
+    </div>
+    <div class="flex-col" style="height:100%;justify-content:center;">
+      <h2 class="reveal d1" style="margin-bottom:8px;">2.3 终端用户编程与软件定制</h2>
+      <p class="reveal d2 subtitle" style="margin-bottom:32px;">从"我来编程"到"Agent 自己开发"的递进</p>
+      <div class="flex-col reveal d3" style="max-width:720px;">
+        <div class="level-row">
+          <div class="level-num">L1</div>
+          <div class="level-content">
+            <h3>直接编程</h3>
+            <p>开发者写代码构建定制系统，门槛最高</p>
+          </div>
+        </div>
+        <div class="level-row">
+          <div class="level-num">L2</div>
+          <div class="level-content">
+            <h3>Coding Agent 对话式开发</h3>
+            <p>用自然语言描述需求，Agent 帮你写代码（如 Claude Code、Cursor）</p>
+          </div>
+        </div>
+        <div class="level-row">
+          <div class="level-num">L3</div>
+          <div class="level-content">
+            <h3>OpenClaw Runtime 自适应</h3>
+            <p>运行时告诉 Agent 你要什么功能，Agent 自己开发、部署、运行。<strong>不再有"开发"和"使用"的边界</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 13: Multi-Channel -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide dark" data-index="13">
+    <div class="nav">
+      <span class="nav-number">02</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Multi-Channel</span>
+    </div>
+    <div class="split" style="align-items:center;">
+      <div class="flex-col gap-md">
+        <h2 class="reveal d1">2.4 多端交互能力</h2>
+        <div class="divider reveal d2"></div>
+        <ul class="reveal d3 flex-col gap-sm">
+          <li>同一个 Agent，<strong>任意渠道</strong>访问</li>
+          <li>WhatsApp 开始对话 → Telegram 继续 → Web 管理</li>
+          <li>会话状态统一，跨平台无缝</li>
+        </ul>
+      </div>
+      <div class="flex-col gap-lg">
+        <!-- Network-like SVG diagram -->
+        <svg class="network-svg reveal d2" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="200" y1="150" x2="80" y2="60" stroke="#444" stroke-width="0.8"/>
+          <line x1="200" y1="150" x2="320" y2="60" stroke="#444" stroke-width="0.8"/>
+          <line x1="200" y1="150" x2="60" y2="180" stroke="#444" stroke-width="0.8"/>
+          <line x1="200" y1="150" x2="340" y2="180" stroke="#444" stroke-width="0.8"/>
+          <line x1="200" y1="150" x2="120" y2="260" stroke="#444" stroke-width="0.8"/>
+          <line x1="200" y1="150" x2="280" y2="260" stroke="#444" stroke-width="0.8"/>
+          <circle cx="200" cy="150" r="28" stroke="#FFF" stroke-width="1.5" fill="none"/>
+          <text x="200" y="154" text-anchor="middle" fill="#FFF" font-family="DM Sans" font-size="11" font-weight="700">Agent</text>
+          <circle cx="80" cy="60" r="18" stroke="#555" stroke-width="0.8" fill="none"/>
+          <text x="80" y="64" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">Slack</text>
+          <circle cx="320" cy="60" r="18" stroke="#555" stroke-width="0.8" fill="none"/>
+          <text x="320" y="64" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">WhatsApp</text>
+          <circle cx="60" cy="180" r="18" stroke="#555" stroke-width="0.8" fill="none"/>
+          <text x="60" y="184" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">Telegram</text>
+          <circle cx="340" cy="180" r="18" stroke="#555" stroke-width="0.8" fill="none"/>
+          <text x="340" y="184" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">Discord</text>
+          <circle cx="120" cy="260" r="18" stroke="#555" stroke-width="0.8" fill="none"/>
+          <text x="120" y="264" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">iMessage</text>
+          <circle cx="280" cy="260" r="18" stroke="#555" stroke-width="0.8" fill="none"/>
+          <text x="280" y="264" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">Web</text>
+        </svg>
+        <div class="reveal d4" style="padding:16px;border:1px solid #333;">
+          <p class="mono" style="font-size:10px;color:#666;margin-bottom:6px;">PARADIGM SHIFT</p>
+          <p style="font-size:clamp(12px,1.1vw,14px);">UX 从 interaction design → <strong>delegation design</strong><br>用户不再执行任务，而是<strong>委托任务</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 14: Comparison Table -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="14">
+    <div class="nav">
+      <span class="nav-number">02</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Comparison</span>
+    </div>
+    <div class="flex-col" style="height:100%;justify-content:center;">
+      <h2 class="reveal d1" style="margin-bottom:32px;">交互范式总结对比</h2>
+      <table class="compare-table reveal d2" style="max-width:720px;">
+        <thead>
+          <tr>
+            <th style="width:110px;">维度</th>
+            <th>Chatbot</th>
+            <th>Agent (OpenClaw)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>发起方</td><td>用户发起</td><td>双向（用户 + Agent 主动）</td></tr>
+          <tr><td>时间性</td><td>用完即走</td><td>24/7 常驻</td></tr>
+          <tr><td>记忆</td><td>无 / 短期</td><td>长期自适应</td></tr>
+          <tr><td>入口</td><td>单一 App</td><td>多渠道统一</td></tr>
+          <tr><td>用户角色</td><td>操作者</td><td>委托者</td></tr>
+          <tr><td>定制方式</td><td>编程 / 配置</td><td>对话即定制</td></tr>
+          <tr><td>设计重心</td><td>界面</td><td>关系 + 信任</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 15: Design Challenges Header -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide dark" data-index="15">
+    <div class="nav">
+      <span class="nav-number">02</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Challenges</span>
+    </div>
+    <div class="v-center" style="align-items:center;text-align:center;">
+      <h1 class="reveal d1" style="font-size:clamp(32px,5vw,64px);">Agent 时代的<br>设计挑战</h1>
+      <div style="width:40px;height:2px;background:#FFF;margin:28px auto;" class="reveal d2"></div>
+      <p class="reveal d3 subtitle" style="max-width:480px;">以上是 Agent 架构带来的创新机会，以下是设计者需要解决的问题</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 16: Challenges 1 & 2 -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="16">
+    <div class="nav">
+      <span class="nav-number">02</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Challenges</span>
+    </div>
+    <div class="split" style="align-items:center;gap:calc(var(--pad)*1.5);">
+      <div class="challenge-card reveal d1">
+        <div class="challenge-num">Challenge 01</div>
+        <h3>透明性与控制权</h3>
+        <p>OpenClaw 实际上是个<strong>黑盒</strong>：权限极高，消耗大量 token，后台做了很多用户看不到的事情。</p>
+        <div class="divider" style="margin:12px 0;"></div>
+        <p style="color:var(--mid-gray);">Agent 在做什么？做了多少？做对了没有？<br>如何设计 Agent 行为的<strong>可审计性</strong>？</p>
+      </div>
+      <div class="challenge-card reveal d2">
+        <div class="challenge-num">Challenge 02</div>
+        <h3>信任校准</h3>
+        <p>用户如何建立对 Agent 的<strong>合理信任</strong>？</p>
+        <div class="divider" style="margin:12px 0;"></div>
+        <p style="color:var(--mid-gray);">过度信任 → 依赖 Agent，出错不自知<br>过度怀疑 → 反复确认，Agent 形同虚设<br><br>如何帮助用户形成准确的<strong>心智模型</strong>？</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 17: Challenges 3, 4, 5 -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="17">
+    <div class="nav">
+      <span class="nav-number">02</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Challenges</span>
+    </div>
+    <div class="columns-3" style="height:70%;align-items:start;margin-top:auto;margin-bottom:auto;">
+      <div class="challenge-card reveal d1">
+        <div class="challenge-num">Challenge 03</div>
+        <h3>错误恢复与问责</h3>
+        <p>Agent 自主执行了错误操作怎么办？发错邮件、删错文件、回复不当。</p>
+        <div class="divider" style="margin:12px 0;"></div>
+        <p style="color:var(--mid-gray);">如何设计撤销/回滚机制？<br>出了问题"<strong>谁负责</strong>"？</p>
+      </div>
+      <div class="challenge-card reveal d2">
+        <div class="challenge-num">Challenge 04</div>
+        <h3>隐私与记忆边界</h3>
+        <p>Agent 记住了太多个人信息怎么办？记忆有时效性，过时的记忆可能导致错误判断。</p>
+        <div class="divider" style="margin:12px 0;"></div>
+        <p style="color:var(--mid-gray);">如何设计<strong>记忆衰减</strong>机制？<br>多用户场景中记忆的边界在哪里？</p>
+      </div>
+      <div class="challenge-card reveal d3">
+        <div class="challenge-num">Challenge 05</div>
+        <h3>社交场景中的 Agent</h3>
+        <p>Agent 出现在群聊中时，它是什么角色？是某人的私人助手还是群组的公共助手？</p>
+        <div class="divider" style="margin:12px 0;"></div>
+        <p style="color:var(--mid-gray);">Agent 在多人交互中的<strong>身份、权限、发言时机</strong>如何设计？</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 18: Part 3 Section Header -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide dark" data-index="18">
+    <div class="nav">
+      <span class="nav-number">03</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Demo</span>
+    </div>
+    <div class="v-center">
+      <div class="tag reveal d1" style="margin-bottom:24px;">Part 3</div>
+      <h1 class="reveal d2" style="margin-bottom:20px;">实例</h1>
+      <p class="reveal d3 subtitle" style="font-size:clamp(18px,2.4vw,32px);">OpenClaw 连接 Tami 机器人</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 19: Robot Integration -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="19">
+    <div class="nav">
+      <span class="nav-number">03</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Robotics</span>
+    </div>
+    <div class="split" style="align-items:center;">
+      <div class="flex-col gap-md">
+        <h2 class="reveal d1">OpenClaw + 机器人</h2>
+        <div class="accent-line reveal d2"></div>
+        <ul class="reveal d3 flex-col gap-sm">
+          <li>Unitree G1 人形机器人</li>
+          <li>Aero Hand Open（3D打印机械手，16关节）</li>
+          <li>Raspberry Pi 集成</li>
+          <li>Gemini Robotics-ER / Qwen VLM 集成</li>
+          <li>支持<strong>零代码机器人控制</strong></li>
+        </ul>
+      </div>
+      <div class="flex-col gap-lg">
+        <div class="reveal d2" style="padding:24px;border:1px solid var(--light-gray);">
+          <p class="mono" style="font-size:11px;color:var(--gray);margin-bottom:16px;">COMPLETE LOOP</p>
+          <div class="flow-row" style="gap:8px;flex-wrap:wrap;">
+            <span class="flow-box">对话指令</span>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="flow-box">Agent 推理</span>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="flow-box">Tool 调用</span>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="flow-box" style="background:var(--black);color:#FFF;">机器人动作</span>
+          </div>
+        </div>
+        <div class="reveal d4" style="padding:16px;border:1px solid var(--light-gray);">
+          <p class="mono" style="font-size:10px;color:var(--gray);margin-bottom:8px;">TEACHING VALUE</p>
+          <ul class="flex-col gap-sm" style="font-size:clamp(12px,1.1vw,14px);">
+            <li>Agent 从数字到物理的完整闭环</li>
+            <li>Tool Use 不只是调 API，还能<strong>控制硬件</strong></li>
+            <li>还能连接什么？还能设计什么样的交互？</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 20: References -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="20">
+    <div class="nav">
+      <span class="nav-number">04</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">References</span>
+    </div>
+    <div class="flex-col" style="height:100%;justify-content:center;">
+      <h2 class="reveal d1" style="margin-bottom:28px;">参考资料</h2>
+      <div class="columns-3 reveal d2" style="font-size:clamp(11px,1vw,13px);">
+        <div class="flex-col gap-sm">
+          <p class="mono" style="font-size:10px;color:var(--gray);letter-spacing:0.15em;margin-bottom:4px;">OPENCLAW CORE</p>
+          <p>OpenClaw 官网 &amp; GitHub</p>
+          <p>官方文档 — 架构 / Tools / Heartbeat</p>
+          <p>Architecture, Explained — ppaolo</p>
+          <p>How OpenClaw Works — Medium</p>
+          <p>You Could've Invented OpenClaw</p>
+        </div>
+        <div class="flex-col gap-sm">
+          <p class="mono" style="font-size:10px;color:var(--gray);letter-spacing:0.15em;margin-bottom:4px;">AGENT FUNDAMENTALS</p>
+          <p>What is a ReAct Agent? — IBM</p>
+          <p>Agent Steps &amp; Structure — Hugging Face</p>
+          <p>LLM Tools: Chatbot to Agent</p>
+          <p class="mono" style="font-size:10px;color:var(--gray);letter-spacing:0.15em;margin-top:16px;margin-bottom:4px;">INTERACTION DESIGN</p>
+          <p>Agent Interaction Model — ScienceDirect</p>
+          <p>Five Design Paradigms — CyberArk</p>
+          <p>The End of the User Interface?</p>
+        </div>
+        <div class="flex-col gap-sm">
+          <p class="mono" style="font-size:10px;color:var(--gray);letter-spacing:0.15em;margin-bottom:4px;">ROBOTICS</p>
+          <p>OpenClaw for Robot Programming</p>
+          <p>AI Agents Meet Robotics</p>
+          <p>When AI Gets Physical Hands</p>
+          <p class="mono" style="font-size:10px;color:var(--gray);letter-spacing:0.15em;margin-top:16px;margin-bottom:4px;">中文资源</p>
+          <p>OpenClaw 中文教程合集</p>
+          <p>OpenClaw 工作原理 — 菜鸟教程</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 21: End -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide dark" data-index="21">
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;">
+      <h1 class="reveal d1" style="font-size:clamp(36px,5vw,64px);font-weight:300;color:#FFF;letter-spacing:0.02em;">Thank you.</h1>
+      <div style="width:32px;height:2px;background:#444;margin:28px auto;" class="reveal d2"></div>
+      <p class="reveal d3 mono" style="font-size:12px;color:#555;letter-spacing:0.15em;">FROM LLM TO AGENT — OPENCLAW 2026</p>
+    </div>
+  </section>
+
+</div>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Slide Counter -->
+<div class="slide-counter" id="slideCounter">01 / 22</div>
+
+<!-- Key Hint -->
+<div class="key-hint" id="keyHint">← → ARROW KEYS TO NAVIGATE</div>
+
+<!-- TOC Button -->
+<button class="toc-btn" id="tocBtn" aria-label="Table of contents">
+  <div class="toc-icon"><span></span><span></span><span></span></div>
+</button>
+
+<!-- TOC Overlay + Panel -->
+<div class="toc-overlay" id="tocOverlay"></div>
+<div class="toc-panel" id="tocPanel">
+  <div class="toc-panel-header">Table of Contents</div>
+  <div id="tocList"></div>
+</div>
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const progressBar = document.getElementById('progressBar');
+  const slideCounter = document.getElementById('slideCounter');
+  const keyHint = document.getElementById('keyHint');
+  let current = 0;
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function goTo(index) {
+    if (index < 0 || index >= total) return;
+    slides[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+
+    // Update progress
+    const pct = ((current + 1) / total) * 100;
+    progressBar.style.width = pct + '%';
+
+    // Update counter
+    slideCounter.textContent = pad(current + 1) + ' / ' + pad(total);
+
+    // Dark mode adaptive
+    const isDark = slides[current].classList.contains('dark');
+    progressBar.className = 'progress-bar' + (isDark ? ' on-dark' : '');
+    slideCounter.className = 'slide-counter' + (isDark ? ' on-dark' : '');
+    keyHint.className = 'key-hint' + (isDark ? ' on-dark' : '') + (current > 0 ? ' hide' : '');
+  }
+
+  // Keyboard
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault();
+      goTo(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      goTo(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goTo(total - 1);
+    }
+  });
+
+  // Touch
+  let touchStartX = 0;
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e) {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      dx < 0 ? goTo(current + 1) : goTo(current - 1);
+    }
+  }, { passive: true });
+
+  // Inject CDI logo into every slide
+  slides.forEach(function(slide) {
+    var logo = document.createElement('img');
+    logo.src = 'assets/pasted-image_副本.png';
+    logo.alt = 'CDI';
+    logo.className = 'cdi-logo';
+    slide.appendChild(logo);
+  });
+
+  // ─── TOC ───
+  const tocBtn = document.getElementById('tocBtn');
+  const tocOverlay = document.getElementById('tocOverlay');
+  const tocPanel = document.getElementById('tocPanel');
+  const tocList = document.getElementById('tocList');
+
+  // Slide titles for TOC
+  const tocData = [
+    { idx: 0,  title: 'From LLM to Agent', section: true },
+    { idx: 1,  title: '课程目标' },
+    { idx: 2,  title: 'Part 1 — 从大模型到 Agent', section: true },
+    { idx: 3,  title: '第一层：大模型（LLM）' },
+    { idx: 4,  title: '第二层：Chatbot' },
+    { idx: 5,  title: '第三层：Agent' },
+    { idx: 6,  title: '第四层：OpenClaw' },
+    { idx: 7,  title: '五大核心组件' },
+    { idx: 8,  title: 'Agent Loop 完整循环' },
+    { idx: 9,  title: 'Part 2 — 交互范式变化', section: true },
+    { idx: 10, title: '2.1 主动响应式交互' },
+    { idx: 11, title: '2.2 连续交互与记忆能力' },
+    { idx: 12, title: '2.3 终端用户编程' },
+    { idx: 13, title: '2.4 多端交互能力' },
+    { idx: 14, title: '交互范式总结对比' },
+    { idx: 15, title: 'Agent 时代的设计挑战', section: true },
+    { idx: 16, title: '挑战 1–2：透明性 / 信任' },
+    { idx: 17, title: '挑战 3–5：问责 / 隐私 / 社交' },
+    { idx: 18, title: 'Part 3 — 实例', section: true },
+    { idx: 19, title: 'OpenClaw + 机器人' },
+    { idx: 20, title: '参考资料' },
+    { idx: 21, title: 'Thank you' },
+  ];
+
+  // Build TOC list
+  tocData.forEach(function(item) {
+    var btn = document.createElement('button');
+    btn.className = 'toc-item' + (item.section ? ' is-section' : '');
+    btn.dataset.idx = item.idx;
+    btn.innerHTML = '<span class="toc-item-num">' + pad(item.idx + 1) + '</span>' +
+                    '<span class="toc-item-title">' + item.title + '</span>';
+    btn.addEventListener('click', function() {
+      goTo(item.idx);
+      closeToc();
+    });
+    tocList.appendChild(btn);
+  });
+
+  function openToc() {
+    tocOverlay.classList.add('open');
+    tocPanel.classList.add('open');
+    // Highlight current
+    tocList.querySelectorAll('.toc-item').forEach(function(el) {
+      el.classList.toggle('active', parseInt(el.dataset.idx) === current);
+    });
+  }
+
+  function closeToc() {
+    tocOverlay.classList.remove('open');
+    tocPanel.classList.remove('open');
+  }
+
+  tocBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    tocPanel.classList.contains('open') ? closeToc() : openToc();
+  });
+
+  tocOverlay.addEventListener('click', closeToc);
+
+  // Update TOC button dark/light state in goTo
+  var origGoTo = goTo;
+  goTo = function(index) {
+    origGoTo(index);
+    var isDark = slides[current].classList.contains('dark');
+    tocBtn.className = 'toc-btn' + (isDark ? ' on-dark' : '');
+  };
+
+  // Escape key closes TOC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeToc();
+  });
+
+  // Init
+  goTo(0);
+})();
+</script>
+</body>
+</html>
