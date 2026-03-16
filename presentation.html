@@ -1233,7 +1233,7 @@
           <!-- Agent label -->
           <text x="310" y="220" text-anchor="middle" fill="#555" font-family="DM Mono,monospace" font-size="7" letter-spacing="0.15em">AGENT</text>
 
-          <!-- === External: Channels (left) === -->
+          <!-- === External: Channels (left, connected) === -->
           <rect x="20" y="52" width="72" height="26" rx="5" fill="#1a1a1a" stroke="#555" stroke-width="0.8"/>
           <g transform="translate(27,59)" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M7.9 13A7 7 0 1 0 3.2 10.3L1.5 13Z" transform="scale(0.75)"/>
@@ -1270,45 +1270,37 @@
             <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3.2s" repeatCount="indefinite" begin="1.5s"/>
           </circle>
 
-          <!-- === External: Modules (right) === -->
-          <rect x="528" y="52" width="72" height="26" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.8" stroke-opacity="0.5"/>
-          <g transform="translate(535,59)" fill="none" stroke="#00E8C6" stroke-width="1.1" stroke-linecap="round">
+          <!-- === Capability satellites (orbiting around agent zone) === -->
+          <!-- Memory (top-right) -->
+          <rect x="430" y="60" width="72" height="24" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.7" stroke-opacity="0.5"/>
+          <g transform="translate(437,66)" fill="none" stroke="#00E8C6" stroke-width="1" stroke-linecap="round">
             <ellipse cx="5" cy="2" rx="4.5" ry="2"/><path d="M0.5 2v3.5a4.5 2 0 0 0 9 0V2"/><path d="M0.5 5.5a4.5 2 0 0 0 9 0"/>
           </g>
-          <text x="574" y="69" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="9">Memory</text>
-          <line x1="402" y1="130" x2="528" y2="65" stroke="#333" stroke-width="0.8"/>
-          <circle r="2.5" fill="#00E8C6">
-            <animate attributeName="cx" values="402;528" dur="4s" repeatCount="indefinite" begin="0.5s"/>
-            <animate attributeName="cy" values="130;65" dur="4s" repeatCount="indefinite" begin="0.5s"/>
-            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="4s" repeatCount="indefinite" begin="0.5s"/>
-          </circle>
+          <text x="478" y="76" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="8">Memory</text>
 
-          <rect x="540" y="130" width="72" height="26" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.8" stroke-opacity="0.5"/>
-          <g transform="translate(548,137)" fill="none" stroke="#00E8C6" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Skills (right) -->
+          <rect x="450" y="132" width="68" height="24" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.7" stroke-opacity="0.5"/>
+          <g transform="translate(457,138)" fill="none" stroke="#00E8C6" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
             <polygon points="6,0 7.5,4 12,4 8.5,6.5 9.5,10.5 6,8 2.5,10.5 3.5,6.5 0,4 4.5,4"/>
           </g>
-          <text x="586" y="147" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="9">Skills</text>
-          <line x1="405" y1="145" x2="540" y2="143" stroke="#333" stroke-width="0.8"/>
-          <circle r="2.5" fill="#00E8C6">
-            <animate attributeName="cx" values="405;540" dur="3.8s" repeatCount="indefinite" begin="2s"/>
-            <animate attributeName="cy" values="145;143" dur="3.8s" repeatCount="indefinite" begin="2s"/>
-            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3.8s" repeatCount="indefinite" begin="2s"/>
-          </circle>
+          <text x="498" y="148" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="8">Skills</text>
 
-          <rect x="528" y="205" width="72" height="26" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.8" stroke-opacity="0.5"/>
-          <g transform="translate(534,212)" fill="none" stroke="#00E8C6" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 4.5C8.8 3.2 7 3.2 6 4.5L5.2 5.4 4.4 4.5C3.4 3.2 1.6 3.2 0.4 4.5S-0.2 7.8 0.4 8.5L5.2 11l4.8-2.5C10.6 7.8 11 6 10 4.5z" transform="scale(0.8)"/>
+          <!-- Heartbeat (bottom-right) -->
+          <rect x="430" y="200" width="80" height="24" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.7" stroke-opacity="0.5"/>
+          <g transform="translate(437,206)" fill="none" stroke="#00E8C6" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 4.5C8.8 3.2 7 3.2 6 4.5L5.2 5.4 4.4 4.5C3.4 3.2 1.6 3.2 0.4 4.5S-0.2 7.8 0.4 8.5L5.2 11l4.8-2.5C10.6 7.8 11 6 10 4.5z" transform="scale(0.7)"/>
           </g>
-          <text x="574" y="222" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="8">Heartbeat</text>
-          <line x1="402" y1="165" x2="528" y2="218" stroke="#333" stroke-width="0.8"/>
-          <circle r="2.5" fill="#00E8C6">
-            <animate attributeName="cx" values="402;528" dur="2.5s" repeatCount="indefinite" begin="1s"/>
-            <animate attributeName="cy" values="165;218" dur="2.5s" repeatCount="indefinite" begin="1s"/>
-            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="2.5s" repeatCount="indefinite" begin="1s"/>
-          </circle>
+          <text x="480" y="216" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="8">Heartbeat</text>
+
+          <!-- Cron (bottom) -->
+          <rect x="320" y="240" width="68" height="24" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.7" stroke-opacity="0.5"/>
+          <g transform="translate(327,246)" fill="none" stroke="#00E8C6" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="6" cy="6" r="5.5"/><polyline points="6,3 6,6 8,7.5"/>
+          </g>
+          <text x="366" y="256" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="8">Cron</text>
 
           <!-- Bottom label -->
-          <text x="310" y="270" text-anchor="middle" fill="#555" font-family="DM Mono,monospace" font-size="10">24/7 · Always-on · 多通道 · 有记忆 · ReAct</text>
+          <text x="310" y="286" text-anchor="middle" fill="#555" font-family="DM Mono,monospace" font-size="10">24/7 · Always-on · 多通道 · 有记忆 · ReAct</text>
         </svg>
       </div>
       <div class="reveal d6" style="margin-top:16px;display:flex;gap:24px;justify-content:center;">
