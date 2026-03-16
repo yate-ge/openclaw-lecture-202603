@@ -2275,9 +2275,174 @@
   </section>
 
   <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE: Personalization Spectrum -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="19">
+    <div class="nav">
+      <span class="nav-number">02</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Spectrum</span>
+    </div>
+    <div class="flex-col" style="height:100%;justify-content:center;padding:0 var(--pad);">
+      <h2 class="reveal d1" style="margin-bottom:4px;">个性化光谱：定制 ↔ 学习</h2>
+      <p class="reveal d1 mono" style="font-size:10px;color:var(--accent);letter-spacing:0.12em;margin-bottom:16px;">THE PERSONALIZATION SPECTRUM</p>
+
+      <!-- Spectrum bar -->
+      <div class="reveal d2" style="margin-bottom:16px;padding:14px 16px;border:1px solid #2a2a2a;border-radius:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <span style="font-size:clamp(11px,1.1vw,14px);color:#fff;font-weight:600;">用户定制 (Adaptable)</span>
+          <span style="font-size:clamp(11px,1.1vw,14px);color:var(--accent);font-weight:600;">系统学习 (Adaptive)</span>
+        </div>
+        <div style="height:6px;border-radius:3px;background:linear-gradient(to right,#fff,var(--accent));margin-bottom:10px;"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-size:clamp(10px,0.9vw,12px);">
+          <div style="text-align:left;color:#aaa;">用户直接修改<br><span style="color:#555;">SOUL.md · 参数调整</span></div>
+          <div style="text-align:center;color:var(--accent);">混合主动<br><span style="color:#666;">AI 建议 + 用户确认</span></div>
+          <div style="text-align:right;color:#aaa;">AI 自主演化<br><span style="color:#555;">MEMORY.md · 行为适应</span></div>
+        </div>
+      </div>
+
+      <!-- Dimensions table -->
+      <div class="reveal d3" style="display:grid;grid-template-columns:120px 1fr 1fr;gap:0;font-size:clamp(10px,0.9vw,12px);margin-bottom:14px;">
+        <div style="padding:6px 10px;border:1px solid #222;color:#666;">维度</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:#fff;">用户定制</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:var(--accent);">系统学习</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:#666;">控制权</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:#aaa;">高 — 用户掌控一切</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:#aaa;">低 — 黑盒风险</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:#666;">透明度</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:#aaa;">高 — 改了什么一目了然</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:#aaa;">低 — 用户可能不知道发生了什么</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:#666;">用户负担</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:#aaa;">高 — 需要用户主动操作</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:#aaa;">低 — 自动发生</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:#666;">可预测性</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:#aaa;">高</div>
+        <div style="padding:6px 10px;border:1px solid #222;color:#aaa;">低 — Agent 行为可能"漂移"</div>
+      </div>
+
+      <!-- Design opportunity -->
+      <div class="reveal d4" style="padding:12px 16px;border-left:3px solid var(--accent);border-radius:0 6px 6px 0;background:rgba(0,232,198,0.02);">
+        <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:4px;">DESIGN OPPORTUNITY</p>
+        <p style="font-size:clamp(11px,1.1vw,13px);color:#ccc;line-height:1.6;">
+          Agent 时代的新问题：<strong style="color:#fff;">如何让用户参与系统的个性化过程？</strong>
+          光谱上可衍生不同参与模式 — 不是二选一，而是在不同场景下动态平衡
+          <span style="color:#666;">— Horvitz 1999; Findlater & McGrenere 2004; Bunt et al. 2010</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE: Case — Cocobo (AI-supported EUD) -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="20">
+    <div class="nav">
+      <span class="nav-number">02</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Case · Cocobo</span>
+    </div>
+    <div class="flex-col" style="height:100%;justify-content:center;padding:0 var(--pad);">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:4px;">
+        <h2 class="reveal d1">案例：Cocobo</h2>
+        <span class="reveal d1 mono" style="font-size:10px;color:#666;">Ge et al., IEEE VL/HCC 2024</span>
+      </div>
+      <p class="reveal d1 mono" style="font-size:10px;color:var(--accent);letter-spacing:0.12em;margin-bottom:16px;">SPECTRUM LEFT — AI 支持的用户定制</p>
+
+      <div class="reveal d2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px;">
+        <div style="padding:14px;border:1px solid #2a2a2a;border-radius:8px;">
+          <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:8px;">WHAT</p>
+          <p style="font-size:clamp(11px,1vw,13px);color:#aaa;line-height:1.6;">
+            LLM 驱动的机器人编程工具<br>
+            非技术用户通过<strong style="color:#fff;">自然语言</strong>定制机器人行为<br>
+            GPT-4 解析意图 → 生成代码 + 流程图
+          </p>
+        </div>
+        <div style="padding:14px;border:1px solid #2a2a2a;border-radius:8px;">
+          <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:8px;">HOW</p>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:clamp(10px,0.95vw,12px);color:#aaa;line-height:1.5;">
+            <p>① 对话式编程 — 多轮对话描述任务</p>
+            <p>② 流程图编辑器 — 可视化调整节点</p>
+            <p>③ MagicDebug — 针对性调试</p>
+            <p style="color:#666;">SUS 72.3 · 16/16 完成任务 · 15/16 认为自然</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spectrum position -->
+      <div class="reveal d3" style="padding:12px 16px;border:1px solid #2a2a2a;border-radius:8px;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="height:4px;flex:1;border-radius:2px;background:linear-gradient(to right,#fff,var(--accent));position:relative;">
+            <div style="position:absolute;left:20%;top:-6px;width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid var(--accent);"></div>
+          </div>
+          <span style="font-size:clamp(10px,0.9vw,12px);color:#888;white-space:nowrap;">← 偏用户定制端</span>
+        </div>
+        <p style="font-size:clamp(10px,0.9vw,12px);color:#666;margin-top:6px;">用户主导意图，AI 负责技术实现 — 降低编程门槛但<strong style="color:#aaa;">控制权完全在用户</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE: Case — GenFaceUI (Meta-Design) -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="21">
+    <div class="nav">
+      <span class="nav-number">02</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Case · GenFaceUI</span>
+    </div>
+    <div class="flex-col" style="height:100%;justify-content:center;padding:0 var(--pad);">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:4px;">
+        <h2 class="reveal d1">案例：GenFaceUI</h2>
+        <span class="reveal d1 mono" style="font-size:10px;color:#666;">Ge et al., CHI 2026</span>
+      </div>
+      <p class="reveal d1 mono" style="font-size:10px;color:var(--accent);letter-spacing:0.12em;margin-bottom:16px;">SPECTRUM MIDDLE — META-DESIGN FOR AGENTS</p>
+
+      <div class="reveal d2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px;">
+        <div style="padding:14px;border:1px solid #2a2a2a;border-radius:8px;">
+          <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:8px;">WHAT</p>
+          <p style="font-size:clamp(11px,1vw,13px);color:#aaa;line-height:1.6;">
+            生成式个性化表情界面框架<br>
+            Design time：设计师定义<strong style="color:#fff;">约束规则</strong><br>
+            Runtime：AI 在规则内<strong style="color:#fff;">自主生成</strong>表情变化
+          </p>
+        </div>
+        <div style="padding:14px;border:1px solid #2a2a2a;border-radius:8px;">
+          <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:8px;">THREE STAGES</p>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:clamp(10px,0.95vw,12px);color:#aaa;line-height:1.5;">
+            <p><strong style="color:#fff;">① Meta-design</strong> — 设计模板、语义标签、变换规则</p>
+            <p><strong style="color:#fff;">② 角色定制</strong> — 根据用户/角色塑造人格</p>
+            <p><strong style="color:#fff;">③ 情境驱动</strong> — 表情随交互情境动态适应</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meta-design insight -->
+      <div class="reveal d3" style="padding:12px 16px;border:1px solid rgba(0,232,198,0.2);border-radius:8px;background:rgba(0,232,198,0.02);margin-bottom:10px;">
+        <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:6px;">WHY META-DESIGN?</p>
+        <p style="font-size:clamp(11px,1.1vw,13px);color:#ccc;line-height:1.6;">
+          系统可以被"调教"，设计师还要设计什么？→ <strong style="color:#fff;">设计约束</strong><br>
+          像给 AI 设计一套 Design System — 不是给人用的，而是给 AI 在 runtime 时<strong style="color:var(--accent);">生成和演化</strong>用的<br>
+          <span style="color:#666;">Meta-design = 设计"设计的规则" — Fischer, 2006</span>
+        </p>
+      </div>
+
+      <!-- Spectrum position -->
+      <div class="reveal d4" style="padding:10px 16px;border:1px solid #2a2a2a;border-radius:8px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="height:4px;flex:1;border-radius:2px;background:linear-gradient(to right,#fff,var(--accent));position:relative;">
+            <div style="position:absolute;left:55%;top:-6px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid #fff;"></div>
+          </div>
+          <span style="font-size:clamp(10px,0.9vw,12px);color:#888;white-space:nowrap;">光谱中部 →</span>
+        </div>
+        <p style="font-size:clamp(10px,0.9vw,12px);color:#666;margin-top:4px;">设计师定义边界（定制），AI 在边界内自主生成（学习）— <strong style="color:#aaa;">人机共治</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 14: Multi-Channel -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="19">
+  <section class="slide dark" data-index="22">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -2328,7 +2493,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 15: Comparison Table -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="20">
+  <section class="slide" data-index="23">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -2360,7 +2525,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 16: Design Challenges Header -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="21">
+  <section class="slide dark" data-index="24">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -2376,7 +2541,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 17: Challenges 1 & 2 -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="22">
+  <section class="slide" data-index="25">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -2403,7 +2568,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 18: Challenges 3, 4, 5 -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="23">
+  <section class="slide" data-index="26">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -2437,7 +2602,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 19: Part 3 Section Header -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="24">
+  <section class="slide dark" data-index="27">
     <div class="nav">
       <span class="nav-number">03</span>
       <span class="nav-line"></span>
@@ -2453,7 +2618,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 20: Robot Integration -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="25">
+  <section class="slide" data-index="28">
     <div class="nav">
       <span class="nav-number">03</span>
       <span class="nav-line"></span>
@@ -2499,7 +2664,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 21: References -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="26">
+  <section class="slide" data-index="29">
     <div class="nav">
       <span class="nav-number">04</span>
       <span class="nav-line"></span>
@@ -2542,7 +2707,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 22: End -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="27">
+  <section class="slide dark" data-index="30">
     <div style="display:flex;align-items:center;justify-content:center;height:100%;gap:clamp(40px,6vw,80px);">
       <!-- Left: text -->
       <div style="display:flex;flex-direction:column;align-items:flex-start;text-align:left;">
@@ -2694,15 +2859,18 @@
     { idx: 16, title: '记忆：长期交互的基础设施' },
     { idx: 17, title: '个性化自适应学习' },
     { idx: 18, title: '2.3 终端用户编程' },
-    { idx: 19, title: '2.4 多端交互能力' },
-    { idx: 20, title: '交互范式总结对比' },
-    { idx: 21, title: 'Agent 时代的设计挑战', section: true },
-    { idx: 22, title: '挑战 1–2：透明性 / 信任' },
-    { idx: 23, title: '挑战 3–5：问责 / 隐私 / 社交' },
-    { idx: 24, title: 'Part 3 — 实例', section: true },
-    { idx: 25, title: 'OpenClaw + 机器人' },
-    { idx: 26, title: '参考资料' },
-    { idx: 27, title: 'Thank you' },
+    { idx: 19, title: '个性化光谱：定制 ↔ 学习' },
+    { idx: 20, title: '案例：Cocobo (AI辅助EUD)' },
+    { idx: 21, title: '案例：GenFaceUI (Meta-Design)' },
+    { idx: 22, title: '2.4 多端交互能力' },
+    { idx: 23, title: '交互范式总结对比' },
+    { idx: 24, title: 'Agent 时代的设计挑战', section: true },
+    { idx: 25, title: '挑战 1–2：透明性 / 信任' },
+    { idx: 26, title: '挑战 3–5：问责 / 隐私 / 社交' },
+    { idx: 27, title: 'Part 3 — 实例', section: true },
+    { idx: 28, title: 'OpenClaw + 机器人' },
+    { idx: 29, title: '参考资料' },
+    { idx: 30, title: 'Thank you' },
   ];
 
   // Build TOC list
