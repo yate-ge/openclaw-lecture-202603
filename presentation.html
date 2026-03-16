@@ -1910,9 +1910,108 @@
   </section>
 
   <!-- ════════════════════════════════════════════ -->
-  <!-- SLIDE 12: Memory -->
+  <!-- SLIDE 13+: Patent — Fine-grained Interaction -->
   <!-- ════════════════════════════════════════════ -->
   <section class="slide" data-index="14">
+    <div class="nav">
+      <span class="nav-number">02</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Proactive · Detail</span>
+    </div>
+    <div class="flex-col" style="height:100%;justify-content:center;padding:0 var(--pad);">
+      <h2 class="reveal d1" style="margin-bottom:6px;">案例续：机器人何时该主动、何时该等待？</h2>
+      <p class="reveal d2 mono" style="font-size:10px;color:var(--accent);letter-spacing:0.15em;margin-bottom:22px;">FINE-GRAINED PROACTIVE INTERACTION DECISION</p>
+
+      <!-- Decision flow SVG -->
+      <div class="reveal d3" style="margin-bottom:22px;">
+        <svg viewBox="0 0 780 200" style="width:100%;max-width:780px;" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrowG2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><polygon points="0,0 6,3 0,6" fill="#00E8C6"/></marker>
+            <marker id="arrowR2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><polygon points="0,0 6,3 0,6" fill="#666"/></marker>
+          </defs>
+          <g font-family="'Noto Sans SC','DM Sans',sans-serif" text-anchor="middle">
+            <!-- Start: arrive -->
+            <rect x="0" y="70" width="120" height="50" rx="6" fill="rgba(0,232,198,0.08)" stroke="#00E8C6" stroke-width="1"/>
+            <text x="60" y="90" fill="#00E8C6" font-size="10" font-family="'DM Mono',monospace">S200</text>
+            <text x="60" y="106" fill="#E0E0E0" font-size="11">到达目标地点</text>
+
+            <!-- Arrow to decision -->
+            <line x1="120" y1="95" x2="155" y2="95" stroke="#00E8C6" stroke-width="1" marker-end="url(#arrowG2)"/>
+
+            <!-- Decision diamond -->
+            <polygon points="210,60 265,95 210,130 155,95" fill="rgba(0,232,198,0.05)" stroke="#00E8C6" stroke-width="1"/>
+            <text x="210" y="91" fill="#fff" font-size="10">目标用户</text>
+            <text x="210" y="103" fill="#fff" font-size="10">在场？</text>
+
+            <!-- YES path -->
+            <line x1="265" y1="95" x2="310" y2="95" stroke="#00E8C6" stroke-width="1" marker-end="url(#arrowG2)"/>
+            <text x="288" y="88" fill="#00E8C6" font-size="9" font-family="'DM Mono',monospace">YES</text>
+
+            <!-- Active service box -->
+            <rect x="310" y="60" width="150" height="70" rx="6" fill="rgba(0,232,198,0.12)" stroke="#00E8C6" stroke-width="1.5"/>
+            <text x="385" y="82" fill="#00E8C6" font-size="10" font-family="'DM Mono',monospace">主动发起服务</text>
+            <text x="385" y="98" fill="#ccc" font-size="10">识别身份（人脸/声纹/NFC）</text>
+            <text x="385" y="112" fill="#ccc" font-size="10">→ 向用户发起服务请求</text>
+
+            <!-- Arrow to response -->
+            <line x1="460" y1="95" x2="505" y2="95" stroke="#00E8C6" stroke-width="1" marker-end="url(#arrowG2)"/>
+
+            <!-- Active response -->
+            <rect x="505" y="55" width="140" height="80" rx="6" fill="rgba(0,232,198,0.08)" stroke="#00E8C6" stroke-width="1"/>
+            <text x="575" y="76" fill="#00E8C6" font-size="10" font-family="'DM Mono',monospace">LLM 主动响应</text>
+            <text x="575" y="92" fill="#ccc" font-size="9.5">多模态感知 → 理解需求</text>
+            <text x="575" y="106" fill="#ccc" font-size="9.5">调整位姿 + UI + 语音</text>
+            <text x="575" y="120" fill="#888" font-size="9">例：正对衣柜1.5m，屏幕俯视-15°</text>
+
+            <!-- NO path down -->
+            <line x1="210" y1="130" x2="210" y2="155" stroke="#666" stroke-width="1" marker-end="url(#arrowR2)"/>
+            <text x="226" y="148" fill="#888" font-size="9" font-family="'DM Mono',monospace">NO</text>
+
+            <!-- Second decision -->
+            <polygon points="210,155 260,180 210,205 160,180" fill="rgba(255,255,255,0.02)" stroke="#555" stroke-width="0.8"/>
+            <text x="210" y="177" fill="#aaa" font-size="9.5">有其他</text>
+            <text x="210" y="189" fill="#aaa" font-size="9.5">服务？</text>
+
+            <!-- YES: go to next -->
+            <line x1="260" y1="180" x2="310" y2="180" stroke="#666" stroke-width="1" marker-end="url(#arrowR2)"/>
+            <text x="286" y="174" fill="#888" font-size="9" font-family="'DM Mono',monospace">YES</text>
+            <rect x="310" y="162" width="120" height="36" rx="5" fill="rgba(255,255,255,0.02)" stroke="#555" stroke-width="0.8"/>
+            <text x="370" y="184" fill="#aaa" font-size="10">前往下一个地点</text>
+
+            <!-- NO: wait -->
+            <line x1="160" y1="180" x2="80" y2="180" stroke="#666" stroke-width="1" marker-end="url(#arrowR2)"/>
+            <text x="135" y="174" fill="#888" font-size="9" font-family="'DM Mono',monospace">NO</text>
+            <rect x="0" y="162" width="80" height="36" rx="5" fill="rgba(255,255,255,0.02)" stroke="#555" stroke-width="0.8"/>
+            <text x="40" y="184" fill="#aaa" font-size="10">原地等待</text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Three columns: pre-response modes + design insight -->
+      <div class="reveal d4" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+        <!-- Pre-launch mode -->
+        <div style="padding:14px;border:1px solid #2a2a2a;border-radius:6px;background:rgba(255,255,255,0.02);">
+          <p class="mono" style="font-size:9px;color:#888;margin-bottom:8px;">预设服务 → 预启动响应</p>
+          <p style="font-size:clamp(11px,1vw,13px);color:#ccc;line-height:1.6;">调整位姿、屏幕朝向<br><span style="color:#888;">安静就位，等用户来</span></p>
+        </div>
+        <!-- Suggestion mode -->
+        <div style="padding:14px;border:1px solid rgba(0,232,198,0.2);border-radius:6px;background:rgba(0,232,198,0.03);">
+          <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:8px;">预测服务 → 建议响应</p>
+          <p style="font-size:clamp(11px,1vw,13px);color:#ccc;line-height:1.6;">屏幕展示个性化建议<br><span style="color:var(--accent);opacity:0.7;">主动引导用户决定是否启动</span></p>
+        </div>
+        <!-- Design insight -->
+        <div style="padding:14px;border:1px solid rgba(0,232,198,0.15);border-radius:6px;background:rgba(0,232,198,0.02);">
+          <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:8px;">DESIGN INSIGHT</p>
+          <p style="font-size:clamp(11px,1vw,13px);color:#ccc;line-height:1.6;">确定性高 → 默默就位<br>不确定 → 先建议再行动<br><span style="color:var(--accent);opacity:0.7;">主动 ≠ 打扰，关键在分寸</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 13: Memory -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="15">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -1920,7 +2019,7 @@
     </div>
     <div class="split" style="align-items:center;">
       <div class="flex-col gap-md">
-        <h2 class="reveal d1">2.2 连续交互与<br>记忆能力</h2>
+        <h2 class="reveal d1">2.2 长期交互与<br>自适应学习</h2>
         <div class="divider reveal d2"></div>
         <div class="reveal d3" style="padding:16px;border:1px solid var(--light-gray);">
           <p class="mono" style="font-size:10px;color:var(--accent);margin-bottom:6px;">DESIGN QUESTION</p>
@@ -1954,7 +2053,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 13: End-User Development -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="15">
+  <section class="slide" data-index="16">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -1992,7 +2091,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 14: Multi-Channel -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="16">
+  <section class="slide dark" data-index="17">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -2043,7 +2142,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 15: Comparison Table -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="17">
+  <section class="slide" data-index="18">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -2075,7 +2174,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 16: Design Challenges Header -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="18">
+  <section class="slide dark" data-index="19">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -2091,7 +2190,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 17: Challenges 1 & 2 -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="19">
+  <section class="slide" data-index="20">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -2118,7 +2217,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 18: Challenges 3, 4, 5 -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="20">
+  <section class="slide" data-index="21">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -2152,7 +2251,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 19: Part 3 Section Header -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="21">
+  <section class="slide dark" data-index="22">
     <div class="nav">
       <span class="nav-number">03</span>
       <span class="nav-line"></span>
@@ -2168,7 +2267,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 20: Robot Integration -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="22">
+  <section class="slide" data-index="23">
     <div class="nav">
       <span class="nav-number">03</span>
       <span class="nav-line"></span>
@@ -2214,7 +2313,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 21: References -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="23">
+  <section class="slide" data-index="24">
     <div class="nav">
       <span class="nav-number">04</span>
       <span class="nav-line"></span>
@@ -2257,7 +2356,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 22: End -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="24">
+  <section class="slide dark" data-index="25">
     <div style="display:flex;align-items:center;justify-content:center;height:100%;gap:clamp(40px,6vw,80px);">
       <!-- Left: text -->
       <div style="display:flex;flex-direction:column;align-items:flex-start;text-align:left;">
@@ -2279,7 +2378,7 @@
 <div class="progress-bar" id="progressBar"></div>
 
 <!-- Slide Counter -->
-<div class="slide-counter" id="slideCounter">01 / 24</div>
+<div class="slide-counter" id="slideCounter">01 / 26</div>
 
 <!-- Key Hint -->
 <div class="key-hint" id="keyHint">← → ARROW KEYS TO NAVIGATE</div>
@@ -2404,17 +2503,18 @@
     { idx: 11, title: '2.1 主动交互' },
     { idx: 12, title: '桌面伙伴 × 主动交互' },
     { idx: 13, title: '案例：机器人主动服务方法' },
-    { idx: 14, title: '2.2 连续交互与记忆能力' },
-    { idx: 15, title: '2.3 终端用户编程' },
-    { idx: 16, title: '2.4 多端交互能力' },
-    { idx: 17, title: '交互范式总结对比' },
-    { idx: 18, title: 'Agent 时代的设计挑战', section: true },
-    { idx: 19, title: '挑战 1–2：透明性 / 信任' },
-    { idx: 20, title: '挑战 3–5：问责 / 隐私 / 社交' },
-    { idx: 21, title: 'Part 3 — 实例', section: true },
-    { idx: 22, title: 'OpenClaw + 机器人' },
-    { idx: 23, title: '参考资料' },
-    { idx: 24, title: 'Thank you' },
+    { idx: 14, title: '案例续：何时主动、何时等待' },
+    { idx: 15, title: '2.2 长期交互与自适应学习' },
+    { idx: 16, title: '2.3 终端用户编程' },
+    { idx: 17, title: '2.4 多端交互能力' },
+    { idx: 18, title: '交互范式总结对比' },
+    { idx: 19, title: 'Agent 时代的设计挑战', section: true },
+    { idx: 20, title: '挑战 1–2：透明性 / 信任' },
+    { idx: 21, title: '挑战 3–5：问责 / 隐私 / 社交' },
+    { idx: 22, title: 'Part 3 — 实例', section: true },
+    { idx: 23, title: 'OpenClaw + 机器人' },
+    { idx: 24, title: '参考资料' },
+    { idx: 25, title: 'Thank you' },
   ];
 
   // Build TOC list
