@@ -1155,8 +1155,8 @@
       <div class="big-num reveal d1" style="color:#3A3A3E;">04</div>
       <h1 class="reveal d2" style="font-size:clamp(36px,6vw,80px);margin:16px 0;">OpenClaw</h1>
       <p class="reveal d3 subtitle" style="margin-bottom:24px;">Agent 住进了电脑</p>
-      <div class="evo-diagram reveal d4" style="max-width:560px;">
-        <svg class="evo-svg" viewBox="0 0 560 280" xmlns="http://www.w3.org/2000/svg">
+      <div class="evo-diagram reveal d4" style="max-width:620px;">
+        <svg class="evo-svg" viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stop-color="#00E8C6" stop-opacity="0.12"/>
@@ -1165,85 +1165,111 @@
             <marker id="arrowAccent" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
               <path d="M0,0 L6,3 L0,6 Z" fill="#00E8C6"/>
             </marker>
+            <marker id="arrowGray2" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#555"/>
+            </marker>
           </defs>
           <!-- Glow background -->
-          <circle cx="280" cy="130" r="100" fill="url(#coreGlow)"/>
+          <circle cx="310" cy="145" r="120" fill="url(#coreGlow)"/>
           <!-- Memory ring (slow rotating) -->
-          <g style="transform-origin:280px 130px;animation:memory-rotate 25s linear infinite;">
-            <circle cx="280" cy="130" r="72" fill="none" stroke="#333" stroke-width="0.6" stroke-dasharray="3,6"/>
-            <!-- Memory dots on ring -->
-            <circle cx="352" cy="130" r="2.5" fill="#555"/>
-            <circle cx="280" cy="58" r="2.5" fill="#555"/>
-            <circle cx="208" cy="130" r="2.5" fill="#555"/>
-            <circle cx="280" cy="202" r="2.5" fill="#555"/>
-            <circle cx="331" cy="80" r="2.5" fill="#555"/>
-            <circle cx="229" cy="180" r="2.5" fill="#555"/>
+          <g style="transform-origin:310px 145px;animation:memory-rotate 25s linear infinite;">
+            <circle cx="310" cy="145" r="95" fill="none" stroke="#333" stroke-width="0.6" stroke-dasharray="3,6"/>
+            <circle cx="405" cy="145" r="2" fill="#555"/>
+            <circle cx="310" cy="50" r="2" fill="#555"/>
+            <circle cx="215" cy="145" r="2" fill="#555"/>
+            <circle cx="310" cy="240" r="2" fill="#555"/>
+            <circle cx="377" cy="80" r="2" fill="#555"/>
+            <circle cx="243" cy="210" r="2" fill="#555"/>
           </g>
+          <!-- Agent inner zone: dashed outer ring -->
+          <circle cx="310" cy="145" r="68" fill="none" stroke="#444" stroke-width="0.8" stroke-dasharray="4,3"/>
           <!-- Core Brain with heartbeat -->
-          <g style="transform-origin:280px 130px;animation:heartbeat-pulse 2.5s ease-in-out infinite;">
-            <circle cx="280" cy="130" r="42" fill="rgba(0,232,198,0.08)" stroke="#00E8C6" stroke-width="2"/>
-            <text x="280" y="126" text-anchor="middle" fill="#00E8C6" font-family="DM Sans,sans-serif" font-size="14" font-weight="700">Brain</text>
-            <text x="280" y="142" text-anchor="middle" fill="#888" font-family="DM Mono,monospace" font-size="8">ReAct + Memory</text>
+          <g style="transform-origin:310px 145px;animation:heartbeat-pulse 2.5s ease-in-out infinite;">
+            <circle cx="310" cy="145" r="32" fill="rgba(0,232,198,0.08)" stroke="#00E8C6" stroke-width="2"/>
+            <text x="310" y="142" text-anchor="middle" fill="#00E8C6" font-family="DM Sans,sans-serif" font-size="13" font-weight="700">LLM</text>
+            <text x="310" y="155" text-anchor="middle" fill="#888" font-family="DM Mono,monospace" font-size="7">+ Tools</text>
           </g>
           <!-- Heartbeat pulse rings -->
-          <circle cx="280" cy="130" r="42" fill="none" stroke="#00E8C6" stroke-width="0.6" style="transform-origin:280px 130px;animation:action-ring 2.5s ease-out infinite;"/>
-          <circle cx="280" cy="130" r="42" fill="none" stroke="#00E8C6" stroke-width="0.6" style="transform-origin:280px 130px;animation:action-ring 2.5s ease-out infinite 1.25s;"/>
-          <!-- Channel: WeChat (left-top) -->
-          <rect x="30" y="40" width="72" height="28" rx="5" fill="#1a1a1a" stroke="#555" stroke-width="0.8"/>
-          <text x="66" y="58" text-anchor="middle" fill="#aaa" font-family="DM Mono,monospace" font-size="9">WeChat</text>
-          <line x1="102" y1="54" x2="240" y2="118" stroke="#333" stroke-width="0.8"/>
+          <circle cx="310" cy="145" r="32" fill="none" stroke="#00E8C6" stroke-width="0.5" style="transform-origin:310px 145px;animation:action-ring 2.5s ease-out infinite;"/>
+          <circle cx="310" cy="145" r="32" fill="none" stroke="#00E8C6" stroke-width="0.5" style="transform-origin:310px 145px;animation:action-ring 2.5s ease-out infinite 1.25s;"/>
+          <!-- ReAct mini-loop inside agent zone -->
+          <rect x="289" y="82" width="42" height="18" rx="4" fill="none" stroke="#888" stroke-width="0.6">
+            <animate attributeName="stroke-opacity" values="0.3;1;0.3;0.3" keyTimes="0;0.15;0.33;1" dur="4s" repeatCount="indefinite"/>
+          </rect>
+          <text x="310" y="94" text-anchor="middle" fill="#aaa" font-family="DM Sans,sans-serif" font-size="8">Think</text>
+          <rect x="345" y="178" width="42" height="18" rx="4" fill="none" stroke="#888" stroke-width="0.6">
+            <animate attributeName="stroke-opacity" values="0.3;0.3;1;0.3" keyTimes="0;0.33;0.48;0.66" dur="4s" repeatCount="indefinite"/>
+          </rect>
+          <text x="366" y="190" text-anchor="middle" fill="#aaa" font-family="DM Sans,sans-serif" font-size="8">Act</text>
+          <rect x="233" y="178" width="52" height="18" rx="4" fill="none" stroke="#888" stroke-width="0.6">
+            <animate attributeName="stroke-opacity" values="0.3;0.3;0.3;1" keyTimes="0;0.33;0.66;0.82" dur="4s" repeatCount="indefinite"/>
+          </rect>
+          <text x="259" y="190" text-anchor="middle" fill="#aaa" font-family="DM Sans,sans-serif" font-size="8">Observe</text>
+          <!-- ReAct cycle arrows -->
+          <path d="M331,96 Q360,100 355,178" fill="none" stroke="#444" stroke-width="0.7" marker-end="url(#arrowGray2)"/>
+          <path d="M345,192 Q310,210 285,192" fill="none" stroke="#444" stroke-width="0.7" marker-end="url(#arrowGray2)"/>
+          <path d="M243,178 Q230,130 289,90" fill="none" stroke="#444" stroke-width="0.7" marker-end="url(#arrowGray2)"/>
+          <!-- Agent label -->
+          <text x="310" y="220" text-anchor="middle" fill="#555" font-family="DM Mono,monospace" font-size="7" letter-spacing="0.15em">AGENT</text>
+
+          <!-- === External: Channels (left) === -->
+          <rect x="20" y="52" width="72" height="26" rx="5" fill="#1a1a1a" stroke="#555" stroke-width="0.8"/>
+          <text x="56" y="69" text-anchor="middle" fill="#aaa" font-family="DM Mono,monospace" font-size="9">WeChat</text>
+          <line x1="92" y1="65" x2="218" y2="130" stroke="#333" stroke-width="0.8"/>
           <circle r="2.5" fill="#00E8C6">
-            <animate attributeName="cx" values="102;240" dur="3s" repeatCount="indefinite"/>
-            <animate attributeName="cy" values="54;118" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="cx" values="92;218" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="cy" values="65;130" dur="3s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" repeatCount="indefinite"/>
           </circle>
-          <!-- Channel: Slack (left-bottom) -->
-          <rect x="30" y="170" width="72" height="28" rx="5" fill="#1a1a1a" stroke="#555" stroke-width="0.8"/>
-          <text x="66" y="188" text-anchor="middle" fill="#aaa" font-family="DM Mono,monospace" font-size="9">Slack</text>
-          <line x1="102" y1="184" x2="240" y2="145" stroke="#333" stroke-width="0.8"/>
+
+          <rect x="20" y="130" width="72" height="26" rx="5" fill="#1a1a1a" stroke="#555" stroke-width="0.8"/>
+          <text x="56" y="147" text-anchor="middle" fill="#aaa" font-family="DM Mono,monospace" font-size="9">Slack</text>
+          <line x1="92" y1="143" x2="215" y2="145" stroke="#333" stroke-width="0.8"/>
           <circle r="2.5" fill="#00E8C6">
-            <animate attributeName="cx" values="102;240" dur="3.5s" repeatCount="indefinite" begin="0.8s"/>
-            <animate attributeName="cy" values="184;145" dur="3.5s" repeatCount="indefinite" begin="0.8s"/>
-            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3.5s" repeatCount="indefinite" begin="0.8s"/>
+            <animate attributeName="cx" values="92;215" dur="3.4s" repeatCount="indefinite" begin="0.8s"/>
+            <animate attributeName="cy" values="143;145" dur="3.4s" repeatCount="indefinite" begin="0.8s"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3.4s" repeatCount="indefinite" begin="0.8s"/>
           </circle>
-          <!-- Channel: Email (left-mid) -->
-          <rect x="10" y="105" width="72" height="28" rx="5" fill="#1a1a1a" stroke="#555" stroke-width="0.8"/>
-          <text x="46" y="123" text-anchor="middle" fill="#aaa" font-family="DM Mono,monospace" font-size="9">Email</text>
-          <line x1="82" y1="119" x2="238" y2="130" stroke="#333" stroke-width="0.8"/>
+
+          <rect x="20" y="205" width="72" height="26" rx="5" fill="#1a1a1a" stroke="#555" stroke-width="0.8"/>
+          <text x="56" y="222" text-anchor="middle" fill="#aaa" font-family="DM Mono,monospace" font-size="9">Email</text>
+          <line x1="92" y1="218" x2="218" y2="165" stroke="#333" stroke-width="0.8"/>
           <circle r="2.5" fill="#00E8C6">
-            <animate attributeName="cx" values="82;238" dur="3.2s" repeatCount="indefinite" begin="1.5s"/>
-            <animate attributeName="cy" values="119;130" dur="3.2s" repeatCount="indefinite" begin="1.5s"/>
+            <animate attributeName="cx" values="92;218" dur="3.2s" repeatCount="indefinite" begin="1.5s"/>
+            <animate attributeName="cy" values="218;165" dur="3.2s" repeatCount="indefinite" begin="1.5s"/>
             <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3.2s" repeatCount="indefinite" begin="1.5s"/>
           </circle>
-          <!-- Module: Memory (right-top) -->
-          <rect x="458" y="40" width="72" height="28" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.8" stroke-opacity="0.5"/>
-          <text x="494" y="58" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="9">Memory</text>
-          <line x1="320" y1="118" x2="458" y2="54" stroke="#333" stroke-width="0.8"/>
+
+          <!-- === External: Modules (right) === -->
+          <rect x="528" y="52" width="72" height="26" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.8" stroke-opacity="0.5"/>
+          <text x="564" y="69" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="9">Memory</text>
+          <line x1="402" y1="130" x2="528" y2="65" stroke="#333" stroke-width="0.8"/>
           <circle r="2.5" fill="#00E8C6">
-            <animate attributeName="cx" values="320;458" dur="4s" repeatCount="indefinite" begin="0.5s"/>
-            <animate attributeName="cy" values="118;54" dur="4s" repeatCount="indefinite" begin="0.5s"/>
+            <animate attributeName="cx" values="402;528" dur="4s" repeatCount="indefinite" begin="0.5s"/>
+            <animate attributeName="cy" values="130;65" dur="4s" repeatCount="indefinite" begin="0.5s"/>
             <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="4s" repeatCount="indefinite" begin="0.5s"/>
           </circle>
-          <!-- Module: Skills (right-mid) -->
-          <rect x="478" y="105" width="72" height="28" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.8" stroke-opacity="0.5"/>
-          <text x="514" y="123" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="9">Skills</text>
-          <line x1="322" y1="130" x2="478" y2="119" stroke="#333" stroke-width="0.8"/>
+
+          <rect x="540" y="130" width="72" height="26" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.8" stroke-opacity="0.5"/>
+          <text x="576" y="147" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="9">Skills</text>
+          <line x1="405" y1="145" x2="540" y2="143" stroke="#333" stroke-width="0.8"/>
           <circle r="2.5" fill="#00E8C6">
-            <animate attributeName="cx" values="322;478" dur="3.8s" repeatCount="indefinite" begin="2s"/>
-            <animate attributeName="cy" values="130;119" dur="3.8s" repeatCount="indefinite" begin="2s"/>
+            <animate attributeName="cx" values="405;540" dur="3.8s" repeatCount="indefinite" begin="2s"/>
+            <animate attributeName="cy" values="145;143" dur="3.8s" repeatCount="indefinite" begin="2s"/>
             <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3.8s" repeatCount="indefinite" begin="2s"/>
           </circle>
-          <!-- Module: Heartbeat (right-bottom) -->
-          <rect x="458" y="170" width="72" height="28" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.8" stroke-opacity="0.5"/>
-          <text x="494" y="188" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="9">Heartbeat</text>
-          <line x1="320" y1="145" x2="458" y2="184" stroke="#333" stroke-width="0.8"/>
+
+          <rect x="528" y="205" width="72" height="26" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.8" stroke-opacity="0.5"/>
+          <text x="564" y="222" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="9">Heartbeat</text>
+          <line x1="402" y1="165" x2="528" y2="218" stroke="#333" stroke-width="0.8"/>
           <circle r="2.5" fill="#00E8C6">
-            <animate attributeName="cx" values="320;458" dur="2.5s" repeatCount="indefinite" begin="1s"/>
-            <animate attributeName="cy" values="145;184" dur="2.5s" repeatCount="indefinite" begin="1s"/>
+            <animate attributeName="cx" values="402;528" dur="2.5s" repeatCount="indefinite" begin="1s"/>
+            <animate attributeName="cy" values="165;218" dur="2.5s" repeatCount="indefinite" begin="1s"/>
             <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="2.5s" repeatCount="indefinite" begin="1s"/>
           </circle>
+
           <!-- Bottom label -->
-          <text x="280" y="240" text-anchor="middle" fill="#555" font-family="DM Mono,monospace" font-size="10">24/7 · Always-on · 多通道 · 有记忆</text>
+          <text x="310" y="270" text-anchor="middle" fill="#555" font-family="DM Mono,monospace" font-size="10">24/7 · Always-on · 多通道 · 有记忆 · ReAct</text>
         </svg>
       </div>
       <div class="reveal d6" style="margin-top:16px;display:flex;gap:24px;justify-content:center;">
