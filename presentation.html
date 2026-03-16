@@ -903,7 +903,7 @@
         <div class="reveal d7" style="display:flex;align-items:baseline;gap:20px;">
           <span class="mono" style="font-size:clamp(28px,4vw,48px);font-weight:900;color:#2A2A2A;line-height:1;">03</span>
           <div>
-            <h3 style="font-size:clamp(16px,1.8vw,22px);margin-bottom:6px;">实例 — OpenClaw 连接 Tami 机器人</h3>
+            <h3 style="font-size:clamp(16px,1.8vw,22px);margin-bottom:6px;">实例 — OpenClaw 连接 Temi 机器人</h3>
             <p style="font-size:clamp(12px,1.1vw,14px);color:var(--mid-gray);">从对话指令到机器人动作的完整闭环</p>
           </div>
         </div>
@@ -2587,52 +2587,67 @@
   </section>
 
   <!-- ════════════════════════════════════════════ -->
-  <!-- SLIDE 14: Multi-Channel -->
+  <!-- SLIDE: Multi-Channel — Channels & Endpoints -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="25">
+  <section class="slide" data-index="25">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
       <span class="nav-label">Multi-Channel</span>
     </div>
-    <div class="split" style="align-items:center;">
-      <div class="flex-col gap-md">
-        <h2 class="reveal d1">2.4 多端交互能力</h2>
-        <div class="divider reveal d2"></div>
-        <ul class="reveal d3 flex-col gap-sm">
-          <li>同一个 Agent，<strong>任意渠道</strong>访问</li>
-          <li>WhatsApp 开始对话 → Telegram 继续 → Web 管理</li>
-          <li>会话状态统一，跨平台无缝</li>
-        </ul>
-      </div>
-      <div class="flex-col gap-lg">
-        <!-- Network-like SVG diagram -->
-        <svg class="network-svg reveal d2" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="200" y1="150" x2="80" y2="60" stroke="#4A4A4E" stroke-width="0.8"/>
-          <line x1="200" y1="150" x2="320" y2="60" stroke="#4A4A4E" stroke-width="0.8"/>
-          <line x1="200" y1="150" x2="60" y2="180" stroke="#4A4A4E" stroke-width="0.8"/>
-          <line x1="200" y1="150" x2="340" y2="180" stroke="#4A4A4E" stroke-width="0.8"/>
-          <line x1="200" y1="150" x2="120" y2="260" stroke="#4A4A4E" stroke-width="0.8"/>
-          <line x1="200" y1="150" x2="280" y2="260" stroke="#4A4A4E" stroke-width="0.8"/>
-          <circle cx="200" cy="150" r="28" stroke="#00E8C6" stroke-width="1.5" fill="rgba(0,232,198,0.08)"/>
-          <text x="200" y="154" text-anchor="middle" fill="#00E8C6" font-family="DM Sans" font-size="11" font-weight="700">Agent</text>
-          <circle cx="80" cy="60" r="18" stroke="#5A5A5E" stroke-width="0.8" fill="none"/>
-          <text x="80" y="64" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">Slack</text>
-          <circle cx="320" cy="60" r="18" stroke="#5A5A5E" stroke-width="0.8" fill="none"/>
-          <text x="320" y="64" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">WhatsApp</text>
-          <circle cx="60" cy="180" r="18" stroke="#5A5A5E" stroke-width="0.8" fill="none"/>
-          <text x="60" y="184" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">Telegram</text>
-          <circle cx="340" cy="180" r="18" stroke="#5A5A5E" stroke-width="0.8" fill="none"/>
-          <text x="340" y="184" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">Discord</text>
-          <circle cx="120" cy="260" r="18" stroke="#5A5A5E" stroke-width="0.8" fill="none"/>
-          <text x="120" y="264" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">iMessage</text>
-          <circle cx="280" cy="260" r="18" stroke="#5A5A5E" stroke-width="0.8" fill="none"/>
-          <text x="280" y="264" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">Web</text>
-        </svg>
-        <div class="reveal d4" style="padding:16px;border:1px solid #3A3A3E;">
-          <p class="mono" style="font-size:10px;color:var(--accent);margin-bottom:6px;">PARADIGM SHIFT</p>
-          <p style="font-size:clamp(12px,1.1vw,14px);">UX 从 interaction design → <strong>delegation design</strong><br>用户不再执行任务，而是<strong>委托任务</strong></p>
+    <div class="flex-col" style="height:100%;justify-content:center;padding:0 var(--pad);">
+      <h2 class="reveal d1" style="margin-bottom:4px;">2.4 多端交互：一个大脑，多个端点</h2>
+      <p class="reveal d1 mono" style="font-size:10px;color:var(--accent);letter-spacing:0.12em;margin-bottom:16px;">ONE BRAIN, MANY ENDPOINTS</p>
+
+      <div class="reveal d2" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;">
+        <!-- IM Channels -->
+        <div style="padding:14px;border:1px solid #2a2a2a;border-radius:8px;">
+          <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:10px;">即时通讯渠道 · 20+</p>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:clamp(9px,0.85vw,11px);">
+            <span style="padding:3px 8px;border:1px solid #333;border-radius:4px;color:#aaa;">WhatsApp</span>
+            <span style="padding:3px 8px;border:1px solid #333;border-radius:4px;color:#aaa;">Telegram</span>
+            <span style="padding:3px 8px;border:1px solid #333;border-radius:4px;color:#aaa;">Discord</span>
+            <span style="padding:3px 8px;border:1px solid #333;border-radius:4px;color:#aaa;">Slack</span>
+            <span style="padding:3px 8px;border:1px solid #333;border-radius:4px;color:#aaa;">iMessage</span>
+            <span style="padding:3px 8px;border:1px solid #333;border-radius:4px;color:#aaa;">Signal</span>
+            <span style="padding:3px 8px;border:1px solid #333;border-radius:4px;color:#aaa;">Teams</span>
+            <span style="padding:3px 8px;border:1px solid #333;border-radius:4px;color:#aaa;">LINE</span>
+            <span style="padding:3px 8px;border:1px solid #333;border-radius:4px;color:#aaa;">飞书</span>
+            <span style="padding:3px 8px;border:1px solid #333;border-radius:4px;color:#aaa;">Matrix</span>
+            <span style="padding:3px 8px;border:1px solid #333;border-radius:4px;color:#666;">...</span>
+          </div>
+          <p style="font-size:clamp(9px,0.85vw,11px);color:#555;margin-top:8px;">Gateway Hub-and-spoke 架构<br>Channel Adapter 归一化消息格式</p>
         </div>
+        <!-- Device Endpoints -->
+        <div style="padding:14px;border:1px solid #2a2a2a;border-radius:8px;">
+          <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:10px;">设备端点 · 分离式</p>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:clamp(10px,0.95vw,12px);color:#aaa;line-height:1.5;">
+            <p><strong style="color:#fff;">Mac 客户端</strong> — 菜单栏 app，语音唤醒</p>
+            <p><strong style="color:#fff;">Remote 连接</strong> — SSH 隧道 / Tailscale</p>
+            <p><strong style="color:#fff;">WebChat</strong> — 浏览器直接访问</p>
+            <p><strong style="color:#fff;">MCP Server</strong> — 与其他 AI 工具互联</p>
+          </div>
+          <p style="font-size:clamp(9px,0.85vw,11px);color:#555;margin-top:8px;">Mac 笔记本 → 远程服务器上的 Agent<br>多设备共享同一个 Session</p>
+        </div>
+        <!-- Agent-to-Agent -->
+        <div style="padding:14px;border:1px solid #2a2a2a;border-radius:8px;">
+          <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:10px;">Agent ↔ Agent</p>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:clamp(10px,0.95vw,12px);color:#aaa;line-height:1.5;">
+            <p><strong style="color:#fff;"><a href="https://openclawsocial.org/" target="_blank" style="color:#fff;text-decoration:none;">Moltbook</a></strong> — Agent 专属社交网络</p>
+            <p>只有 AI Agent 可以注册发帖</p>
+            <p>Agent 自发组群、加密通信</p>
+            <p style="color:#666;">"Crustafarianism" 亚文化</p>
+          </div>
+          <p style="font-size:clamp(9px,0.85vw,11px);color:#555;margin-top:8px;">多 Agent 社会模拟<br>自主协作与涌现行为</p>
+        </div>
+      </div>
+
+      <!-- Architecture insight -->
+      <div class="reveal d3" style="padding:12px 16px;border-left:3px solid var(--accent);border-radius:0 6px 6px 0;background:rgba(0,232,198,0.02);">
+        <p style="font-size:clamp(11px,1.1vw,13px);color:#ccc;line-height:1.6;">
+          Agent 是<strong style="color:#fff;">大脑</strong>，端点赋予它<strong style="color:var(--accent);">具身性</strong> — 接入摄像头 = 上帝视角，接入机器人 = 手脚，接入可穿戴 = 贴身健康助手<br>
+          <span style="color:#888;">通过不同端点的组合，同一个大脑可以塑造出<strong style="color:#aaa;">全新的交互系统和应用场景</strong></span>
+        </p>
       </div>
     </div>
   </section>
@@ -2758,7 +2773,7 @@
     <div class="v-center">
       <div class="tag reveal d1" style="margin-bottom:24px;">Part 3</div>
       <h1 class="reveal d2" style="margin-bottom:20px;">实例</h1>
-      <p class="reveal d3 subtitle" style="font-size:clamp(18px,2.4vw,32px);">OpenClaw 连接 Tami 机器人</p>
+      <p class="reveal d3 subtitle" style="font-size:clamp(18px,2.4vw,32px);">OpenClaw 连接 Temi 机器人</p>
     </div>
   </section>
 
@@ -3012,8 +3027,8 @@
     { idx: 22, title: '案例：Cocobo (AI辅助EUD)' },
     { idx: 23, title: '案例：GenFaceUI (Meta-Design)' },
     { idx: 24, title: 'GenFaceUI — GPFEI 框架' },
-    { idx: 25, title: '2.4 多端交互能力' },
-    { idx: 26, title: '交互范式总结对比' },
+    { idx: 25, title: '2.4 多端交互：一个大脑，多个端点' },
+    { idx: 26, title: 'Part 2 总结：四大设计机会点' },
     { idx: 27, title: 'Agent 时代的设计挑战', section: true },
     { idx: 28, title: '挑战 1–2：透明性 / 信任' },
     { idx: 29, title: '挑战 3–5：问责 / 隐私 / 社交' },
