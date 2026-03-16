@@ -267,6 +267,12 @@
     gap: var(--pad-sm);
   }
 
+  .columns-6 {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--pad-sm);
+  }
+
   /* ─── Specific Layouts ─── */
 
   /* Title slide scattered */
@@ -1270,7 +1276,14 @@
             <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3.2s" repeatCount="indefinite" begin="1.5s"/>
           </circle>
 
-          <!-- === Capability satellites (orbiting around agent zone) === -->
+          <!-- === Capability satellites (around agent zone) === -->
+          <!-- Gateway (top, between channels and core) -->
+          <rect x="170" y="52" width="78" height="24" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.7" stroke-opacity="0.5"/>
+          <g transform="translate(177,58)" fill="none" stroke="#00E8C6" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="0" y="2" width="10" height="8" rx="1.5"/><line x1="3" y1="5" x2="7" y2="5"/><line x1="3" y1="7.5" x2="7" y2="7.5"/>
+          </g>
+          <text x="218" y="68" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="8">Gateway</text>
+
           <!-- Memory (top-right) -->
           <rect x="430" y="60" width="72" height="24" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.7" stroke-opacity="0.5"/>
           <g transform="translate(437,66)" fill="none" stroke="#00E8C6" stroke-width="1" stroke-linecap="round">
@@ -1321,8 +1334,8 @@
       <span class="nav-label">Architecture</span>
     </div>
     <div class="flex-col" style="height:100%;justify-content:center;">
-      <h2 class="reveal d1" style="margin-bottom:32px;">五大核心组件</h2>
-      <div class="columns-5 reveal d2">
+      <h2 class="reveal d1" style="margin-bottom:32px;">六大核心组件</h2>
+      <div class="columns-6 reveal d2">
         <div class="step-col">
           <div class="step-num">01</div>
           <h3>Gateway</h3>
@@ -1347,6 +1360,11 @@
           <div class="step-num">05</div>
           <h3>Heartbeat</h3>
           <p>周期性触发（如每30分钟），无需用户输入。Agent 主动性的关键机制。</p>
+        </div>
+        <div class="step-col">
+          <div class="step-num">06</div>
+          <h3>Cron</h3>
+          <p>定时任务调度，支持 cron 表达式。可设定每日摘要、定期检查等自动化流程。</p>
         </div>
       </div>
     </div>
