@@ -740,6 +740,75 @@
     font-size: clamp(11px, 1.1vw, 14px);
     line-height: 1.6;
   }
+
+  /* ─── Evolution Diagram Animations ─── */
+  .evo-diagram {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .evo-svg {
+    width: 100%;
+    height: auto;
+    opacity: 0;
+    transition: opacity 0.8s ease 0.3s;
+  }
+  .slide.active .evo-svg { opacity: 1; }
+  .slide:not(.active) .evo-svg * { animation-play-state: paused !important; }
+
+  @keyframes core-breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+  }
+  @keyframes token-flow {
+    0%   { opacity: 0; }
+    15%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes token-move-right {
+    0%   { transform: translateX(-50px); }
+    100% { transform: translateX(50px); }
+  }
+  @keyframes bubble-float {
+    0%   { opacity: 0; transform: translateY(10px); }
+    15%  { opacity: 0.8; transform: translateY(0); }
+    75%  { opacity: 0.8; transform: translateY(-30px); }
+    100% { opacity: 0; transform: translateY(-45px); }
+  }
+  @keyframes orbit-spin {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes react-highlight {
+    0%, 100% { opacity: 0.3; }
+    33% { opacity: 1; }
+  }
+  @keyframes action-ring {
+    0%   { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+  @keyframes heartbeat-pulse {
+    0%, 100% { transform: scale(1); }
+    12% { transform: scale(1.1); }
+    24% { transform: scale(1); }
+    36% { transform: scale(1.06); }
+    48% { transform: scale(1); }
+  }
+  @keyframes packet-move {
+    0%   { opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes memory-rotate {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes dash-flow {
+    0%   { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -20; }
+  }
 </style>
 </head>
 <body>
@@ -850,22 +919,66 @@
         <p class="reveal d3 mono" style="font-size:13px;color:var(--gray);letter-spacing:0.1em;">会说话的大脑</p>
       </div>
       <div class="flex-col gap-md v-center">
-        <div class="reveal d2">
-          <div class="flow-row" style="margin-bottom:20px;">
-            <span class="flow-box">Prompt</span>
-            <span class="flow-arrow">&rarr;</span>
-            <span class="flow-box" style="background:var(--accent);color:#000;font-weight:700;">LLM</span>
-            <span class="flow-arrow">&rarr;</span>
-            <span class="flow-box">Text</span>
-          </div>
+        <div class="evo-diagram reveal d2">
+          <svg class="evo-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+            <!-- Input: Prompt -->
+            <rect x="20" y="120" width="80" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+            <text x="60" y="143" text-anchor="middle" fill="#aaa" font-family="DM Mono,monospace" font-size="12">Prompt</text>
+            <!-- Arrow in -->
+            <line x1="105" y1="138" x2="155" y2="138" stroke="#555" stroke-width="1" stroke-dasharray="4,3">
+              <animate attributeName="stroke-dashoffset" from="0" to="-14" dur="1.5s" repeatCount="indefinite"/>
+            </line>
+            <!-- Core Brain -->
+            <g style="transform-origin:200px 138px;animation:core-breathe 4s ease-in-out infinite;">
+              <circle cx="200" cy="138" r="42" fill="rgba(0,232,198,0.06)" stroke="#00E8C6" stroke-width="1.5"/>
+              <text x="200" y="144" text-anchor="middle" fill="#00E8C6" font-family="DM Sans,sans-serif" font-size="18" font-weight="700">LLM</text>
+            </g>
+            <!-- Arrow out -->
+            <line x1="245" y1="138" x2="295" y2="138" stroke="#555" stroke-width="1" stroke-dasharray="4,3">
+              <animate attributeName="stroke-dashoffset" from="0" to="-14" dur="1.5s" repeatCount="indefinite"/>
+            </line>
+            <!-- Output: Text -->
+            <rect x="300" y="120" width="80" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+            <text x="340" y="143" text-anchor="middle" fill="#aaa" font-family="DM Mono,monospace" font-size="12">Text</text>
+            <!-- Flowing tokens: input side -->
+            <circle r="3" fill="#00E8C6" opacity="0">
+              <animate attributeName="cx" from="108" to="155" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="cy" values="138" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.2;0.8;1" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle r="3" fill="#00E8C6" opacity="0">
+              <animate attributeName="cx" from="108" to="155" dur="2s" repeatCount="indefinite" begin="0.7s"/>
+              <animate attributeName="cy" values="138" dur="2s" repeatCount="indefinite" begin="0.7s"/>
+              <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.2;0.8;1" dur="2s" repeatCount="indefinite" begin="0.7s"/>
+            </circle>
+            <!-- Flowing tokens: output side -->
+            <circle r="3" fill="#00E8C6" opacity="0">
+              <animate attributeName="cx" from="248" to="295" dur="2s" repeatCount="indefinite" begin="0.3s"/>
+              <animate attributeName="cy" values="138" dur="2s" repeatCount="indefinite" begin="0.3s"/>
+              <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.2;0.8;1" dur="2s" repeatCount="indefinite" begin="0.3s"/>
+            </circle>
+            <circle r="3" fill="#00E8C6" opacity="0">
+              <animate attributeName="cx" from="248" to="295" dur="2s" repeatCount="indefinite" begin="1s"/>
+              <animate attributeName="cy" values="138" dur="2s" repeatCount="indefinite" begin="1s"/>
+              <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.2;0.8;1" dur="2s" repeatCount="indefinite" begin="1s"/>
+            </circle>
+            <!-- Label -->
+            <text x="200" y="210" text-anchor="middle" fill="#555" font-family="DM Mono,monospace" font-size="10">Text In → Text Out</text>
+            <!-- Limitation markers -->
+            <g fill="none" stroke="#444" stroke-width="1" transform="translate(120,235)">
+              <line x1="0" y1="0" x2="8" y2="8"/><line x1="8" y1="0" x2="0" y2="8"/>
+              <text x="14" y="8" fill="#555" font-family="DM Mono,monospace" font-size="9">无记忆</text>
+            </g>
+            <g fill="none" stroke="#444" stroke-width="1" transform="translate(190,235)">
+              <line x1="0" y1="0" x2="8" y2="8"/><line x1="8" y1="0" x2="0" y2="8"/>
+              <text x="14" y="8" fill="#555" font-family="DM Mono,monospace" font-size="9">无行动</text>
+            </g>
+            <g fill="none" stroke="#444" stroke-width="1" transform="translate(260,235)">
+              <line x1="0" y1="0" x2="8" y2="8"/><line x1="8" y1="0" x2="0" y2="8"/>
+              <text x="14" y="8" fill="#555" font-family="DM Mono,monospace" font-size="9">无连接</text>
+            </g>
+          </svg>
         </div>
-        <div class="divider reveal d3"></div>
-        <ul class="reveal d3 flex-col gap-sm">
-          <li>本质上是一个<strong>文本生成器</strong></li>
-          <li>能力：理解语义、生成内容、推理</li>
-          <li>局限：<strong>没有记忆、没有行动力、没有外部连接</strong></li>
-          <li>形态：单轮问答，用完即走</li>
-        </ul>
       </div>
     </div>
   </section>
@@ -886,16 +999,55 @@
         <p class="reveal d3 mono" style="font-size:13px;color:var(--gray);letter-spacing:0.1em;">能对话了</p>
       </div>
       <div class="flex-col gap-md v-center">
-        <ul class="reveal d2 flex-col gap-sm">
-          <li>在 LLM 基础上加入<strong>对话历史</strong></li>
-          <li>多轮对话，有上下文感知</li>
-          <li>本质仍是<strong>被动应答</strong>：你问它答，你不问它就不动</li>
-          <li>形态：ChatGPT、Claude 对话界面</li>
-        </ul>
-        <div class="divider reveal d3"></div>
-        <div class="reveal d4" style="padding:16px;border:1px solid var(--light-gray);">
-          <p class="mono" style="font-size:11px;color:var(--gray);margin-bottom:6px;color:var(--accent);">FOR DESIGNERS</p>
-          <p style="font-size:clamp(12px,1.2vw,15px);">交互从搜索框/表单 → 对话框，但仍然是<strong>用户发起</strong></p>
+        <div class="evo-diagram reveal d2">
+          <svg class="evo-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- History stack (layered cards behind core) -->
+            <rect x="152" y="68" width="96" height="24" rx="4" fill="none" stroke="#333" stroke-width="0.8" opacity="0.3"/>
+            <rect x="148" y="76" width="104" height="24" rx="4" fill="none" stroke="#444" stroke-width="0.8" opacity="0.4"/>
+            <rect x="144" y="84" width="112" height="24" rx="4" fill="none" stroke="#555" stroke-width="0.8" opacity="0.5"/>
+            <text x="200" y="82" text-anchor="middle" fill="#555" font-family="DM Mono,monospace" font-size="8">conversation history</text>
+            <!-- Arrow: history feeds into core -->
+            <line x1="200" y1="110" x2="200" y2="125" stroke="#555" stroke-width="1" stroke-dasharray="3,2">
+              <animate attributeName="stroke-dashoffset" from="0" to="-10" dur="1.5s" repeatCount="indefinite"/>
+            </line>
+            <!-- Core Brain (same as LLM) -->
+            <g style="transform-origin:200px 158px;animation:core-breathe 4s ease-in-out infinite;">
+              <circle cx="200" cy="158" r="42" fill="rgba(0,232,198,0.06)" stroke="#00E8C6" stroke-width="1.5"/>
+              <text x="200" y="164" text-anchor="middle" fill="#00E8C6" font-family="DM Sans,sans-serif" font-size="18" font-weight="700">LLM</text>
+            </g>
+            <!-- User icon (left) -->
+            <circle cx="60" cy="152" r="12" fill="none" stroke="#888" stroke-width="1"/>
+            <text x="60" y="156" text-anchor="middle" fill="#888" font-size="12">U</text>
+            <text x="60" y="178" text-anchor="middle" fill="#555" font-family="DM Mono,monospace" font-size="9">用户</text>
+            <!-- User → Core arrow -->
+            <line x1="78" y1="152" x2="153" y2="155" stroke="#666" stroke-width="1" stroke-dasharray="4,3">
+              <animate attributeName="stroke-dashoffset" from="0" to="-14" dur="1.5s" repeatCount="indefinite"/>
+            </line>
+            <!-- Core → User arrow (reply) -->
+            <line x1="153" y1="162" x2="78" y2="162" stroke="#444" stroke-width="1" stroke-dasharray="4,3">
+              <animate attributeName="stroke-dashoffset" from="0" to="-14" dur="1.5s" repeatCount="indefinite"/>
+            </line>
+            <!-- Floating chat bubbles -->
+            <g style="animation:bubble-float 4s ease-in-out infinite;">
+              <rect x="100" y="195" width="40" height="16" rx="8" fill="none" stroke="#666" stroke-width="0.8"/>
+              <text x="120" y="206" text-anchor="middle" fill="#666" font-size="8">你好</text>
+            </g>
+            <g style="animation:bubble-float 4s ease-in-out infinite 1.3s;">
+              <rect x="250" y="195" width="56" height="16" rx="8" fill="none" stroke="#00E8C6" stroke-width="0.8"/>
+              <text x="278" y="206" text-anchor="middle" fill="#00E8C6" font-size="8">你好！</text>
+            </g>
+            <g style="animation:bubble-float 4s ease-in-out infinite 2.6s;">
+              <rect x="110" y="195" width="60" height="16" rx="8" fill="none" stroke="#666" stroke-width="0.8"/>
+              <text x="140" y="206" text-anchor="middle" fill="#666" font-size="8">帮我...</text>
+            </g>
+            <!-- Label -->
+            <text x="200" y="250" text-anchor="middle" fill="#555" font-family="DM Mono,monospace" font-size="10">Multi-turn · Context-aware · 被动应答</text>
+            <!-- "User Initiated" indicator -->
+            <g transform="translate(140,265)">
+              <rect width="120" height="20" rx="3" fill="none" stroke="#444" stroke-width="0.8"/>
+              <text x="60" y="14" text-anchor="middle" fill="#888" font-family="DM Mono,monospace" font-size="9">用户发起 →</text>
+            </g>
+          </svg>
         </div>
       </div>
     </div>
@@ -920,26 +1072,71 @@
         </div>
       </div>
       <div class="flex-col gap-md v-center">
-        <div class="reveal d3" style="padding:24px;border:1px solid #3A3A3E;">
-          <p class="mono" style="font-size:11px;color:var(--accent);margin-bottom:12px;">REACT LOOP</p>
-          <div class="flow-row" style="gap:16px;">
-            <span class="flow-box">Thought</span>
-            <span class="flow-arrow" style="color:#5A5A5E;">&rarr;</span>
-            <span class="flow-box">Action</span>
-            <span class="flow-arrow" style="color:#5A5A5E;">&rarr;</span>
-            <span class="flow-box">Observation</span>
-            <span class="flow-arrow" style="color:#5A5A5E;">&circlearrowright;</span>
-          </div>
-        </div>
-        <div class="divider reveal d4"></div>
-        <ul class="reveal d5 flex-col gap-sm" style="font-size:clamp(12px,1.1vw,14px);">
-          <li>LLM 决定调用工具来完成任务</li>
-          <li>角色从"文本生成器"变成"<strong>决策者 + 协调者</strong>"</li>
-          <li>模仿人类：想一想 → 做一做 → 看结果 → 再想</li>
-        </ul>
-        <div class="reveal d6" style="padding:16px;border:1px solid #3A3A3E;">
-          <p class="mono" style="font-size:11px;color:#666;margin-bottom:6px;color:var(--accent);">FOR DESIGNERS</p>
-          <p style="font-size:clamp(12px,1.1vw,14px);">AI 从"应答工具"变成"能执行任务的助手"<br>交互从"对话"扩展到"<strong>委托</strong>"</p>
+        <div class="evo-diagram reveal d3">
+          <svg class="evo-svg" viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+            <!-- Core Brain (double ring = evolution) -->
+            <g style="transform-origin:200px 140px;animation:core-breathe 4s ease-in-out infinite;">
+              <circle cx="200" cy="140" r="50" fill="none" stroke="#333" stroke-width="0.8" stroke-dasharray="4,3"/>
+              <circle cx="200" cy="140" r="40" fill="rgba(0,232,198,0.06)" stroke="#00E8C6" stroke-width="1.5"/>
+              <text x="200" y="136" text-anchor="middle" fill="#00E8C6" font-family="DM Sans,sans-serif" font-size="15" font-weight="700">LLM</text>
+              <text x="200" y="152" text-anchor="middle" fill="#888" font-family="DM Mono,monospace" font-size="8">+ Tool Use</text>
+            </g>
+            <!-- Action pulse rings -->
+            <circle cx="200" cy="140" r="40" fill="none" stroke="#00E8C6" stroke-width="0.8" style="transform-origin:200px 140px;animation:action-ring 3s ease-out infinite;"/>
+            <circle cx="200" cy="140" r="40" fill="none" stroke="#00E8C6" stroke-width="0.8" style="transform-origin:200px 140px;animation:action-ring 3s ease-out infinite 1.5s;"/>
+            <!-- ReAct cycle: Think / Act / Observe -->
+            <!-- Think (top) -->
+            <rect x="168" y="38" width="64" height="26" rx="5" fill="none" stroke="#FFF" stroke-width="1" style="animation:react-highlight 4.5s ease infinite;">
+              <animate attributeName="stroke-opacity" values="0.3;1;0.3;0.3" keyTimes="0;0.15;0.33;1" dur="4.5s" repeatCount="indefinite"/>
+            </rect>
+            <text x="200" y="56" text-anchor="middle" fill="#FFF" font-family="DM Sans,sans-serif" font-size="11" font-weight="500">Think</text>
+            <!-- Act (bottom-right) -->
+            <rect x="278" y="185" width="64" height="26" rx="5" fill="none" stroke="#FFF" stroke-width="1">
+              <animate attributeName="stroke-opacity" values="0.3;0.3;1;0.3" keyTimes="0;0.33;0.48;0.66" dur="4.5s" repeatCount="indefinite"/>
+            </rect>
+            <text x="310" y="203" text-anchor="middle" fill="#FFF" font-family="DM Sans,sans-serif" font-size="11" font-weight="500">Act</text>
+            <!-- Observe (bottom-left) -->
+            <rect x="58" y="185" width="76" height="26" rx="5" fill="none" stroke="#FFF" stroke-width="1">
+              <animate attributeName="stroke-opacity" values="0.3;0.3;0.3;1" keyTimes="0;0.33;0.66;0.82" dur="4.5s" repeatCount="indefinite"/>
+            </rect>
+            <text x="96" y="203" text-anchor="middle" fill="#FFF" font-family="DM Sans,sans-serif" font-size="11" font-weight="500">Observe</text>
+            <!-- Cycle arrows: Think → Act -->
+            <path d="M232,56 Q290,60 290,185" fill="none" stroke="#555" stroke-width="1" marker-end="url(#arrowGray)">
+              <animate attributeName="stroke-dashoffset" from="0" to="-12" dur="1.5s" repeatCount="indefinite"/>
+            </path>
+            <!-- Act → Observe -->
+            <path d="M278,205 Q200,240 134,205" fill="none" stroke="#555" stroke-width="1" marker-end="url(#arrowGray)">
+              <animate attributeName="stroke-dashoffset" from="0" to="-12" dur="1.5s" repeatCount="indefinite"/>
+            </path>
+            <!-- Observe → Think -->
+            <path d="M75,185 Q60,100 168,50" fill="none" stroke="#555" stroke-width="1" marker-end="url(#arrowGray)">
+              <animate attributeName="stroke-dashoffset" from="0" to="-12" dur="1.5s" repeatCount="indefinite"/>
+            </path>
+            <!-- Arrow marker -->
+            <defs>
+              <marker id="arrowGray" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#666"/>
+              </marker>
+            </defs>
+            <!-- Tool nodes (orbiting) -->
+            <g style="transform-origin:200px 140px;animation:orbit-spin 12s linear infinite;">
+              <circle cx="200" cy="55" r="10" fill="#1a1a1a" stroke="#888" stroke-width="0.8"/>
+              <text x="200" y="59" text-anchor="middle" fill="#aaa" font-size="8">🔍</text>
+            </g>
+            <g style="transform-origin:200px 140px;animation:orbit-spin 12s linear infinite;animation-delay:-4s;">
+              <circle cx="200" cy="55" r="10" fill="#1a1a1a" stroke="#888" stroke-width="0.8"/>
+              <text x="200" y="59" text-anchor="middle" fill="#aaa" font-size="8">⚙</text>
+            </g>
+            <g style="transform-origin:200px 140px;animation:orbit-spin 12s linear infinite;animation-delay:-8s;">
+              <circle cx="200" cy="55" r="10" fill="#1a1a1a" stroke="#888" stroke-width="0.8"/>
+              <text x="200" y="59" text-anchor="middle" fill="#aaa" font-size="8">📡</text>
+            </g>
+            <!-- Label -->
+            <text x="200" y="270" text-anchor="middle" fill="#555" font-family="DM Mono,monospace" font-size="10">ReAct Loop · 想→做→看→再想</text>
+            <!-- Designer note -->
+            <rect x="110" y="282" width="180" height="22" rx="3" fill="none" stroke="#333" stroke-width="0.8"/>
+            <text x="200" y="297" text-anchor="middle" fill="#888" font-family="DM Mono,monospace" font-size="9">从"对话" → "委托"</text>
+          </svg>
         </div>
       </div>
     </div>
@@ -957,21 +1154,99 @@
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;">
       <div class="big-num reveal d1" style="color:#3A3A3E;">04</div>
       <h1 class="reveal d2" style="font-size:clamp(36px,6vw,80px);margin:16px 0;">OpenClaw</h1>
-      <p class="reveal d3 subtitle" style="margin-bottom:32px;">Agent 住进了电脑</p>
-      <div class="reveal d4" style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
-        <span class="flow-box" style="border-color:#FFF;color:#FFF;">常驻运行</span>
-        <span class="flow-arrow" style="color:#5A5A5E;">+</span>
-        <span class="flow-box" style="border-color:#FFF;color:#FFF;">通讯连接</span>
-        <span class="flow-arrow" style="color:#5A5A5E;">+</span>
-        <span class="flow-box" style="border-color:#FFF;color:#FFF;">记忆系统</span>
-        <span class="flow-arrow" style="color:#5A5A5E;">+</span>
-        <span class="flow-box" style="border-color:#FFF;color:#FFF;">定时心跳</span>
+      <p class="reveal d3 subtitle" style="margin-bottom:24px;">Agent 住进了电脑</p>
+      <div class="evo-diagram reveal d4" style="max-width:560px;">
+        <svg class="evo-svg" viewBox="0 0 560 280" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#00E8C6" stop-opacity="0.12"/>
+              <stop offset="100%" stop-color="#00E8C6" stop-opacity="0"/>
+            </radialGradient>
+            <marker id="arrowAccent" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#00E8C6"/>
+            </marker>
+          </defs>
+          <!-- Glow background -->
+          <circle cx="280" cy="130" r="100" fill="url(#coreGlow)"/>
+          <!-- Memory ring (slow rotating) -->
+          <g style="transform-origin:280px 130px;animation:memory-rotate 25s linear infinite;">
+            <circle cx="280" cy="130" r="72" fill="none" stroke="#333" stroke-width="0.6" stroke-dasharray="3,6"/>
+            <!-- Memory dots on ring -->
+            <circle cx="352" cy="130" r="2.5" fill="#555"/>
+            <circle cx="280" cy="58" r="2.5" fill="#555"/>
+            <circle cx="208" cy="130" r="2.5" fill="#555"/>
+            <circle cx="280" cy="202" r="2.5" fill="#555"/>
+            <circle cx="331" cy="80" r="2.5" fill="#555"/>
+            <circle cx="229" cy="180" r="2.5" fill="#555"/>
+          </g>
+          <!-- Core Brain with heartbeat -->
+          <g style="transform-origin:280px 130px;animation:heartbeat-pulse 2.5s ease-in-out infinite;">
+            <circle cx="280" cy="130" r="42" fill="rgba(0,232,198,0.08)" stroke="#00E8C6" stroke-width="2"/>
+            <text x="280" y="126" text-anchor="middle" fill="#00E8C6" font-family="DM Sans,sans-serif" font-size="14" font-weight="700">Brain</text>
+            <text x="280" y="142" text-anchor="middle" fill="#888" font-family="DM Mono,monospace" font-size="8">ReAct + Memory</text>
+          </g>
+          <!-- Heartbeat pulse rings -->
+          <circle cx="280" cy="130" r="42" fill="none" stroke="#00E8C6" stroke-width="0.6" style="transform-origin:280px 130px;animation:action-ring 2.5s ease-out infinite;"/>
+          <circle cx="280" cy="130" r="42" fill="none" stroke="#00E8C6" stroke-width="0.6" style="transform-origin:280px 130px;animation:action-ring 2.5s ease-out infinite 1.25s;"/>
+          <!-- Channel: WeChat (left-top) -->
+          <rect x="30" y="40" width="72" height="28" rx="5" fill="#1a1a1a" stroke="#555" stroke-width="0.8"/>
+          <text x="66" y="58" text-anchor="middle" fill="#aaa" font-family="DM Mono,monospace" font-size="9">WeChat</text>
+          <line x1="102" y1="54" x2="240" y2="118" stroke="#333" stroke-width="0.8"/>
+          <circle r="2.5" fill="#00E8C6">
+            <animate attributeName="cx" values="102;240" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="cy" values="54;118" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <!-- Channel: Slack (left-bottom) -->
+          <rect x="30" y="170" width="72" height="28" rx="5" fill="#1a1a1a" stroke="#555" stroke-width="0.8"/>
+          <text x="66" y="188" text-anchor="middle" fill="#aaa" font-family="DM Mono,monospace" font-size="9">Slack</text>
+          <line x1="102" y1="184" x2="240" y2="145" stroke="#333" stroke-width="0.8"/>
+          <circle r="2.5" fill="#00E8C6">
+            <animate attributeName="cx" values="102;240" dur="3.5s" repeatCount="indefinite" begin="0.8s"/>
+            <animate attributeName="cy" values="184;145" dur="3.5s" repeatCount="indefinite" begin="0.8s"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3.5s" repeatCount="indefinite" begin="0.8s"/>
+          </circle>
+          <!-- Channel: Email (left-mid) -->
+          <rect x="10" y="105" width="72" height="28" rx="5" fill="#1a1a1a" stroke="#555" stroke-width="0.8"/>
+          <text x="46" y="123" text-anchor="middle" fill="#aaa" font-family="DM Mono,monospace" font-size="9">Email</text>
+          <line x1="82" y1="119" x2="238" y2="130" stroke="#333" stroke-width="0.8"/>
+          <circle r="2.5" fill="#00E8C6">
+            <animate attributeName="cx" values="82;238" dur="3.2s" repeatCount="indefinite" begin="1.5s"/>
+            <animate attributeName="cy" values="119;130" dur="3.2s" repeatCount="indefinite" begin="1.5s"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3.2s" repeatCount="indefinite" begin="1.5s"/>
+          </circle>
+          <!-- Module: Memory (right-top) -->
+          <rect x="458" y="40" width="72" height="28" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.8" stroke-opacity="0.5"/>
+          <text x="494" y="58" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="9">Memory</text>
+          <line x1="320" y1="118" x2="458" y2="54" stroke="#333" stroke-width="0.8"/>
+          <circle r="2.5" fill="#00E8C6">
+            <animate attributeName="cx" values="320;458" dur="4s" repeatCount="indefinite" begin="0.5s"/>
+            <animate attributeName="cy" values="118;54" dur="4s" repeatCount="indefinite" begin="0.5s"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="4s" repeatCount="indefinite" begin="0.5s"/>
+          </circle>
+          <!-- Module: Skills (right-mid) -->
+          <rect x="478" y="105" width="72" height="28" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.8" stroke-opacity="0.5"/>
+          <text x="514" y="123" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="9">Skills</text>
+          <line x1="322" y1="130" x2="478" y2="119" stroke="#333" stroke-width="0.8"/>
+          <circle r="2.5" fill="#00E8C6">
+            <animate attributeName="cx" values="322;478" dur="3.8s" repeatCount="indefinite" begin="2s"/>
+            <animate attributeName="cy" values="130;119" dur="3.8s" repeatCount="indefinite" begin="2s"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3.8s" repeatCount="indefinite" begin="2s"/>
+          </circle>
+          <!-- Module: Heartbeat (right-bottom) -->
+          <rect x="458" y="170" width="72" height="28" rx="5" fill="#1a1a1a" stroke="#00E8C6" stroke-width="0.8" stroke-opacity="0.5"/>
+          <text x="494" y="188" text-anchor="middle" fill="#00E8C6" font-family="DM Mono,monospace" font-size="9">Heartbeat</text>
+          <line x1="320" y1="145" x2="458" y2="184" stroke="#333" stroke-width="0.8"/>
+          <circle r="2.5" fill="#00E8C6">
+            <animate attributeName="cx" values="320;458" dur="2.5s" repeatCount="indefinite" begin="1s"/>
+            <animate attributeName="cy" values="145;184" dur="2.5s" repeatCount="indefinite" begin="1s"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="2.5s" repeatCount="indefinite" begin="1s"/>
+          </circle>
+          <!-- Bottom label -->
+          <text x="280" y="240" text-anchor="middle" fill="#555" font-family="DM Mono,monospace" font-size="10">24/7 · Always-on · 多通道 · 有记忆</text>
+        </svg>
       </div>
-      <div class="divider reveal d5" style="max-width:400px;margin:32px auto;"></div>
-      <p class="reveal d6" style="font-size:clamp(12px,1.2vw,15px);color:#888;max-width:520px;">
-        不再是"打开-使用-关闭"，而是<strong>24/7 活着的数字存在</strong>
-      </p>
-      <div class="reveal d7" style="margin-top:24px;display:flex;gap:24px;justify-content:center;">
+      <div class="reveal d6" style="margin-top:16px;display:flex;gap:24px;justify-content:center;">
         <span class="tag">2025.11 发布</span>
         <span class="tag">开源 / Self-Hosted</span>
         <span class="tag">30-40万用户</span>
