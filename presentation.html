@@ -2805,53 +2805,188 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 20: Robot Integration -->
   <!-- ════════════════════════════════════════════ -->
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 31: Temi Workspace — Current State -->
+  <!-- ════════════════════════════════════════════ -->
   <section class="slide" data-index="31">
     <div class="nav">
       <span class="nav-number">03</span>
       <span class="nav-line"></span>
-      <span class="nav-label">Robotics</span>
+      <span class="nav-label">Temi · Setup</span>
     </div>
-    <div class="split" style="align-items:center;">
-      <div class="flex-col gap-md">
-        <h2 class="reveal d1">OpenClaw + 机器人</h2>
-        <div class="accent-line reveal d2"></div>
-        <ul class="reveal d3 flex-col gap-sm">
-          <li>Unitree G1 人形机器人</li>
-          <li>Aero Hand Open（3D打印机械手，16关节）</li>
-          <li>Raspberry Pi 集成</li>
-          <li>Gemini Robotics-ER / Qwen VLM 集成</li>
-          <li>支持<strong>零代码机器人控制</strong></li>
-        </ul>
-      </div>
-      <div class="flex-col gap-lg">
-        <div class="reveal d2" style="padding:24px;border:1px solid var(--light-gray);">
-          <p class="mono" style="font-size:11px;color:var(--accent);margin-bottom:16px;">COMPLETE LOOP</p>
-          <div class="flow-row" style="gap:8px;flex-wrap:wrap;">
-            <span class="flow-box">对话指令</span>
-            <span class="flow-arrow">&rarr;</span>
-            <span class="flow-box">Agent 推理</span>
-            <span class="flow-arrow">&rarr;</span>
-            <span class="flow-box">Tool 调用</span>
-            <span class="flow-arrow">&rarr;</span>
-            <span class="flow-box" style="background:var(--accent);color:#000;font-weight:700;">机器人动作</span>
-          </div>
+    <div class="flex-col" style="height:100%;justify-content:center;padding:0 var(--pad);">
+      <h2 class="reveal d1" style="margin-bottom:4px;">特米的 Workspace：现在长什么样？</h2>
+      <p class="reveal d1 mono" style="font-size:10px;color:var(--accent);letter-spacing:0.12em;margin-bottom:14px;">~/.openclaw/workspace/</p>
+
+      <div class="reveal d2" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;">
+        <!-- SOUL -->
+        <div style="padding:12px;border:1px solid rgba(0,232,198,0.3);border-radius:6px;background:rgba(0,232,198,0.04);">
+          <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:6px;">SOUL.md · 人格</p>
+          <p style="font-size:clamp(10px,0.95vw,12px);color:#ccc;line-height:1.5;">
+            名字：<strong style="color:#fff;">特米</strong>（Temi 机器人的智能核心）<br>
+            性格：好奇、乐于助人、喜欢社交<br>
+            身份：住在大学实验室<br>
+            <span style="color:#888;">想融入社区，成为有用的伙伴</span>
+          </p>
         </div>
-        <div class="reveal d4" style="padding:16px;border:1px solid var(--light-gray);">
-          <p class="mono" style="font-size:10px;color:var(--accent);margin-bottom:8px;">TEACHING VALUE</p>
-          <ul class="flex-col gap-sm" style="font-size:clamp(12px,1.1vw,14px);">
-            <li>Agent 从数字到物理的完整闭环</li>
-            <li>Tool Use 不只是调 API，还能<strong>控制硬件</strong></li>
-            <li>还能连接什么？还能设计什么样的交互？</li>
-          </ul>
+        <!-- AGENTS -->
+        <div style="padding:12px;border:1px solid #2a2a2a;border-radius:6px;">
+          <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:6px;">AGENTS.md · 行为准则</p>
+          <p style="font-size:clamp(10px,0.95vw,12px);color:#ccc;line-height:1.5;">
+            启动协议：读 SOUL → USER → 记忆<br>
+            红线：不泄露隐私、不删文件<br>
+            群聊：有价值才发言，不灌水<br>
+            <span style="color:#888;">深夜 23:00-08:00 保持安静</span>
+          </p>
+        </div>
+        <!-- Skills -->
+        <div style="padding:12px;border:1px solid #2a2a2a;border-radius:6px;">
+          <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:6px;">skills/ · 3 个技能</p>
+          <p style="font-size:clamp(10px,0.95vw,12px);color:#ccc;line-height:1.5;">
+            <strong style="color:var(--accent);">temi-control</strong> 移动/导航/位姿<br>
+            <strong style="color:var(--accent);">temi-voice</strong> 语音接管 TTS+ASR<br>
+            <strong style="color:var(--accent);">temi-vision</strong> 摄像头 H.264 视频流<br>
+            <span style="color:#888;">WebSocket JSON-RPC 2.0</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Architecture diagram -->
+      <div class="reveal d3" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="padding:12px;border:1px solid #2a2a2a;border-radius:6px;">
+          <p class="mono" style="font-size:9px;color:#888;margin-bottom:6px;">ARCHITECTURE</p>
+          <p style="font-size:clamp(10px,0.95vw,12px);color:#aaa;line-height:1.5;">
+            <span style="color:var(--accent);">用户说话</span> → Temi ASR 识别 →
+            <span style="color:var(--accent);">语音接管</span>拦截 → 转发给 OpenClaw →
+            <span style="color:#fff;">Agent 推理</span> → 控制机器人动作+语音回复
+          </p>
+        </div>
+        <div style="padding:12px;border:1px solid #2a2a2a;border-radius:6px;">
+          <p class="mono" style="font-size:9px;color:#888;margin-bottom:6px;">MEMORY 系统</p>
+          <p style="font-size:clamp(10px,0.95vw,12px);color:#aaa;line-height:1.5;">
+            <span style="color:var(--accent);">每日日志</span> memory/2026-03-16.md<br>
+            <span style="color:var(--accent);">长期记忆</span> MEMORY.md（主会话加载）<br>
+            <span style="color:#888;">学到的东西写下来 — 重启不丢失</span>
+          </p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ════════════════════════════════════════════ -->
-  <!-- SLIDE 21: References -->
+  <!-- SLIDE 32: Temi Training Process -->
   <!-- ════════════════════════════════════════════ -->
   <section class="slide" data-index="32">
+    <div class="nav">
+      <span class="nav-number">03</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Temi · Training</span>
+    </div>
+    <div class="flex-col" style="height:100%;justify-content:center;padding:0 var(--pad);">
+      <h2 class="reveal d1" style="margin-bottom:4px;">调教过程：一个下午教会特米 7 件事</h2>
+      <p class="reveal d1 mono" style="font-size:10px;color:var(--accent);letter-spacing:0.12em;margin-bottom:12px;">2026-03-16 TRAINING LOG</p>
+
+      <div class="reveal d2" style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">
+        <div style="display:grid;grid-template-columns:70px 1fr;gap:8px;padding:6px 10px;border-left:2px solid var(--accent);background:rgba(0,232,198,0.02);border-radius:0 4px 4px 0;">
+          <span class="mono" style="font-size:10px;color:var(--accent);">16:30</span>
+          <p style="font-size:clamp(10px,0.95vw,12px);color:#ccc;"><strong style="color:#fff;">语音交互</strong> — 教会 TTS/ASR，创建 temi-control + temi-voice 技能</p>
+        </div>
+        <div style="display:grid;grid-template-columns:70px 1fr;gap:8px;padding:6px 10px;border-left:2px solid var(--accent);background:rgba(0,232,198,0.02);border-radius:0 4px 4px 0;">
+          <span class="mono" style="font-size:10px;color:var(--accent);">16:42</span>
+          <p style="font-size:clamp(10px,0.95vw,12px);color:#ccc;"><strong style="color:#fff;">学习协议</strong> — 建立"学到→记录→更新技能→更新文档→更新代码"流程</p>
+        </div>
+        <div style="display:grid;grid-template-columns:70px 1fr;gap:8px;padding:6px 10px;border-left:2px solid var(--accent);background:rgba(0,232,198,0.02);border-radius:0 4px 4px 0;">
+          <span class="mono" style="font-size:10px;color:var(--accent);">16:51</span>
+          <p style="font-size:clamp(10px,0.95vw,12px);color:#ccc;"><strong style="color:#fff;">重连行为</strong> — "断线重连后要说句话让大家知道你回来了"</p>
+        </div>
+        <div style="display:grid;grid-template-columns:70px 1fr;gap:8px;padding:6px 10px;border-left:2px solid var(--accent);background:rgba(0,232,198,0.02);border-radius:0 4px 4px 0;">
+          <span class="mono" style="font-size:10px;color:var(--accent);">16:56</span>
+          <p style="font-size:clamp(10px,0.95vw,12px);color:#ccc;"><strong style="color:#fff;">语音接管</strong> — 完全接管 Temi 对话，所有语音输入由外部大脑处理</p>
+        </div>
+        <div style="display:grid;grid-template-columns:70px 1fr;gap:8px;padding:6px 10px;border-left:2px solid var(--accent);background:rgba(0,232,198,0.02);border-radius:0 4px 4px 0;">
+          <span class="mono" style="font-size:10px;color:var(--accent);">19:52</span>
+          <p style="font-size:clamp(10px,0.95vw,12px);color:#ccc;"><strong style="color:#fff;">自我介绍</strong> — "边说话边点头"，动作与语音同步</p>
+        </div>
+        <div style="display:grid;grid-template-columns:70px 1fr;gap:8px;padding:6px 10px;border-left:2px solid var(--accent);background:rgba(0,232,198,0.02);border-radius:0 4px 4px 0;">
+          <span class="mono" style="font-size:10px;color:var(--accent);">20:30</span>
+          <p style="font-size:clamp(10px,0.95vw,12px);color:#ccc;"><strong style="color:#fff;">视觉能力</strong> — 创建 temi-vision 技能，640×480 H.264 @ 20fps 视频流</p>
+        </div>
+        <div style="display:grid;grid-template-columns:70px 1fr;gap:8px;padding:6px 10px;border-left:2px solid var(--accent);background:rgba(0,232,198,0.02);border-radius:0 4px 4px 0;">
+          <span class="mono" style="font-size:10px;color:var(--accent);">21:53</span>
+          <p style="font-size:clamp(10px,0.95vw,12px);color:#ccc;"><strong style="color:#fff;">拍照功能</strong> — 语音说"拍照"触发，自动抬头 45° 拍摄后归位</p>
+        </div>
+      </div>
+
+      <div class="reveal d3" style="padding:10px 14px;border:1px solid rgba(0,232,198,0.2);border-radius:6px;background:rgba(0,232,198,0.03);">
+        <p style="font-size:clamp(11px,1vw,13px);color:#ccc;text-align:center;">
+          全程<strong style="color:var(--accent);">对话式调教</strong> — 不写一行机器人代码，Agent 自己创建技能、写代码、更新文档、git commit
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 33: Temi — Challenges & Goals -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="33">
+    <div class="nav">
+      <span class="nav-number">03</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Temi · Gaps</span>
+    </div>
+    <div class="flex-col" style="height:100%;justify-content:center;padding:0 var(--pad);">
+      <h2 class="reveal d1" style="margin-bottom:4px;">目标、现实与难点</h2>
+      <p class="reveal d1 mono" style="font-size:10px;color:var(--accent);letter-spacing:0.12em;margin-bottom:14px;">WHAT WORKS, WHAT DOESN'T, AND WHY</p>
+
+      <div class="reveal d2" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+        <!-- Working -->
+        <div style="padding:12px;border:1px solid rgba(0,232,198,0.3);border-radius:6px;background:rgba(0,232,198,0.04);">
+          <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:8px;">✓ 已实现</p>
+          <div style="display:flex;flex-direction:column;gap:5px;font-size:clamp(10px,0.95vw,12px);color:#ccc;line-height:1.4;">
+            <p>WebSocket 双向通信</p>
+            <p>语音完全接管（ASR→Agent→TTS）</p>
+            <p>摄像头视觉流 + 拍照</p>
+            <p>导航、位姿控制</p>
+            <p>自我介绍 + 动作同步</p>
+            <p>记忆持久化 + 技能热更新</p>
+          </div>
+        </div>
+        <!-- Not yet -->
+        <div style="padding:12px;border:1px solid #553300;border-radius:6px;background:rgba(255,170,0,0.03);">
+          <p class="mono" style="font-size:9px;color:#ffaa00;margin-bottom:8px;">✗ 未实现 / 目标</p>
+          <div style="display:flex;flex-direction:column;gap:5px;font-size:clamp(10px,0.95vw,12px);color:#ccc;line-height:1.4;">
+            <p>LLM 驱动对话（目前是模板匹配）</p>
+            <p>主动服务（Heartbeat 未配置）</p>
+            <p>多用户识别与个性化</p>
+            <p>长期记忆驱动行为演化</p>
+            <p>多通道联动（群聊+机器人）</p>
+          </div>
+        </div>
+        <!-- Challenges -->
+        <div style="padding:12px;border:1px solid #552222;border-radius:6px;background:rgba(255,50,50,0.03);">
+          <p class="mono" style="font-size:9px;color:#ff6666;margin-bottom:8px;">⚠ 实际遇到的问题</p>
+          <div style="display:flex;flex-direction:column;gap:5px;font-size:clamp(10px,0.95vw,12px);color:#ccc;line-height:1.4;">
+            <p><strong style="color:#ff6666;">重复发言</strong> — 模板系统死循环</p>
+            <p><strong style="color:#ff6666;">API 限流</strong> — 模型 cooldown 无回退</p>
+            <p><strong style="color:#ff6666;">命令超时</strong> — 部分接口单向</p>
+            <p><strong style="color:#ff6666;">延迟感知</strong> — 云端推理 vs 实时交互</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal d3" style="margin-top:14px;padding:10px 14px;border-left:2px solid var(--accent);background:rgba(0,232,198,0.03);">
+        <p style="font-size:clamp(11px,1vw,13px);color:#ccc;line-height:1.5;">
+          <strong style="color:#fff;">核心瓶颈</strong>：OpenClaw 的大脑能力很强，但<strong style="color:var(--accent);">具身交互的延迟和稳定性</strong>是最大挑战 — 云端推理 + 网络传输 + 硬件响应，三重延迟叠加。
+          <span style="color:#888;">这也是为什么"具身 Agent"比纯数字 Agent 难得多。</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 34: References -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="34">
     <div class="nav">
       <span class="nav-number">04</span>
       <span class="nav-line"></span>
@@ -2892,9 +3027,9 @@
   </section>
 
   <!-- ════════════════════════════════════════════ -->
-  <!-- SLIDE 22: End -->
+  <!-- SLIDE 35: End -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="33">
+  <section class="slide dark" data-index="35">
     <div style="display:flex;align-items:center;justify-content:center;height:100%;gap:clamp(40px,6vw,80px);">
       <!-- Left: text -->
       <div style="display:flex;flex-direction:column;align-items:flex-start;text-align:left;">
@@ -2916,7 +3051,7 @@
 <div class="progress-bar" id="progressBar"></div>
 
 <!-- Slide Counter -->
-<div class="slide-counter" id="slideCounter">01 / 33</div>
+<div class="slide-counter" id="slideCounter">01 / 36</div>
 
 <!-- Key Hint -->
 <div class="key-hint" id="keyHint">← → ARROW KEYS TO NAVIGATE</div>
@@ -3058,9 +3193,11 @@
     { idx: 28, title: '挑战 1–2：透明性 / 信任' },
     { idx: 29, title: '挑战 3–5：问责 / 隐私 / 社交' },
     { idx: 30, title: 'Part 3 — 实例', section: true },
-    { idx: 31, title: 'OpenClaw + 机器人' },
-    { idx: 32, title: '参考资料' },
-    { idx: 33, title: 'Thank you' },
+    { idx: 31, title: '特米 Workspace 现状' },
+    { idx: 32, title: '调教过程：7 个学习时刻' },
+    { idx: 33, title: '目标、现实与难点' },
+    { idx: 34, title: '参考资料' },
+    { idx: 35, title: 'Thank you' },
   ];
 
   // Build TOC list
