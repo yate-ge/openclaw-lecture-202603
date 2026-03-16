@@ -10,12 +10,14 @@
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --base: #F0F0F0;
+    --base: #0A0A0A;
     --white: #FFFFFF;
-    --black: #000000;
-    --text: #1A1A1A;
-    --gray: #999999;
-    --light-gray: #D0D0D0;
+    --black: #0A0A0A;
+    --accent: #00E8C6;
+    --accent-dim: rgba(0, 232, 198, 0.15);
+    --text: #E0E0E0;
+    --gray: #666666;
+    --light-gray: #2A2A2A;
     --mid-gray: #888888;
     --slide-w: 100vw;
     --slide-h: 100vh;
@@ -32,11 +34,25 @@
   html { font-size: 16px; scroll-behavior: smooth; }
   body {
     font-family: 'DM Sans', 'Noto Sans SC', sans-serif;
-    background: var(--black);
+    background: var(--base);
     color: var(--text);
     overflow: hidden;
     -webkit-font-smoothing: antialiased;
   }
+
+  /* Subtle noise grain overlay */
+  .slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+  }
+
+  .slide > * { position: relative; z-index: 2; }
 
   /* ─── Slide Container ─── */
   .deck {
@@ -56,6 +72,7 @@
     justify-content: center;
     padding: var(--pad);
     background: var(--base);
+    color: #E0E0E0;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -67,15 +84,6 @@
     pointer-events: auto;
     z-index: 2;
   }
-
-  .slide.dark {
-    background: var(--black);
-    color: #E0E0E0;
-  }
-
-  .slide.dark .nav-label,
-  .slide.dark .nav-number { color: #666; }
-  .slide.dark .nav-line { background: #333; }
 
   /* ─── Navigation Label ─── */
   .nav {
@@ -123,10 +131,8 @@
     font-weight: 700;
     line-height: 1.1;
     letter-spacing: -0.02em;
-    color: var(--black);
+    color: #FFF;
   }
-
-  .slide.dark h1 { color: #FFF; }
 
   h2 {
     font-family: 'DM Sans', sans-serif;
@@ -149,11 +155,8 @@
     font-weight: 300;
     line-height: 1.85;
     letter-spacing: 0.04em;
-    color: var(--text);
+    color: #BBB;
   }
-
-  .slide.dark p,
-  .slide.dark li { color: #BBB; }
 
   .big-num {
     font-family: 'DM Sans', sans-serif;
@@ -161,17 +164,13 @@
     font-weight: 900;
     line-height: 1;
     letter-spacing: -0.04em;
-    color: var(--black);
+    color: #FFF;
   }
-
-  .slide.dark .big-num { color: #FFF; }
 
   strong {
     font-weight: 700;
-    color: var(--black);
+    color: #FFF;
   }
-
-  .slide.dark strong { color: #FFF; }
 
   .tag {
     display: inline-block;
@@ -185,11 +184,6 @@
     color: var(--gray);
   }
 
-  .slide.dark .tag {
-    border-color: #444;
-    color: #777;
-  }
-
   .divider {
     width: 100%;
     height: 1px;
@@ -197,16 +191,12 @@
     margin: var(--pad-sm) 0;
   }
 
-  .slide.dark .divider { background: #333; }
-
   .accent-line {
     width: 40px;
     height: 3px;
-    background: var(--black);
+    background: var(--accent);
     margin-bottom: 20px;
   }
-
-  .slide.dark .accent-line { background: #FFF; }
 
   ul { list-style: none; padding: 0; }
   ul li { position: relative; padding-left: 16px; }
@@ -220,7 +210,7 @@
     background: var(--gray);
   }
 
-  .slide.dark ul li::before { background: #666; }
+  ul li::before { background: #666; }
 
   /* ─── Layout Helpers ─── */
   .split {
@@ -306,11 +296,6 @@
     white-space: nowrap;
   }
 
-  .slide.dark .title-scattered .stamp {
-    border-color: #333;
-    color: #555;
-  }
-
   /* Two-column problem/solution */
   .vs-split {
     display: grid;
@@ -321,12 +306,10 @@
   }
 
   .vs-split .vs-line {
-    width: 3px;
+    width: 2px;
     height: 100%;
-    background: var(--black);
+    background: var(--accent);
   }
-
-  .slide.dark .vs-split .vs-line { background: #FFF; }
 
   .vs-split .vs-col {
     padding: 0 var(--pad-sm);
@@ -345,14 +328,10 @@
     font-size: clamp(11px, 1.2vw, 14px);
     font-weight: 500;
     padding: 10px 18px;
-    border: 1.5px solid var(--black);
+    border: 1.5px solid #FFF;
+    color: #FFF;
     letter-spacing: 0.05em;
     white-space: nowrap;
-  }
-
-  .slide.dark .flow-box {
-    border-color: #FFF;
-    color: #FFF;
   }
 
   .flow-arrow {
@@ -383,10 +362,9 @@
     text-transform: uppercase;
     text-align: left;
     padding: 12px 16px;
-    border-bottom: 2px solid var(--black);
+    border-bottom: 2px solid var(--accent);
+    color: #FFF;
   }
-
-  .slide.dark .compare-table th { border-color: #FFF; color: #FFF; }
 
   .compare-table td {
     font-family: 'Noto Sans SC', sans-serif;
@@ -398,16 +376,12 @@
     line-height: 1.6;
   }
 
-  .slide.dark .compare-table td { border-color: #333; color: #BBB; }
-
   .compare-table td:first-child {
     font-family: 'Noto Sans SC', sans-serif;
     font-weight: 500;
-    color: var(--black);
+    color: #FFF;
     white-space: nowrap;
   }
-
-  .slide.dark .compare-table td:first-child { color: #FFF; }
 
   /* Step columns */
   .step-col {
@@ -425,7 +399,6 @@
     color: var(--light-gray);
   }
 
-  .slide.dark .step-col .step-num { color: #333; }
 
   .step-col h3 {
     font-size: clamp(14px, 1.6vw, 20px);
@@ -439,11 +412,9 @@
 
   /* Challenge cards */
   .challenge-card {
-    border-left: 3px solid var(--black);
+    border-left: 3px solid var(--accent);
     padding-left: var(--pad-sm);
   }
-
-  .slide.dark .challenge-card { border-color: #FFF; }
 
   .challenge-card .challenge-num {
     font-family: 'DM Mono', monospace;
@@ -492,12 +463,10 @@
     bottom: 0;
     left: 0;
     height: 2px;
-    background: var(--black);
+    background: var(--accent);
     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 100;
   }
-
-  .progress-bar.on-dark { background: #FFF; }
 
   /* ─── Slide Counter ─── */
   .slide-counter {
@@ -513,7 +482,6 @@
     transition: color 0.4s;
   }
 
-  .slide-counter.on-dark { color: #555; }
 
   /* ─── Keyboard Hint ─── */
   .key-hint {
@@ -530,7 +498,6 @@
   }
 
   .key-hint.hide { opacity: 0; }
-  .key-hint.on-dark { color: #333; }
 
   /* ─── CDI Logo ─── */
   .cdi-logo {
@@ -538,21 +505,9 @@
     bottom: var(--pad-sm);
     right: var(--pad);
     height: 28px;
-    opacity: 0.35;
+    opacity: 0.5;
     z-index: 10;
     pointer-events: none;
-    filter: invert(0);
-    transition: filter 0.4s;
-  }
-
-  .slide.dark .cdi-logo {
-    filter: invert(0);
-    opacity: 0.5;
-  }
-
-  .slide:not(.dark) .cdi-logo {
-    filter: invert(1);
-    opacity: 0.3;
   }
 
   /* ─── TOC Button & Panel ─── */
@@ -562,24 +517,17 @@
     left: var(--pad);
     width: 32px;
     height: 32px;
-    border: 1px solid var(--light-gray);
-    background: var(--base);
+    border: 1px solid #444;
+    background: var(--black);
     cursor: pointer;
     z-index: 200;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: border-color 0.3s, background 0.3s;
+    transition: border-color 0.3s;
   }
 
-  .toc-btn:hover { border-color: var(--black); }
-
-  .toc-btn.on-dark {
-    border-color: #444;
-    background: var(--black);
-  }
-
-  .toc-btn.on-dark:hover { border-color: #FFF; }
+  .toc-btn:hover { border-color: #FFF; }
 
   .toc-btn .toc-icon {
     display: flex;
@@ -590,15 +538,12 @@
   .toc-btn .toc-icon span {
     display: block;
     height: 1.5px;
-    background: var(--black);
-    transition: background 0.3s;
+    background: #FFF;
   }
 
   .toc-btn .toc-icon span:nth-child(1) { width: 14px; }
   .toc-btn .toc-icon span:nth-child(2) { width: 10px; }
   .toc-btn .toc-icon span:nth-child(3) { width: 14px; }
-
-  .toc-btn.on-dark .toc-icon span { background: #FFF; }
 
   .toc-overlay {
     position: fixed;
@@ -622,7 +567,7 @@
     width: 380px;
     max-width: 90vw;
     max-height: 70vh;
-    background: var(--white);
+    background: #0E0E0E;
     z-index: 310;
     transform: translateY(100%);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -693,7 +638,7 @@
 
   .toc-item.active .toc-item-num,
   .toc-item.active .toc-item-title {
-    color: var(--black);
+    color: var(--accent);
     font-weight: 700;
   }
 
@@ -702,20 +647,16 @@
     font-family: 'Noto Sans SC', sans-serif;
     font-weight: 300;
     font-size: clamp(14px, 1.6vw, 20px);
-    color: var(--gray);
+    color: #ccc;
     letter-spacing: 0.06em;
     line-height: 1.7;
   }
 
-  .slide.dark .subtitle { color: #777; }
-
   .quote-block {
-    border-left: 2px solid var(--light-gray);
+    border-left: 2px solid rgba(0,232,198,0.3);
     padding-left: 20px;
     font-style: italic;
   }
-
-  .slide.dark .quote-block { border-color: #444; }
 
   .quote-block p {
     font-size: clamp(13px, 1.3vw, 16px);
@@ -739,7 +680,6 @@
     background: var(--light-gray);
   }
 
-  .slide.dark .timeline::before { background: #333; }
 
   .timeline-item {
     position: relative;
@@ -754,10 +694,8 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--black);
+    background: var(--accent);
   }
-
-  .slide.dark .timeline-item::before { background: #FFF; }
 
   .timeline-item h4 {
     font-family: 'DM Sans', sans-serif;
@@ -781,21 +719,17 @@
     border-bottom: 1px solid var(--light-gray);
   }
 
-  .slide.dark .level-row { border-color: #333; }
-
   .level-row:last-child { border-bottom: none; }
 
   .level-num {
     font-family: 'DM Sans', sans-serif;
     font-size: clamp(24px, 3vw, 40px);
     font-weight: 900;
-    color: var(--light-gray);
+    color: #333;
     flex-shrink: 0;
     width: 60px;
     line-height: 1;
   }
-
-  .slide.dark .level-num { color: #333; }
 
   .level-content h3 {
     font-size: clamp(13px, 1.4vw, 17px);
@@ -816,6 +750,8 @@
   <!-- SLIDE 00: Title -->
   <!-- ════════════════════════════════════════════ -->
   <section class="slide dark active" data-index="0">
+    <!-- p5.js particle background -->
+    <div id="p5-cover-bg" style="position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:auto;"></div>
     <div class="title-scattered">
       <span class="stamp reveal d1" style="top:12%;left:8%;--rot:-6deg;">INTERACTION DESIGN</span>
       <span class="stamp reveal d2" style="top:18%;right:10%;--rot:3deg;">AI AGENT</span>
@@ -824,36 +760,59 @@
       <span class="stamp reveal d5" style="top:38%;left:5%;--rot:-2deg;">REACT LOOP</span>
       <span class="stamp reveal d6" style="top:50%;right:6%;--rot:5deg;">HEARTBEAT</span>
       <div class="main-title reveal d3">
-        <p class="subtitle" style="margin-bottom:20px;">从交互设计视角理解</p>
-        <h1 style="font-size:clamp(32px,5.5vw,72px);color:#FFF;">From LLM<br>to Agent</h1>
-        <div style="width:40px;height:2px;background:#FFF;margin:24px auto;"></div>
-        <p class="subtitle">AI Agent 的技术本质与设计创新</p>
-        <div style="margin-top:36px;display:flex;align-items:center;justify-content:center;gap:16px;">
-          <span class="mono" style="font-size:12px;color:#666;letter-spacing:0.08em;">葛亚特</span>
-          <span style="width:1px;height:12px;background:#444;display:inline-block;"></span>
-          <span class="mono" style="font-size:11px;color:#555;letter-spacing:0.1em;">博士生</span>
-          <span style="width:1px;height:12px;background:#444;display:inline-block;"></span>
-          <span class="mono" style="font-size:11px;color:#555;letter-spacing:0.1em;">数字创新中心</span>
+        <p class="subtitle" style="margin-bottom:20px;">从<span style="color:var(--accent);font-weight:500;">交互设计</span>视角理解</p>
+        <h1 style="font-size:clamp(32px,5.5vw,72px);color:#FFF;">OpenClaw</h1>
+        <p class="subtitle" style="margin-top:12px;">AI Agent 的技术本质与设计创新</p>
+        <div style="width:40px;height:2px;background:#00E8C6;margin:28px auto;"></div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:16px;">
+          <span class="mono" style="font-size:12px;color:#ccc;letter-spacing:0.08em;">葛亚特</span>
+          <span style="width:1px;height:12px;background:#555;display:inline-block;"></span>
+          <span class="mono" style="font-size:11px;color:#bbb;letter-spacing:0.1em;">博士生</span>
+          <span style="width:1px;height:12px;background:#555;display:inline-block;"></span>
+          <span class="mono" style="font-size:11px;color:#bbb;letter-spacing:0.1em;">数字创新中心</span>
         </div>
+        <p class="mono" style="margin-top:16px;font-size:12px;color:#bbb;letter-spacing:0.15em;">2026.03</p>
       </div>
     </div>
   </section>
 
   <!-- ════════════════════════════════════════════ -->
-  <!-- SLIDE 01: Course Objective -->
+  <!-- SLIDE 01: Table of Contents -->
   <!-- ════════════════════════════════════════════ -->
   <section class="slide" data-index="1">
     <div class="nav">
       <span class="nav-number">00</span>
       <span class="nav-line"></span>
-      <span class="nav-label">Introduction</span>
+      <span class="nav-label">Contents</span>
     </div>
     <div class="v-center" style="max-width:640px;">
       <div class="accent-line reveal d1"></div>
-      <h2 class="reveal d2" style="margin-bottom:24px;">课程目标</h2>
-      <p class="reveal d3" style="font-size:clamp(15px,1.6vw,20px);line-height:2;font-weight:300;">
-        面向设计学本科生和研究生，从<strong>交互设计视角</strong>理解 AI Agent 的技术本质，启发学生思考如何利用 Agent 技术进行<strong>设计创新</strong>。
-      </p>
+      <h2 class="reveal d2" style="margin-bottom:40px;">目录</h2>
+      <div class="flex-col" style="gap:28px;">
+        <div class="reveal d3" style="display:flex;align-items:baseline;gap:20px;">
+          <span class="mono" style="font-size:clamp(28px,4vw,48px);font-weight:900;color:#2A2A2A;line-height:1;">01</span>
+          <div>
+            <h3 style="font-size:clamp(16px,1.8vw,22px);margin-bottom:6px;">从 LLM 到 CLaw — 技术演进与本质</h3>
+            <p style="font-size:clamp(12px,1.1vw,14px);color:var(--mid-gray);">LLM → Chatbot → Agent（ReAct）→ OpenClaw</p>
+          </div>
+        </div>
+        <div style="width:100%;height:1px;background:var(--light-gray);" class="reveal d4"></div>
+        <div class="reveal d5" style="display:flex;align-items:baseline;gap:20px;">
+          <span class="mono" style="font-size:clamp(28px,4vw,48px);font-weight:900;color:#2A2A2A;line-height:1;">02</span>
+          <div>
+            <h3 style="font-size:clamp(16px,1.8vw,22px);margin-bottom:6px;">OpenClaw 启发的设计机会点与挑战</h3>
+            <p style="font-size:clamp(12px,1.1vw,14px);color:var(--mid-gray);">主动交互 · 记忆 · 终端用户编程 · 多端 · 设计挑战</p>
+          </div>
+        </div>
+        <div style="width:100%;height:1px;background:var(--light-gray);" class="reveal d6"></div>
+        <div class="reveal d7" style="display:flex;align-items:baseline;gap:20px;">
+          <span class="mono" style="font-size:clamp(28px,4vw,48px);font-weight:900;color:#2A2A2A;line-height:1;">03</span>
+          <div>
+            <h3 style="font-size:clamp(16px,1.8vw,22px);margin-bottom:6px;">实例 — OpenClaw 连接 Tami 机器人</h3>
+            <p style="font-size:clamp(12px,1.1vw,14px);color:var(--mid-gray);">从对话指令到机器人动作的完整闭环</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -868,7 +827,7 @@
     </div>
     <div class="v-center">
       <div class="tag reveal d1" style="margin-bottom:24px;">Part 1</div>
-      <h1 class="reveal d2" style="margin-bottom:32px;">从大模型到 Agent<br><span style="font-weight:300;font-size:0.6em;color:#777;">技术演进与本质</span></h1>
+      <h1 class="reveal d2" style="margin-bottom:32px;">从 LLM 到 CLaw<br><span style="font-weight:300;font-size:0.6em;color:#bbb;">技术演进与本质</span></h1>
       <div class="reveal d3 quote-block" style="max-width:600px;">
         <p>核心叙事线：LLM → Chatbot → Agent（ReAct）→ OpenClaw<br>每一步跨越意味着什么？对我们（设计者）意味着什么？</p>
       </div>
@@ -895,7 +854,7 @@
           <div class="flow-row" style="margin-bottom:20px;">
             <span class="flow-box">Prompt</span>
             <span class="flow-arrow">&rarr;</span>
-            <span class="flow-box" style="background:var(--black);color:#FFF;">LLM</span>
+            <span class="flow-box" style="background:var(--accent);color:#000;font-weight:700;">LLM</span>
             <span class="flow-arrow">&rarr;</span>
             <span class="flow-box">Text</span>
           </div>
@@ -935,7 +894,7 @@
         </ul>
         <div class="divider reveal d3"></div>
         <div class="reveal d4" style="padding:16px;border:1px solid var(--light-gray);">
-          <p class="mono" style="font-size:11px;color:var(--gray);margin-bottom:6px;">FOR DESIGNERS</p>
+          <p class="mono" style="font-size:11px;color:var(--gray);margin-bottom:6px;color:var(--accent);">FOR DESIGNERS</p>
           <p style="font-size:clamp(12px,1.2vw,15px);">交互从搜索框/表单 → 对话框，但仍然是<strong>用户发起</strong></p>
         </div>
       </div>
@@ -953,7 +912,7 @@
     </div>
     <div class="split" style="align-items:center;">
       <div class="flex-col gap-md">
-        <div class="big-num reveal d1" style="color:#444;">03</div>
+        <div class="big-num reveal d1" style="color:#4A4A4E;">03</div>
         <h2 class="reveal d2">Agent</h2>
         <p class="reveal d3 mono" style="font-size:13px;color:#666;letter-spacing:0.1em;">会思考、会行动</p>
         <div class="reveal d4" style="margin-top:16px;">
@@ -961,15 +920,15 @@
         </div>
       </div>
       <div class="flex-col gap-md v-center">
-        <div class="reveal d3" style="padding:24px;border:1px solid #333;">
-          <p class="mono" style="font-size:11px;color:#666;margin-bottom:12px;">REACT LOOP</p>
+        <div class="reveal d3" style="padding:24px;border:1px solid #3A3A3E;">
+          <p class="mono" style="font-size:11px;color:var(--accent);margin-bottom:12px;">REACT LOOP</p>
           <div class="flow-row" style="gap:16px;">
             <span class="flow-box">Thought</span>
-            <span class="flow-arrow" style="color:#555;">&rarr;</span>
+            <span class="flow-arrow" style="color:#5A5A5E;">&rarr;</span>
             <span class="flow-box">Action</span>
-            <span class="flow-arrow" style="color:#555;">&rarr;</span>
+            <span class="flow-arrow" style="color:#5A5A5E;">&rarr;</span>
             <span class="flow-box">Observation</span>
-            <span class="flow-arrow" style="color:#555;">&circlearrowright;</span>
+            <span class="flow-arrow" style="color:#5A5A5E;">&circlearrowright;</span>
           </div>
         </div>
         <div class="divider reveal d4"></div>
@@ -978,8 +937,8 @@
           <li>角色从"文本生成器"变成"<strong>决策者 + 协调者</strong>"</li>
           <li>模仿人类：想一想 → 做一做 → 看结果 → 再想</li>
         </ul>
-        <div class="reveal d6" style="padding:16px;border:1px solid #333;">
-          <p class="mono" style="font-size:11px;color:#666;margin-bottom:6px;">FOR DESIGNERS</p>
+        <div class="reveal d6" style="padding:16px;border:1px solid #3A3A3E;">
+          <p class="mono" style="font-size:11px;color:#666;margin-bottom:6px;color:var(--accent);">FOR DESIGNERS</p>
           <p style="font-size:clamp(12px,1.1vw,14px);">AI 从"应答工具"变成"能执行任务的助手"<br>交互从"对话"扩展到"<strong>委托</strong>"</p>
         </div>
       </div>
@@ -996,16 +955,16 @@
       <span class="nav-label">OpenClaw</span>
     </div>
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;">
-      <div class="big-num reveal d1" style="color:#333;">04</div>
+      <div class="big-num reveal d1" style="color:#3A3A3E;">04</div>
       <h1 class="reveal d2" style="font-size:clamp(36px,6vw,80px);margin:16px 0;">OpenClaw</h1>
       <p class="reveal d3 subtitle" style="margin-bottom:32px;">Agent 住进了电脑</p>
       <div class="reveal d4" style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
         <span class="flow-box" style="border-color:#FFF;color:#FFF;">常驻运行</span>
-        <span class="flow-arrow" style="color:#555;">+</span>
+        <span class="flow-arrow" style="color:#5A5A5E;">+</span>
         <span class="flow-box" style="border-color:#FFF;color:#FFF;">通讯连接</span>
-        <span class="flow-arrow" style="color:#555;">+</span>
+        <span class="flow-arrow" style="color:#5A5A5E;">+</span>
         <span class="flow-box" style="border-color:#FFF;color:#FFF;">记忆系统</span>
-        <span class="flow-arrow" style="color:#555;">+</span>
+        <span class="flow-arrow" style="color:#5A5A5E;">+</span>
         <span class="flow-box" style="border-color:#FFF;color:#FFF;">定时心跳</span>
       </div>
       <div class="divider reveal d5" style="max-width:400px;margin:32px auto;"></div>
@@ -1079,7 +1038,7 @@
         <span class="flow-arrow">&rarr;</span>
         <span class="flow-box">加载上下文+Skills</span>
         <span class="flow-arrow">&rarr;</span>
-        <span class="flow-box" style="background:var(--black);color:#FFF;">LLM 推理 (ReAct)</span>
+        <span class="flow-box" style="background:var(--accent);color:#000;font-weight:700;">LLM 推理 (ReAct)</span>
         <span class="flow-arrow">&rarr;</span>
         <span class="flow-box">工具调用</span>
         <span class="flow-arrow">&rarr;</span>
@@ -1089,7 +1048,7 @@
       </div>
       <div class="divider reveal d3"></div>
       <div class="reveal d4" style="max-width:680px;margin:0 auto;text-align:center;">
-        <p class="mono" style="font-size:11px;color:var(--gray);margin-bottom:10px;">FOR DESIGNERS</p>
+        <p class="mono" style="font-size:11px;color:var(--gray);margin-bottom:10px;color:var(--accent);">FOR DESIGNERS</p>
         <p style="font-size:clamp(14px,1.5vw,18px);line-height:1.8;">
           这不再是一个"工具"，而是一个<strong>有记忆、有行动力、能主动联系你、活在你日常通讯渠道里的数字实体</strong>。<br>交互设计的对象从"界面"变成了"<strong>关系</strong>"。
         </p>
@@ -1138,7 +1097,7 @@
           <h3 style="margin-bottom:12px;">Agent 主动感知 → 主动联系</h3>
           <p>通过 Heartbeat 周期性检查邮件/日历<br>主动推送待办提醒</p>
           <div style="margin-top:16px;padding:12px;border:1px solid var(--light-gray);">
-            <p class="mono" style="font-size:10px;color:var(--gray);margin-bottom:6px;">DESIGN QUESTION</p>
+            <p class="mono" style="font-size:10px;color:var(--accent);margin-bottom:6px;">DESIGN QUESTION</p>
             <p style="font-size:clamp(12px,1.1vw,14px);">如何设计"<strong>不打扰但有用</strong>"的主动交互？</p>
           </div>
         </div>
@@ -1160,7 +1119,7 @@
         <h2 class="reveal d1">2.2 连续交互与<br>记忆能力</h2>
         <div class="divider reveal d2"></div>
         <div class="reveal d3" style="padding:16px;border:1px solid var(--light-gray);">
-          <p class="mono" style="font-size:10px;color:var(--gray);margin-bottom:6px;">DESIGN QUESTION</p>
+          <p class="mono" style="font-size:10px;color:var(--accent);margin-bottom:6px;">DESIGN QUESTION</p>
           <p style="font-size:clamp(12px,1.1vw,14px);">如何设计"<strong>长期关系型</strong>"的交互？<br>记忆如何影响 Agent 的行为和人格？</p>
         </div>
       </div>
@@ -1248,29 +1207,29 @@
       <div class="flex-col gap-lg">
         <!-- Network-like SVG diagram -->
         <svg class="network-svg reveal d2" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="200" y1="150" x2="80" y2="60" stroke="#444" stroke-width="0.8"/>
-          <line x1="200" y1="150" x2="320" y2="60" stroke="#444" stroke-width="0.8"/>
-          <line x1="200" y1="150" x2="60" y2="180" stroke="#444" stroke-width="0.8"/>
-          <line x1="200" y1="150" x2="340" y2="180" stroke="#444" stroke-width="0.8"/>
-          <line x1="200" y1="150" x2="120" y2="260" stroke="#444" stroke-width="0.8"/>
-          <line x1="200" y1="150" x2="280" y2="260" stroke="#444" stroke-width="0.8"/>
-          <circle cx="200" cy="150" r="28" stroke="#FFF" stroke-width="1.5" fill="none"/>
-          <text x="200" y="154" text-anchor="middle" fill="#FFF" font-family="DM Sans" font-size="11" font-weight="700">Agent</text>
-          <circle cx="80" cy="60" r="18" stroke="#555" stroke-width="0.8" fill="none"/>
+          <line x1="200" y1="150" x2="80" y2="60" stroke="#4A4A4E" stroke-width="0.8"/>
+          <line x1="200" y1="150" x2="320" y2="60" stroke="#4A4A4E" stroke-width="0.8"/>
+          <line x1="200" y1="150" x2="60" y2="180" stroke="#4A4A4E" stroke-width="0.8"/>
+          <line x1="200" y1="150" x2="340" y2="180" stroke="#4A4A4E" stroke-width="0.8"/>
+          <line x1="200" y1="150" x2="120" y2="260" stroke="#4A4A4E" stroke-width="0.8"/>
+          <line x1="200" y1="150" x2="280" y2="260" stroke="#4A4A4E" stroke-width="0.8"/>
+          <circle cx="200" cy="150" r="28" stroke="#00E8C6" stroke-width="1.5" fill="rgba(0,232,198,0.08)"/>
+          <text x="200" y="154" text-anchor="middle" fill="#00E8C6" font-family="DM Sans" font-size="11" font-weight="700">Agent</text>
+          <circle cx="80" cy="60" r="18" stroke="#5A5A5E" stroke-width="0.8" fill="none"/>
           <text x="80" y="64" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">Slack</text>
-          <circle cx="320" cy="60" r="18" stroke="#555" stroke-width="0.8" fill="none"/>
+          <circle cx="320" cy="60" r="18" stroke="#5A5A5E" stroke-width="0.8" fill="none"/>
           <text x="320" y="64" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">WhatsApp</text>
-          <circle cx="60" cy="180" r="18" stroke="#555" stroke-width="0.8" fill="none"/>
+          <circle cx="60" cy="180" r="18" stroke="#5A5A5E" stroke-width="0.8" fill="none"/>
           <text x="60" y="184" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">Telegram</text>
-          <circle cx="340" cy="180" r="18" stroke="#555" stroke-width="0.8" fill="none"/>
+          <circle cx="340" cy="180" r="18" stroke="#5A5A5E" stroke-width="0.8" fill="none"/>
           <text x="340" y="184" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">Discord</text>
-          <circle cx="120" cy="260" r="18" stroke="#555" stroke-width="0.8" fill="none"/>
+          <circle cx="120" cy="260" r="18" stroke="#5A5A5E" stroke-width="0.8" fill="none"/>
           <text x="120" y="264" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">iMessage</text>
-          <circle cx="280" cy="260" r="18" stroke="#555" stroke-width="0.8" fill="none"/>
+          <circle cx="280" cy="260" r="18" stroke="#5A5A5E" stroke-width="0.8" fill="none"/>
           <text x="280" y="264" text-anchor="middle" fill="#888" font-family="DM Mono" font-size="8">Web</text>
         </svg>
-        <div class="reveal d4" style="padding:16px;border:1px solid #333;">
-          <p class="mono" style="font-size:10px;color:#666;margin-bottom:6px;">PARADIGM SHIFT</p>
+        <div class="reveal d4" style="padding:16px;border:1px solid #3A3A3E;">
+          <p class="mono" style="font-size:10px;color:var(--accent);margin-bottom:6px;">PARADIGM SHIFT</p>
           <p style="font-size:clamp(12px,1.1vw,14px);">UX 从 interaction design → <strong>delegation design</strong><br>用户不再执行任务，而是<strong>委托任务</strong></p>
         </div>
       </div>
@@ -1320,7 +1279,7 @@
     </div>
     <div class="v-center" style="align-items:center;text-align:center;">
       <h1 class="reveal d1" style="font-size:clamp(32px,5vw,64px);">Agent 时代的<br>设计挑战</h1>
-      <div style="width:40px;height:2px;background:#FFF;margin:28px auto;" class="reveal d2"></div>
+      <div style="width:40px;height:2px;background:#00E8C6;margin:28px auto;" class="reveal d2"></div>
       <p class="reveal d3 subtitle" style="max-width:480px;">以上是 Agent 架构带来的创新机会，以下是设计者需要解决的问题</p>
     </div>
   </section>
@@ -1425,7 +1384,7 @@
       </div>
       <div class="flex-col gap-lg">
         <div class="reveal d2" style="padding:24px;border:1px solid var(--light-gray);">
-          <p class="mono" style="font-size:11px;color:var(--gray);margin-bottom:16px;">COMPLETE LOOP</p>
+          <p class="mono" style="font-size:11px;color:var(--accent);margin-bottom:16px;">COMPLETE LOOP</p>
           <div class="flow-row" style="gap:8px;flex-wrap:wrap;">
             <span class="flow-box">对话指令</span>
             <span class="flow-arrow">&rarr;</span>
@@ -1433,11 +1392,11 @@
             <span class="flow-arrow">&rarr;</span>
             <span class="flow-box">Tool 调用</span>
             <span class="flow-arrow">&rarr;</span>
-            <span class="flow-box" style="background:var(--black);color:#FFF;">机器人动作</span>
+            <span class="flow-box" style="background:var(--accent);color:#000;font-weight:700;">机器人动作</span>
           </div>
         </div>
         <div class="reveal d4" style="padding:16px;border:1px solid var(--light-gray);">
-          <p class="mono" style="font-size:10px;color:var(--gray);margin-bottom:8px;">TEACHING VALUE</p>
+          <p class="mono" style="font-size:10px;color:var(--accent);margin-bottom:8px;">TEACHING VALUE</p>
           <ul class="flex-col gap-sm" style="font-size:clamp(12px,1.1vw,14px);">
             <li>Agent 从数字到物理的完整闭环</li>
             <li>Tool Use 不只是调 API，还能<strong>控制硬件</strong></li>
@@ -1497,8 +1456,8 @@
   <section class="slide dark" data-index="21">
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;">
       <h1 class="reveal d1" style="font-size:clamp(36px,5vw,64px);font-weight:300;color:#FFF;letter-spacing:0.02em;">Thank you.</h1>
-      <div style="width:32px;height:2px;background:#444;margin:28px auto;" class="reveal d2"></div>
-      <p class="reveal d3 mono" style="font-size:12px;color:#555;letter-spacing:0.15em;">FROM LLM TO AGENT — OPENCLAW 2026</p>
+      <div style="width:32px;height:2px;background:#00E8C6;margin:28px auto;" class="reveal d2"></div>
+      <p class="reveal d3 mono" style="font-size:12px;color:#5A5A5E;letter-spacing:0.15em;">FROM LLM TO AGENT — OPENCLAW 2026</p>
     </div>
   </section>
 
@@ -1549,11 +1508,7 @@
     // Update counter
     slideCounter.textContent = pad(current + 1) + ' / ' + pad(total);
 
-    // Dark mode adaptive
-    const isDark = slides[current].classList.contains('dark');
-    progressBar.className = 'progress-bar' + (isDark ? ' on-dark' : '');
-    slideCounter.className = 'slide-counter' + (isDark ? ' on-dark' : '');
-    keyHint.className = 'key-hint' + (isDark ? ' on-dark' : '') + (current > 0 ? ' hide' : '');
+    keyHint.className = 'key-hint' + (current > 0 ? ' hide' : '');
   }
 
   // Keyboard
@@ -1603,8 +1558,8 @@
 
   // Slide titles for TOC
   const tocData = [
-    { idx: 0,  title: 'From LLM to Agent', section: true },
-    { idx: 1,  title: '课程目标' },
+    { idx: 0,  title: 'OpenClaw', section: true },
+    { idx: 1,  title: '目录' },
     { idx: 2,  title: 'Part 1 — 从大模型到 Agent', section: true },
     { idx: 3,  title: '第一层：大模型（LLM）' },
     { idx: 4,  title: '第二层：Chatbot' },
@@ -1666,8 +1621,6 @@
   var origGoTo = goTo;
   goTo = function(index) {
     origGoTo(index);
-    var isDark = slides[current].classList.contains('dark');
-    tocBtn.className = 'toc-btn' + (isDark ? ' on-dark' : '');
   };
 
   // Escape key closes TOC
@@ -1677,6 +1630,190 @@
 
   // Init
   goTo(0);
+})();
+</script>
+
+<!-- p5.js particle cover background -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+<script>
+(function() {
+  var particles = [];
+  var img;
+  var cols, rows;
+  var cellSize = 12;
+  var ripples = [];
+  var canvasW, canvasH;
+  var imgOffX, imgOffY, drawW, drawH;
+  var p5Instance;
+
+  function coverSketch(p) {
+    p5Instance = p;
+
+    p.preload = function() {
+      img = p.loadImage('assets/claw.png');
+    };
+
+    p.setup = function() {
+      var container = document.getElementById('p5-cover-bg');
+      canvasW = container.offsetWidth;
+      canvasH = container.offsetHeight;
+      var cnv = p.createCanvas(canvasW, canvasH);
+      cnv.parent('p5-cover-bg');
+      p.pixelDensity(1);
+
+      buildParticles(p);
+    };
+
+    function buildParticles(p) {
+      particles = [];
+
+      // Scale image to fit canvas (contain, centered)
+      var imgAspect = img.width / img.height;
+      var canAspect = canvasW / canvasH;
+      if (imgAspect > canAspect) {
+        drawW = canvasW * 1.24;
+        drawH = drawW / imgAspect;
+      } else {
+        drawH = canvasH * 1.24;
+        drawW = drawH * imgAspect;
+      }
+      imgOffX = (canvasW - drawW) / 2;
+      imgOffY = (canvasH - drawH) / 2;
+
+      // Sample pixels from image
+      img.loadPixels();
+      cols = Math.floor(drawW / cellSize);
+      rows = Math.floor(drawH / cellSize);
+
+      for (var r = 0; r < rows; r++) {
+        for (var c = 0; c < cols; c++) {
+          // Map grid cell to image pixel
+          var imgX = Math.floor(p.map(c, 0, cols, 0, img.width));
+          var imgY = Math.floor(p.map(r, 0, rows, 0, img.height));
+          var idx = (imgY * img.width + imgX) * 4;
+
+          var red = img.pixels[idx];
+          var green = img.pixels[idx + 1];
+          var blue = img.pixels[idx + 2];
+          var alpha = img.pixels[idx + 3];
+
+          // Skip near-white / transparent pixels (background)
+          if (alpha < 128) continue;
+          var brightness = (red + green + blue) / 3;
+          if (brightness > 240) continue;
+
+          var px = imgOffX + c * cellSize;
+          var py = imgOffY + r * cellSize;
+
+          particles.push({
+            homeX: px,
+            homeY: py,
+            x: px,
+            y: py,
+            vx: 0,
+            vy: 0,
+            r: red,
+            g: green,
+            b: blue,
+            a: p.map(alpha, 0, 255, 0, 120),
+            size: p.random(2.5, 5)
+          });
+        }
+      }
+    }
+
+    p.draw = function() {
+      p.clear();
+
+      // Update ripples
+      for (var ri = ripples.length - 1; ri >= 0; ri--) {
+        ripples[ri].radius += 2;
+        ripples[ri].strength *= 0.94;
+        if (ripples[ri].strength < 0.2) {
+          ripples.splice(ri, 1);
+        }
+      }
+
+      // Random ambient ripples
+      var ambientCount = Math.floor(p.random(2, 5));
+      for (var ai = 0; ai < ambientCount; ai++) {
+        if (p.random() < 0.06) {
+          var rx = imgOffX + p.random(drawW);
+          var ry = imgOffY + p.random(drawH);
+          ripples.push({
+            x: rx,
+            y: ry,
+            radius: 0,
+            strength: p.random(0.2, 0.6),
+            maxRadius: 60
+          });
+        }
+      }
+
+      // Mouse continuous ripple (gentle water surface)
+      if (p.mouseX > 0 && p.mouseX < canvasW && p.mouseY > 0 && p.mouseY < canvasH) {
+        var speed = p.dist(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
+        if (speed > 3) {
+          ripples.push({
+            x: p.mouseX,
+            y: p.mouseY,
+            radius: 0,
+            strength: p.min(speed * 0.1, 2),
+            maxRadius: 150
+          });
+        }
+      }
+
+      // Update and draw particles
+      for (var i = 0; i < particles.length; i++) {
+        var pt = particles[i];
+
+        // Ripple displacement
+        var fx = 0, fy = 0;
+        for (var ri2 = 0; ri2 < ripples.length; ri2++) {
+          var rp = ripples[ri2];
+          var dx = pt.homeX - rp.x;
+          var dy = pt.homeY - rp.y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          var ringDist = Math.abs(dist - rp.radius);
+
+          if (ringDist < 30 && dist > 0) {
+            var wave = (1 - ringDist / 30) * rp.strength;
+            fx += (dx / dist) * wave;
+            fy += (dy / dist) * wave;
+          }
+        }
+
+        // Spring back to home
+        var ax = (pt.homeX - pt.x) * 0.08 + fx;
+        var ay = (pt.homeY - pt.y) * 0.08 + fy;
+        pt.vx = (pt.vx + ax) * 0.85;
+        pt.vy = (pt.vy + ay) * 0.85;
+        pt.x += pt.vx;
+        pt.y += pt.vy;
+
+        // Draw particle
+        var displacement = Math.sqrt(pt.vx * pt.vx + pt.vy * pt.vy);
+        var glowAlpha = p.min(pt.a + displacement * 8, 255);
+        p.noStroke();
+        p.fill(pt.r, pt.g, pt.b, glowAlpha);
+        p.circle(pt.x, pt.y, pt.size + displacement * 0.3);
+      }
+    };
+
+    p.windowResized = function() {
+      var container = document.getElementById('p5-cover-bg');
+      canvasW = container.offsetWidth;
+      canvasH = container.offsetHeight;
+      p.resizeCanvas(canvasW, canvasH);
+      buildParticles(p);
+    };
+  }
+
+  // Wait for DOM + image load
+  window.addEventListener('load', function() {
+    new p5(coverSketch);
+  });
 })();
 </script>
 </body>
