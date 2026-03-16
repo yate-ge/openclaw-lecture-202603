@@ -1989,7 +1989,7 @@
 
   function pad(n) { return String(n).padStart(2, '0'); }
 
-  function goTo(index) {
+  function goTo(index, pushHash) {
     if (index < 0 || index >= total) return;
     slides[current].classList.remove('active');
     current = index;
@@ -2003,7 +2003,27 @@
     slideCounter.textContent = pad(current + 1) + ' / ' + pad(total);
 
     keyHint.className = 'key-hint' + (current > 0 ? ' hide' : '');
+
+    // Update URL hash
+    if (pushHash !== false) {
+      history.replaceState(null, '', '#/' + index);
+    }
   }
+
+  // Read initial slide from hash
+  function getSlideFromHash() {
+    var match = location.hash.match(/^#\/(\d+)$/);
+    if (match) {
+      var idx = parseInt(match[1], 10);
+      if (idx >= 0 && idx < total) return idx;
+    }
+    return 0;
+  }
+
+  // Listen for hash changes
+  window.addEventListener('hashchange', function() {
+    goTo(getSlideFromHash(), false);
+  });
 
   // Keyboard
   document.addEventListener('keydown', function(e) {
@@ -2122,8 +2142,8 @@
     if (e.key === 'Escape') closeToc();
   });
 
-  // Init
-  goTo(0);
+  // Init — read from URL hash or default to 0
+  goTo(getSlideFromHash());
 })();
 </script>
 
