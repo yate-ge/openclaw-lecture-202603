@@ -1378,9 +1378,85 @@
   </section>
 
   <!-- ════════════════════════════════════════════ -->
-  <!-- SLIDE 08: Agent Loop -->
+  <!-- SLIDE 08: Workspace & Context -->
   <!-- ════════════════════════════════════════════ -->
   <section class="slide" data-index="8">
+    <div class="nav">
+      <span class="nav-number">01</span>
+      <span class="nav-line"></span>
+      <span class="nav-label">Workspace</span>
+    </div>
+    <div class="split" style="align-items:start;padding-top:var(--pad);">
+      <!-- Left: Directory Tree -->
+      <div class="flex-col gap-md">
+        <h2 class="reveal d1" style="margin-bottom:8px;">Workspace — 车库里有什么</h2>
+        <p class="reveal d2" style="font-size:clamp(11px,1.1vw,14px);color:#888;margin-bottom:16px;">
+          <span class="mono" style="color:var(--accent);font-size:10px;">~/.openclaw/workspace/</span>
+        </p>
+        <div class="reveal d3" style="font-family:'DM Mono',monospace;font-size:clamp(11px,1vw,13px);line-height:2;color:#888;">
+          <div style="color:#00E8C6;">📂 workspace/</div>
+          <div style="padding-left:20px;">
+            <div><span style="color:#fff;">AGENTS.md</span> <span style="color:#555;">── 行为规则与优先级</span></div>
+            <div><span style="color:#fff;">SOUL.md</span> <span style="color:#555;">── 人格、语气、边界</span></div>
+            <div><span style="color:#fff;">USER.md</span> <span style="color:#555;">── 用户身份与偏好</span></div>
+            <div><span style="color:#fff;">IDENTITY.md</span> <span style="color:#555;">── 名字、风格、emoji</span></div>
+            <div><span style="color:#fff;">TOOLS.md</span> <span style="color:#555;">── 本地工具备注</span></div>
+            <div style="height:6px;"></div>
+            <div><span style="color:#aaa;">HEARTBEAT.md</span> <span style="color:#555;">── 心跳任务清单</span></div>
+            <div><span style="color:#aaa;">BOOT.md</span> <span style="color:#555;">── 重启清单</span></div>
+            <div><span style="color:#aaa;">BOOTSTRAP.md</span> <span style="color:#555;">── 首次运行仪式</span></div>
+            <div style="height:6px;"></div>
+            <div style="color:#00E8C6;">📂 memory/</div>
+            <div style="padding-left:20px;">
+              <span style="color:#aaa;">2026-03-17.md</span> <span style="color:#555;">── 每日记忆</span>
+            </div>
+            <div><span style="color:#aaa;">MEMORY.md</span> <span style="color:#555;">── 长期记忆</span></div>
+            <div style="height:6px;"></div>
+            <div style="color:#00E8C6;">📂 skills/</div>
+            <div style="padding-left:20px;color:#555;">自定义技能覆盖</div>
+            <div style="color:#00E8C6;">📂 canvas/</div>
+            <div style="padding-left:20px;color:#555;">Canvas UI 文件</div>
+          </div>
+        </div>
+      </div>
+      <!-- Right: Context explanation -->
+      <div class="flex-col gap-md" style="padding-top:40px;">
+        <div class="reveal d2">
+          <p class="mono" style="font-size:10px;color:var(--accent);letter-spacing:0.12em;margin-bottom:10px;">CONTEXT ≠ MEMORY</p>
+          <p style="font-size:clamp(12px,1.2vw,15px);color:#aaa;line-height:1.7;margin-bottom:20px;">
+            Context 是每次运行时<strong style="color:#fff;">送入模型的全部内容</strong>，<br>
+            Memory 存在磁盘上，可以被重新加载
+          </p>
+        </div>
+        <div class="reveal d3" style="display:flex;flex-direction:column;gap:14px;">
+          <div style="padding:14px 16px;border:1px solid #2a2a2a;border-radius:6px;">
+            <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:6px;">SYSTEM PROMPT</p>
+            <p style="font-size:clamp(11px,1vw,13px);color:#aaa;line-height:1.6;">工具列表 · Skills 元数据 · 注入的 Workspace 文件 · 时间/运行时信息</p>
+          </div>
+          <div style="padding:14px 16px;border:1px solid #2a2a2a;border-radius:6px;">
+            <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:6px;">CONVERSATION</p>
+            <p style="font-size:clamp(11px,1vw,13px);color:#aaa;line-height:1.6;">用户消息 · 助手回复 · 当前会话历史</p>
+          </div>
+          <div style="padding:14px 16px;border:1px solid #2a2a2a;border-radius:6px;">
+            <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:6px;">TOOL RESULTS</p>
+            <p style="font-size:clamp(11px,1vw,13px);color:#aaa;line-height:1.6;">命令输出 · 文件读取 · 图片/音频/转写</p>
+          </div>
+        </div>
+        <div class="reveal d4" style="margin-top:12px;padding:12px 16px;border-left:2px solid rgba(0,232,198,0.3);">
+          <p style="font-size:clamp(11px,1.1vw,13px);color:#666;line-height:1.6;">
+            每个文件限 <strong style="color:#aaa;">20,000</strong> 字符<br>
+            全部 Bootstrap 总计限 <strong style="color:#aaa;">150,000</strong> 字符<br>
+            Skills 按需加载，不占默认 Context
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 09: Agent Loop -->
+  <!-- ════════════════════════════════════════════ -->
+  <section class="slide" data-index="9">
     <div class="nav">
       <span class="nav-number">01</span>
       <span class="nav-line"></span>
@@ -1560,7 +1636,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 09: Part 2 Section Header -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="9">
+  <section class="slide dark" data-index="10">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -1578,7 +1654,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 10: Proactive Interaction -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="10">
+  <section class="slide" data-index="11">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -1609,7 +1685,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 11: Memory -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="11">
+  <section class="slide" data-index="12">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -1651,7 +1727,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 12: End-User Development -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="12">
+  <section class="slide" data-index="13">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -1689,7 +1765,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 13: Multi-Channel -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="13">
+  <section class="slide dark" data-index="14">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -1740,7 +1816,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 14: Comparison Table -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="14">
+  <section class="slide" data-index="15">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -1772,7 +1848,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 15: Design Challenges Header -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="15">
+  <section class="slide dark" data-index="16">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -1788,7 +1864,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 16: Challenges 1 & 2 -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="16">
+  <section class="slide" data-index="17">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -1815,7 +1891,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 17: Challenges 3, 4, 5 -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="17">
+  <section class="slide" data-index="18">
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
@@ -1849,7 +1925,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 18: Part 3 Section Header -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="18">
+  <section class="slide dark" data-index="19">
     <div class="nav">
       <span class="nav-number">03</span>
       <span class="nav-line"></span>
@@ -1865,7 +1941,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 19: Robot Integration -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="19">
+  <section class="slide" data-index="20">
     <div class="nav">
       <span class="nav-number">03</span>
       <span class="nav-line"></span>
@@ -1911,7 +1987,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 20: References -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide" data-index="20">
+  <section class="slide" data-index="21">
     <div class="nav">
       <span class="nav-number">04</span>
       <span class="nav-line"></span>
@@ -1954,7 +2030,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- SLIDE 21: End -->
   <!-- ════════════════════════════════════════════ -->
-  <section class="slide dark" data-index="21">
+  <section class="slide dark" data-index="22">
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;">
       <h1 class="reveal d1" style="font-size:clamp(36px,5vw,64px);font-weight:300;color:#FFF;letter-spacing:0.02em;">Thank you.</h1>
       <div style="width:32px;height:2px;background:#00E8C6;margin:28px auto;" class="reveal d2"></div>
@@ -2087,20 +2163,21 @@
     { idx: 5,  title: '第三层：Agent' },
     { idx: 6,  title: '六大核心组件' },
     { idx: 7,  title: '第四层：OpenClaw' },
-    { idx: 8,  title: 'Agent Loop 完整循环' },
-    { idx: 9,  title: 'Part 2 — 交互范式变化', section: true },
-    { idx: 10, title: '2.1 主动响应式交互' },
-    { idx: 11, title: '2.2 连续交互与记忆能力' },
-    { idx: 12, title: '2.3 终端用户编程' },
-    { idx: 13, title: '2.4 多端交互能力' },
-    { idx: 14, title: '交互范式总结对比' },
-    { idx: 15, title: 'Agent 时代的设计挑战', section: true },
-    { idx: 16, title: '挑战 1–2：透明性 / 信任' },
-    { idx: 17, title: '挑战 3–5：问责 / 隐私 / 社交' },
-    { idx: 18, title: 'Part 3 — 实例', section: true },
-    { idx: 19, title: 'OpenClaw + 机器人' },
-    { idx: 20, title: '参考资料' },
-    { idx: 21, title: 'Thank you' },
+    { idx: 8,  title: 'Workspace & Context' },
+    { idx: 9,  title: 'Agent Loop 完整循环' },
+    { idx: 10, title: 'Part 2 — 交互范式变化', section: true },
+    { idx: 11, title: '2.1 主动响应式交互' },
+    { idx: 12, title: '2.2 连续交互与记忆能力' },
+    { idx: 13, title: '2.3 终端用户编程' },
+    { idx: 14, title: '2.4 多端交互能力' },
+    { idx: 15, title: '交互范式总结对比' },
+    { idx: 16, title: 'Agent 时代的设计挑战', section: true },
+    { idx: 17, title: '挑战 1–2：透明性 / 信任' },
+    { idx: 18, title: '挑战 3–5：问责 / 隐私 / 社交' },
+    { idx: 19, title: 'Part 3 — 实例', section: true },
+    { idx: 20, title: 'OpenClaw + 机器人' },
+    { idx: 21, title: '参考资料' },
+    { idx: 22, title: 'Thank you' },
   ];
 
   // Build TOC list
