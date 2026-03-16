@@ -1661,21 +1661,40 @@
       <span class="nav-label">Proactive</span>
     </div>
     <div class="flex-col" style="height:100%;justify-content:center;">
-      <h2 class="reveal d1" style="margin-bottom:32px;">2.1 主动响应式交互</h2>
-      <div class="vs-split reveal d2">
-        <div class="vs-col">
-          <p class="mono" style="font-size:11px;color:var(--gray);letter-spacing:0.15em;margin-bottom:16px;">TRADITIONAL</p>
-          <h3 style="margin-bottom:12px;">用户发起 → 系统响应</h3>
-          <p style="color:var(--mid-gray);">Request-Response 模式<br>用户不操作，系统就沉默</p>
+      <h2 class="reveal d1" style="margin-bottom:32px;">2.1 主动交互</h2>
+      <div class="reveal d2" style="display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:stretch;">
+        <!-- Traditional -->
+        <div style="padding:28px 24px;background:rgba(255,255,255,0.02);border:1px solid #2a2a2a;border-radius:8px;">
+          <p class="mono" style="font-size:10px;color:#666;letter-spacing:0.15em;margin-bottom:16px;">TRADITIONAL</p>
+          <h3 style="margin-bottom:14px;color:#888;">用户发起 → 系统响应</h3>
+          <div style="margin:16px 0;display:flex;align-items:center;gap:10px;">
+            <span style="display:inline-block;width:32px;height:32px;border-radius:50%;border:1px solid #555;text-align:center;line-height:32px;font-size:12px;color:#888;">U</span>
+            <span style="color:#555;">→</span>
+            <span style="display:inline-block;padding:6px 14px;border:1px solid #444;border-radius:4px;font-size:12px;color:#888;">系统</span>
+            <span style="color:#555;">→</span>
+            <span style="display:inline-block;width:32px;height:32px;border-radius:50%;border:1px solid #555;text-align:center;line-height:32px;font-size:12px;color:#888;">U</span>
+          </div>
+          <p style="color:#666;font-size:clamp(12px,1.1vw,14px);line-height:1.7;">Request-Response 模式<br>用户不操作，系统就<strong style="color:#888;">沉默</strong></p>
         </div>
-        <div class="vs-line"></div>
-        <div class="vs-col">
-          <p class="mono" style="font-size:11px;color:var(--gray);letter-spacing:0.15em;margin-bottom:16px;">AGENT MODE</p>
-          <h3 style="margin-bottom:12px;">Agent 主动感知 → 主动联系</h3>
-          <p>通过 Heartbeat 周期性检查邮件/日历<br>主动推送待办提醒</p>
-          <div style="margin-top:16px;padding:12px;border:1px solid var(--light-gray);">
-            <p class="mono" style="font-size:10px;color:var(--accent);margin-bottom:6px;">DESIGN QUESTION</p>
-            <p style="font-size:clamp(12px,1.1vw,14px);">如何设计"<strong>不打扰但有用</strong>"的主动交互？</p>
+        <!-- VS indicator -->
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
+          <div style="width:1px;flex:1;background:linear-gradient(to bottom,transparent,#333,var(--accent),#333,transparent);"></div>
+          <span class="mono" style="font-size:10px;color:var(--accent);letter-spacing:0.1em;">VS</span>
+          <div style="width:1px;flex:1;background:linear-gradient(to bottom,transparent,#333,var(--accent),#333,transparent);"></div>
+        </div>
+        <!-- Agent Mode -->
+        <div style="padding:28px 24px;background:rgba(0,232,198,0.03);border:1px solid rgba(0,232,198,0.2);border-radius:8px;">
+          <p class="mono" style="font-size:10px;color:var(--accent);letter-spacing:0.15em;margin-bottom:16px;">AGENT MODE</p>
+          <h3 style="margin-bottom:14px;">Agent 主动感知 → 主动联系</h3>
+          <div style="margin:16px 0;display:flex;align-items:center;gap:10px;">
+            <span style="display:inline-block;padding:6px 14px;border:1px solid var(--accent);border-radius:4px;font-size:12px;color:var(--accent);">Agent</span>
+            <span style="color:var(--accent);">→</span>
+            <span style="display:inline-block;width:32px;height:32px;border-radius:50%;border:1px solid var(--accent);text-align:center;line-height:32px;font-size:12px;color:var(--accent);">U</span>
+          </div>
+          <p style="font-size:clamp(12px,1.1vw,14px);line-height:1.7;">Heartbeat 周期性检查邮件/日历<br><strong>主动</strong>推送待办提醒</p>
+          <div style="margin-top:20px;padding:12px;border:1px solid rgba(0,232,198,0.15);border-radius:6px;background:rgba(0,232,198,0.02);">
+            <p class="mono" style="font-size:9px;color:var(--accent);margin-bottom:6px;">DESIGN QUESTION</p>
+            <p style="font-size:clamp(11px,1vw,13px);color:#aaa;">如何设计"<strong style="color:#fff;">不打扰但有用</strong>"的主动交互？</p>
           </div>
         </div>
       </div>
@@ -2166,7 +2185,7 @@
     { idx: 8,  title: 'Workspace & Context' },
     { idx: 9,  title: 'Agent Loop 完整循环' },
     { idx: 10, title: 'Part 2 — 交互范式变化', section: true },
-    { idx: 11, title: '2.1 主动响应式交互' },
+    { idx: 11, title: '2.1 主动交互' },
     { idx: 12, title: '2.2 连续交互与记忆能力' },
     { idx: 13, title: '2.3 终端用户编程' },
     { idx: 14, title: '2.4 多端交互能力' },
