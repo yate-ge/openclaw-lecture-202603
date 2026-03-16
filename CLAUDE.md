@@ -16,7 +16,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Slides 内容结构
 
-当前共 23 页（data-index 0-22），分为三个 Part：
+分为三个 Part（页数持续增加中，以实际 HTML 中 data-index 为准）：
 
 1. **Part 1** — 从 LLM 到 CLaw：技术演进与本质
    - 封面（p5.js 粒子动画背景）
@@ -62,6 +62,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `.v-center` — 垂直居中单栏
 - `.columns-5` / `.columns-6` — 等宽多列网格
 - `.flow-row` — 水平流程图
+
+### 内容区域限制（重要！）
+每页 slide 尺寸为 `100vw × 100vh`，`overflow: hidden`，超出部分不可见且不可滚动。
+
+- **可用高度**：视口高度（如 1080p 下约 627px）减去上下 padding `clamp(32px, 4vw, 64px)` × 2，实际内容区域约 **500–550px**
+- **可用宽度**：视口宽度减去左右 padding × 2，实际约 **1050–1110px**（1080p）
+- **设计新 slide 时必须确保内容不超出**，宁可精简文字、压缩间距，也不能让底部被截断
+- 推荐做法：表格/列表 padding 用 `10-14px`，行高 `1.4-1.5`，margin-bottom `12-16px`，避免大段留白
+- 如果内容较多，优先考虑拆分为两页，而非在一页内硬塞
 
 ### 导航
 - 键盘方向键 / 空格翻页
