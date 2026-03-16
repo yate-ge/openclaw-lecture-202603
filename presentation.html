@@ -1667,12 +1667,27 @@
         <div style="padding:28px 24px;background:rgba(255,255,255,0.02);border:1px solid #2a2a2a;border-radius:8px;">
           <p class="mono" style="font-size:10px;color:#666;letter-spacing:0.15em;margin-bottom:16px;">TRADITIONAL</p>
           <h3 style="margin-bottom:14px;color:#888;">用户发起 → 系统响应</h3>
-          <div style="margin:16px 0;display:flex;align-items:center;gap:10px;">
-            <span style="display:inline-block;width:32px;height:32px;border-radius:50%;border:1px solid #555;text-align:center;line-height:32px;font-size:12px;color:#888;">U</span>
-            <span style="color:#555;">→</span>
-            <span style="display:inline-block;padding:6px 14px;border:1px solid #444;border-radius:4px;font-size:12px;color:#888;">系统</span>
-            <span style="color:#555;">→</span>
-            <span style="display:inline-block;width:32px;height:32px;border-radius:50%;border:1px solid #555;text-align:center;line-height:32px;font-size:12px;color:#888;">U</span>
+          <div style="margin:20px 0;display:flex;align-items:center;gap:12px;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span class="mono" style="font-size:8px;color:#666;">用户</span>
+            </div>
+            <span style="color:#555;font-size:16px;">→</span>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+              <span class="mono" style="font-size:8px;color:#666;">系统</span>
+            </div>
+            <span style="color:#555;font-size:16px;">→</span>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span class="mono" style="font-size:8px;color:#666;">用户</span>
+            </div>
           </div>
           <p style="color:#666;font-size:clamp(12px,1.1vw,14px);line-height:1.7;">Request-Response 模式<br>用户不操作，系统就<strong style="color:#888;">沉默</strong></p>
         </div>
@@ -1686,10 +1701,22 @@
         <div style="padding:28px 24px;background:rgba(0,232,198,0.03);border:1px solid rgba(0,232,198,0.2);border-radius:8px;">
           <p class="mono" style="font-size:10px;color:var(--accent);letter-spacing:0.15em;margin-bottom:16px;">AGENT MODE</p>
           <h3 style="margin-bottom:14px;">Agent 主动感知 → 主动联系</h3>
-          <div style="margin:16px 0;display:flex;align-items:center;gap:10px;">
-            <span style="display:inline-block;padding:6px 14px;border:1px solid var(--accent);border-radius:4px;font-size:12px;color:var(--accent);">Agent</span>
-            <span style="color:var(--accent);">→</span>
-            <span style="display:inline-block;width:32px;height:32px;border-radius:50%;border:1px solid var(--accent);text-align:center;line-height:32px;font-size:12px;color:var(--accent);">U</span>
+          <div style="margin:20px 0;display:flex;align-items:center;gap:12px;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00E8C6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/>
+                <line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/>
+                <line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/>
+              </svg>
+              <span class="mono" style="font-size:8px;color:var(--accent);">Agent</span>
+            </div>
+            <span style="color:var(--accent);font-size:16px;">→</span>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00E8C6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span class="mono" style="font-size:8px;color:var(--accent);">用户</span>
+            </div>
           </div>
           <p style="font-size:clamp(12px,1.1vw,14px);line-height:1.7;">Heartbeat 周期性检查邮件/日历<br><strong>主动</strong>推送待办提醒</p>
           <div style="margin-top:20px;padding:12px;border:1px solid rgba(0,232,198,0.15);border-radius:6px;background:rgba(0,232,198,0.02);">
