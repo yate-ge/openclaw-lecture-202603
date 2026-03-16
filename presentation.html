@@ -2408,36 +2408,28 @@
       <span class="nav-line"></span>
       <span class="nav-label">Case · Cocobo</span>
     </div>
-    <div class="split" style="align-items:center;padding:var(--pad-sm) var(--pad);">
-      <div class="flex-col gap-md" style="flex:0 0 42%;">
-        <div>
-          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:2px;">
-            <h2 class="reveal d1" style="font-size:clamp(18px,2.2vw,28px);">案例：Cocobo</h2>
-          </div>
-          <p class="reveal d1 mono" style="font-size:9px;color:#666;margin-bottom:2px;"><a href="https://arxiv.org/abs/2407.20712" target="_blank" style="color:#666;text-decoration:none;">Ge et al., IEEE VL/HCC 2024</a></p>
-          <p class="reveal d1 mono" style="font-size:10px;color:var(--accent);letter-spacing:0.12em;">SPECTRUM LEFT — AI 支持用户定制</p>
-        </div>
-        <div class="reveal d2" style="font-size:clamp(11px,1vw,13px);color:#aaa;line-height:1.7;">
-          <p>LLM 驱动的<strong style="color:#fff;">机器人编程工具</strong></p>
-          <p>非技术用户通过自然语言定制机器人行为</p>
-          <p style="color:#666;margin-top:6px;">GPT-4 解析意图 → 生成代码 + 流程图</p>
-        </div>
-        <div class="reveal d3" style="display:flex;flex-direction:column;gap:4px;font-size:clamp(10px,0.9vw,12px);color:#aaa;">
-          <p>① 对话式编程 — 多轮对话描述任务</p>
-          <p>② 流程图编辑 — 可视化调整节点</p>
-          <p>③ MagicDebug — 针对性调试</p>
-          <p style="color:#555;margin-top:4px;">SUS 72.3 · 16/16 完成 · 15/16 认为自然</p>
-        </div>
-        <!-- Spectrum position -->
-        <div class="reveal d4" style="padding:8px 12px;border:1px solid #2a2a2a;border-radius:6px;">
-          <div style="height:4px;border-radius:2px;background:linear-gradient(to right,#fff,var(--accent));position:relative;margin-bottom:4px;">
-            <div style="position:absolute;left:20%;top:-5px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid var(--accent);"></div>
-          </div>
-          <p style="font-size:clamp(9px,0.85vw,11px);color:#666;">用户主导意图，AI 实现 — <strong style="color:#aaa;">控制权在用户</strong></p>
-        </div>
+    <div class="flex-col" style="height:100%;justify-content:center;padding:0 var(--pad);">
+      <!-- Top: title + brief description row -->
+      <div class="reveal d1" style="display:flex;align-items:baseline;gap:16px;margin-bottom:4px;">
+        <h2 style="font-size:clamp(18px,2.2vw,28px);">案例：Cocobo</h2>
+        <span class="mono" style="font-size:9px;color:#666;"><a href="https://arxiv.org/abs/2407.20712" target="_blank" style="color:#666;text-decoration:none;">Ge et al., IEEE VL/HCC 2024</a></span>
+        <span class="mono" style="font-size:10px;color:var(--accent);letter-spacing:0.1em;">AI 支持用户定制</span>
       </div>
-      <div class="flex-col reveal d2" style="flex:0 0 55%;">
-        <img src="assets/cocobo-overview.jpg" alt="Cocobo System Overview" style="width:100%;border-radius:8px;border:1px solid #2a2a2a;">
+      <div class="reveal d1" style="display:flex;gap:20px;font-size:clamp(10px,0.95vw,12px);color:#888;margin-bottom:12px;">
+        <span>LLM 驱动的<strong style="color:#ccc;">机器人编程工具</strong> · 自然语言 → 代码 + 流程图</span>
+        <span>① 对话编程 ② 流程图编辑 ③ MagicDebug</span>
+        <span style="color:#555;">SUS 72.3 · 16/16 完成</span>
+      </div>
+      <!-- Large image -->
+      <div class="reveal d2" style="flex:1;display:flex;align-items:center;justify-content:center;min-height:0;">
+        <img src="assets/cocobo-overview.jpg" alt="Cocobo System Overview" style="max-width:100%;max-height:100%;border-radius:8px;border:1px solid #2a2a2a;object-fit:contain;">
+      </div>
+      <!-- Spectrum bar at bottom -->
+      <div class="reveal d3" style="margin-top:10px;padding:6px 12px;border:1px solid #2a2a2a;border-radius:6px;display:flex;align-items:center;gap:12px;">
+        <div style="height:4px;flex:1;max-width:200px;border-radius:2px;background:linear-gradient(to right,#fff,var(--accent));position:relative;">
+          <div style="position:absolute;left:20%;top:-5px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid var(--accent);"></div>
+        </div>
+        <span style="font-size:clamp(9px,0.85vw,11px);color:#666;">← 偏用户定制端 · 用户主导意图，AI 实现 — <strong style="color:#aaa;">控制权在用户</strong></span>
       </div>
     </div>
   </section>
@@ -2482,7 +2474,7 @@
         </div>
       </div>
       <div class="flex-col reveal d2" style="flex:0 0 57%;gap:10px;">
-        <img src="assets/genfaceui-teaser.jpg" alt="GenFaceUI Teaser" style="width:100%;border-radius:8px;border:1px solid #2a2a2a;">
+        <img src="assets/genfaceui-overview.png" alt="GenFaceUI Overview" style="width:100%;border-radius:8px;border:1px solid #2a2a2a;">
       </div>
     </div>
   </section>
