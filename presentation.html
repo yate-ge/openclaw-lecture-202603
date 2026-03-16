@@ -2015,51 +2015,62 @@
     <div class="nav">
       <span class="nav-number">02</span>
       <span class="nav-line"></span>
-      <span class="nav-label">Long-term</span>
+      <span class="nav-label">Embodiment</span>
     </div>
     <div class="flex-col" style="height:100%;justify-content:center;padding:0 var(--pad);">
       <h2 class="reveal d1" style="margin-bottom:4px;">2.2 长期交互与自适应学习</h2>
-      <p class="reveal d1 mono" style="font-size:10px;color:var(--accent);letter-spacing:0.15em;margin-bottom:18px;">LONG-TERM HUMAN-AI INTERACTION</p>
+      <p class="reveal d1 mono" style="font-size:10px;color:var(--accent);letter-spacing:0.15em;margin-bottom:14px;">OPENCLAW IS A BRAIN — BUT WHAT'S THE BODY?</p>
 
-      <div class="reveal d2" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:16px;">
-        <div style="padding:16px;border:1px solid #2a2a2a;border-radius:8px;">
-          <p class="mono" style="font-size:9px;color:var(--accent);letter-spacing:0.12em;margin-bottom:10px;">WHAT IS LONG-TERM?</p>
-          <p style="font-size:clamp(11px,1vw,13px);color:#aaa;line-height:1.7;">
-            HRI 定义：同一用户<strong style="color:#fff;">3+ 次交互，跨 3+ 天</strong>
-            <span style="color:#555;">— ACM THRI 2025</span>
-          </p>
-          <p style="font-size:clamp(10px,0.9vw,12px);color:#777;line-height:1.6;margin-top:8px;">
-            Kanda et al. 小学部署机器人 <strong style="color:#bbb;">2 个月</strong>，视为"朋友"时交互更持久
-          </p>
-        </div>
-        <div style="padding:16px;border:1px solid #2a2a2a;border-radius:8px;">
-          <p class="mono" style="font-size:9px;color:var(--accent);letter-spacing:0.12em;margin-bottom:10px;">KEY CHARACTERISTICS</p>
-          <div style="display:flex;flex-direction:column;gap:7px;">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00E8C6" stroke-width="1.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <p style="font-size:clamp(10px,0.95vw,12px);color:#aaa;">用户识别与记忆</p>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00E8C6" stroke-width="1.5" stroke-linecap="round"><path d="M12 20V4m0 0l-4 4m4-4l4 4"/></svg>
-              <p style="font-size:clamp(10px,0.95vw,12px);color:#aaa;">行为适应 — 根据历史调整</p>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00E8C6" stroke-width="1.5" stroke-linecap="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-              <p style="font-size:clamp(10px,0.95vw,12px);color:#aaa;">关系发展 — 好奇→信任→伙伴</p>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00E8C6" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
-              <p style="font-size:clamp(10px,0.95vw,12px);color:#aaa;">融入日常 — 成为"正常成员"</p>
-            </div>
-          </div>
-        </div>
+      <!-- Core question -->
+      <div class="reveal d2" style="margin-bottom:14px;padding:10px 14px;border-left:2px solid var(--accent);background:rgba(0,232,198,0.03);">
+        <p style="font-size:clamp(11px,1.05vw,14px);color:#ccc;line-height:1.5;">
+          OpenClaw 有记忆、有推理、能主动 — 但要支持<strong style="color:#fff;">长期个性化交互</strong>，需要<strong style="color:var(--accent);">感知用户</strong>和<strong style="color:var(--accent);">与外界互动</strong>的能力。
+          <span style="color:#888;">大脑有了，<strong style="color:#fff;">身体</strong>是什么？什么<strong style="color:#fff;">器官</strong>获取信息？什么<strong style="color:#fff;">通道</strong>输出服务？</span>
+        </p>
       </div>
 
-      <div class="reveal d3" style="padding:12px 16px;border-left:3px solid #555;border-radius:0 6px 6px 0;background:rgba(255,255,255,0.015);">
-        <p style="font-size:clamp(11px,1.1vw,14px);color:#aaa;line-height:1.6;">
-          <strong style="color:#fff;">核心挑战：新鲜感衰退</strong> — 初始兴奋消退后如何维持参与？
-          <span style="color:#555;">de Graaf 六阶段：期望→接触→采用→适应→整合→<strong style="color:#aaa;">认同</strong></span>
-        </p>
+      <!-- Brain-Body layout -->
+      <div class="reveal d3" style="display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;">
+        <!-- Brain -->
+        <div style="padding:12px;border:1px solid rgba(0,232,198,0.3);border-radius:8px;background:rgba(0,232,198,0.04);text-align:center;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00E8C6" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/>
+            <line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/>
+            <line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/>
+          </svg>
+          <p style="color:var(--accent);font-weight:600;font-size:clamp(12px,1.1vw,15px);margin-top:6px;">OpenClaw</p>
+          <p style="font-size:clamp(9px,0.85vw,11px);color:#888;margin-top:4px;">Memory · Brain<br>Skills · Heartbeat</p>
+        </div>
+
+        <!-- Input/Output grid -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="padding:10px;border:1px solid #2a2a2a;border-radius:6px;">
+            <p class="mono" style="font-size:9px;color:#888;letter-spacing:0.1em;margin-bottom:6px;">感知器官 · INPUT</p>
+            <div style="display:flex;flex-direction:column;gap:4px;font-size:clamp(10px,0.9vw,12px);">
+              <p><span style="color:var(--accent);">Gateway</span> <span style="color:#555;">—</span> <span style="color:#aaa;">消息、语音、图片</span></p>
+              <p><span style="color:var(--accent);">摄像头/VLM</span> <span style="color:#555;">—</span> <span style="color:#aaa;">视觉、人脸、姿态</span></p>
+              <p><span style="color:var(--accent);">IoT 传感器</span> <span style="color:#555;">—</span> <span style="color:#aaa;">温度、光照、门磁</span></p>
+              <p><span style="color:var(--accent);">NFC/BLE</span> <span style="color:#555;">—</span> <span style="color:#aaa;">近场身份识别</span></p>
+              <p><span style="color:var(--accent);">API</span> <span style="color:#555;">—</span> <span style="color:#aaa;">日历、天气、邮件</span></p>
+            </div>
+          </div>
+          <div style="padding:10px;border:1px solid #2a2a2a;border-radius:6px;">
+            <p class="mono" style="font-size:9px;color:#888;letter-spacing:0.1em;margin-bottom:6px;">输出通道 · OUTPUT</p>
+            <div style="display:flex;flex-direction:column;gap:4px;font-size:clamp(10px,0.9vw,12px);">
+              <p><span style="color:var(--accent);">多平台消息</span> <span style="color:#555;">—</span> <span style="color:#aaa;">文字、卡片、提醒</span></p>
+              <p><span style="color:var(--accent);">屏幕 UI</span> <span style="color:#555;">—</span> <span style="color:#aaa;">个性化界面</span></p>
+              <p><span style="color:var(--accent);">语音 TTS</span> <span style="color:#555;">—</span> <span style="color:#aaa;">主动对话、播报</span></p>
+              <p><span style="color:var(--accent);">执行器</span> <span style="color:#555;">—</span> <span style="color:#aaa;">移动、位姿、朝向</span></p>
+              <p><span style="color:var(--accent);">IoT 控制</span> <span style="color:#555;">—</span> <span style="color:#aaa;">灯光、空调、家电</span></p>
+            </div>
+          </div>
+          <div style="grid-column:1/3;padding:8px 12px;border:1px solid rgba(0,232,198,0.2);border-radius:6px;background:rgba(0,232,198,0.03);">
+            <p style="font-size:clamp(11px,1vw,13px);color:#ccc;text-align:center;">
+              <strong style="color:var(--accent);">具身性</strong>决定 Agent 能感知什么、能做什么 → 直接决定<strong style="color:#fff;">个性化服务的上限</strong>
+              <span style="color:#666;"> · 同一个大脑 + 不同的身体 = 完全不同的交互体验</span>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
