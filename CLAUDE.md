@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **主题**: 从 LLM 到 Agent — 以交互设计视角理解 OpenClaw 的架构与设计启发。
 
-**核心文件**: `presentation.html` — 完整的 HTML slides，包含所有样式、动画、SVG 图表和导航逻辑。
+**核心文件**: `index.html` — 完整的 HTML slides，包含所有样式、动画、SVG 图表和导航逻辑。
 
 **辅助文件**:
 - `openclaw-slides-202603.md` — 原始 Markdown 版本的内容底稿（Obsidian 格式）
@@ -83,5 +83,5 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 语言: **中文**（普通话）。所有内容编辑保持中文。
 - 本地预览需启动 HTTP 服务器（`python3 -m http.server 8080`），不可直接 file:// 打开（p5.js CORS 限制）。
 - **每次修改后立即 git commit**，不要攒到最后。
-- 单文件架构：所有 CSS、JS、SVG 都内嵌在 `presentation.html` 中，不拆分。
+- 单文件架构：所有 CSS、JS、SVG 都内嵌在 `index.html` 中，不拆分。
 - Part 3 的 Tami 机器人部分有未完成的 TODO 待填充技术细节。
